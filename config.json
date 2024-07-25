@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "decoded-totem-428110-s6",
+  "private_key_id": "4fe356fc44b8927af38f134e9c597fa0f2a46190",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCptbmke2g/rsUX\nLntRVYMQK5MA1c/wlb4hNC3jHP3QE1BItaTl83yfLmfx46zXtOVmu3+XxRRm9x6R\nkcAOATdMJjiEQo5A/qhGNFie2B9YEI5zV37hxJP268zWuw1MR8juThTbQKGrIpB8\ngYSsm3IVvXk27jJYbDtLLQabdDCCTTjP/Ovx/xd0If3SxwoBZQes1RwaSEEeVrAZ\nQeQVJfzVlmJePi/3sLuFxje2G1KPtfqUTTHVZSAhoknwDwBMFN7E54ejyNJaIBEe\nwYKo40D4zoXIA1dZJy0bCihRls4JGbp+mYMdRNGLd7z23ptGUwpZdhTfD1u462rP\nAEytsJ9tAgMBAAECggEAAKAv4JGu6kz5BqwpHkt1ZHJXy1ST0h0vOnlHh0F7sVA8\n6q5hcJKcj33NVs/JSSpuY1LGmejLJG+2p0d40o8QMzcmTkCI5z0q6Q4+obzbbWUr\nV/TqqIq43pvIdrQcIgaB1/UXzKYnRgBYNReJRY5uK0hLwaWCWrvw+z+PgG0Qm0dE\nrBjki2+KFr7wuWtMbRJhiFZcpE1rLKC1eeJnlOtcRsNUUN9hLizv5ai7/ZBcCwcP\nWkPfLTJGuAvE7wzAlPjeNoDo0GLyuR1ZTrh9idg1o0w/ZWEBxa/zivakC5LVp2BH\n/CjR0XCvAK9ptxCGTrNJOBxroNAyt0nkpKc2S4Ze2QKBgQDtwFZMp1ujgaaPXjUT\nF4aDgCEE7f8QDF5MeH0ZZPf2PDe179ZY4zZWDeUJjmouCaymhVSo/iLe0MnRlePr\n15YjKPY+PeYkeFASIdXNwhHkRuRjwQo48zVmU5c8UrPLA6iT73d09ZqIkFQmSvLd\nHAMiYssEwA5oYrjTvPw96UCrBQKBgQC2vGqktiuI1We3aSg2+FEtc9OhdfhYqVPz\nDYQsQQ898PwQEZ2q/wwb6ZIJBhieRZigMv0+/a8N6mq4/h/Q+Qk0ZxsuL8hfH5Dd\noWfbRl/2bCwVTDQy0mrHXqKs6K2BSFBd+jIPDo+JPrze0zgRvWLL2b0z1dn8RINb\nEzqGs/VfSQKBgQCRGyXQzQg6KAQ/VnEwQNiBY+9DMfrNka7wH03C9QP+Dky2RzZc\ns/hS11Il3fziMldkntXH+qvPsECtIT2lkMP6m6KG5IKVWbUNDAeQ+FSxLa9xTr1t\nesrptDUGxTckvgvilnIjOU9i8Cvb3zyRROqIzyE3ufxRK4fA+4Q8SSOF/QKBgEJ9\nUDhaaIDDVZew1Yca1z64lFp9eD2abwdS9bK8gXVCSBT4s+vSHW/SjuZlp3N/U0eH\nBgpzd8ySbP6eyKja1HSSx5sIm9mwvJ9H6WgptSUOuwOM1LlhQqUEVCCiEO+nhkaL\nkMdVvvhrMYHKTO53gIk30tYXi9d0fm8XEgaNWEyxAoGBAKPP6Vm+VrcyETQ69IcZ\naJLa3ZRfDw+pxM4n3r10DLF2JcVUo7YiDELCM9UUUxj25mOKWXA/xkxN9kPva56m\nSuW8NaOKkqxu89GZzVXW52UlHRMRKqq5pLldYaBmHQMb1RvVbBsUWOgo9s04u8gs\nOoUuT5TiMb+nxeUkajZcrxOh\n-----END PRIVATE KEY-----\n",
+  "client_email": "uploadfilevertexai@decoded-totem-428110-s6.iam.gserviceaccount.com",
+  "client_id": "109377772284580505816",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/uploadfilevertexai%40decoded-totem-428110-s6.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

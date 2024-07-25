@@ -1,0 +1,16 @@
+Insert into pa18.thv_ct values('VST1L-366','l�c linh th�o','F',to_date('15/04/1993','dd/mm/yyyy'),'D','209','1','8','209','20915','2091545','khu lao đ�ng','','020193006515','209',to_date('6/08/2021','dd/mm/yyyy'),'t� do','','2','1','','','','',to_date('25/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-366','nguy�n di�p qu�n','M',to_date('27/06/1978','dd/mm/yyyy'),'D','101','1','8','101','10109','1010921','8 ng�ch 150/80','','001078001174','101',to_date('10/04/2021','dd/mm/yyyy'),'t� do','','2','1','','','','',to_date('25/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-366','nguy�n th�y linh','F',to_date('22/08/1993','dd/mm/yyyy'),'D','101','1','8','101','10106','1010627','t� 9','','024193000073','101',to_date('25/04/2021','dd/mm/yyyy'),'t� do','','2','1','','','','',to_date('25/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-366','tr�n phương dung','F',to_date('22/06/1987','dd/mm/yyyy'),'D','209','1','8','209','20901','2090105','kh�i 1','','020187005482','209',to_date('09/05/2021','dd/mm/yyyy'),'t� do','','2','1','','','','',to_date('25/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-366','n�ng đ�c quy�n','M',to_date('17/10/1984','dd/mm/yyyy'),'D','209','1','8','209','20901','2090105','kh�i 1','','020084008173','209',to_date('09/05/2021','dd/mm/yyyy'),'t� do','','2','1','','','','',to_date('25/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-366','ph�m duy t�nh','M',to_date('19/07/1992','dd/mm/yyyy'),'D','401','1','8','401','40121','4012113','xu�n th�nh','','038092029885','401',to_date('13/03/2022','dd/mm/yyyy'),'t� do','','2','1','','','','',to_date('25/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+commit
+/
+quit
+/
