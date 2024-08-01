@@ -1,0 +1,24 @@
+Insert into pa18.thv_ct values('VST1L-373','nguyÔn thÞ thïy linh','F',to_date('01/09/1987','dd/mm/yyyy'),'D','101','1','8','101','10107','1010703','sè 4 xãm chïa','','031187003165','101',to_date('10/07/2021','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('30/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-373','hoµng viÖt anh','M',to_date('10/05/1987','dd/mm/yyyy'),'D','101','1','8','101','10107','1010703','4 xãm chïa','','001087015531','101',to_date('10/07/2021','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('30/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-373','v­¬ng thÞ h­êng','F',to_date('02/08/1981','dd/mm/yyyy'),'D','209','1','8','209','20901','2090103','141 t« thÞ k7','','020181002070','209',to_date('20/04/2021','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('30/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-373','hoµng thÕ phóc','M',to_date('07/05/1969','dd/mm/yyyy'),'D','209','1','8','209','20913','2091335','tæ 5, khèi 1','','020069000278','209',to_date('02/04/2021','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('30/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-373','trÇn thÞ kim loan','F',to_date('14/10/1979','dd/mm/yyyy'),'D','221','1','8','221','22107','2210709','','','020179003248','221',to_date('04/02/2022','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('30/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-373','nguyÔn thÞ diÖp','F',to_date('24/05/1988','dd/mm/yyyy'),'D','209','1','8','209','20901','2090101','khèi 6','','020188002653','209',to_date('20/04/2021','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('30/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-373','th©n ®øc khoa','M',to_date('16/10/1993','dd/mm/yyyy'),'D','221','1','8','221','22117','2211713','s¬n quang','','024093009202','221',to_date('09/01/2022','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('30/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-373','nguyÔn thÞ tó','F',to_date('11/05/1998','dd/mm/yyyy'),'D','221','1','8','221','22115','2211525','mai th­ëng','','024198009516','221',to_date('','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('30/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-373','hoµng thÞ th¬i','F',to_date('01/09/1997','dd/mm/yyyy'),'D','209','1','8','209','20903','2090311','th«n cèc m­êi','','020197006066','209',to_date('12/07/2021','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('30/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-373','tr¨ng thu huyÒn','F',to_date('03/12/2000','dd/mm/yyyy'),'D','209','1','8','209','20901','2090115','th«n ®ång Ðn','','020300000213','209',to_date('08/04/2021','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('30/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+commit
+/
+quit
+/

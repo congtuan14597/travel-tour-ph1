@@ -88,14 +88,14 @@ const perform =  async (req, res) => {
     console.log("extractedInfo", extractedInfo);
     console.log("======================");
 
-    // const fullNameTCVN3 = CommonUltil.convertUnicodeToTcvn3Map(extractedInfo.fullName);
-    // const villageTCVN3 = CommonUltil.convertUnicodeToTcvn3Map(extractedInfo.village);
+    const fullNameTCVN3 = CommonUltil.convertUnicodeToTcvn3Map(extractedInfo.fullName);
+    const villageTCVN3 = CommonUltil.convertUnicodeToTcvn3Map(extractedInfo.village);
     const genderCode = extractedInfo.gender === "Nam" ? "M" : "F";
 
     const currentDate = new Date().toLocaleDateString("en-GB");
-    const sqlInsert = `Insert into pa18.thv_ct values('VST1L-369','${extractedInfo.fullName}','${genderCode}',to_date('${extractedInfo.dayOfBirth}','dd/mm/yyyy'),'D','${extractedInfo.provinceCode}','1','8','${extractedInfo.provinceCode}','${extractedInfo.districtCode}','${extractedInfo.communeCode}','${extractedInfo.village}','','${extractedInfo.cardID}','${extractedInfo.provinceCode}',to_date('${extractedInfo.createdAt}','dd/mm/yyyy'),'tự do','','2','1','','','','',to_date('${currentDate}','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')`;
+    const sqlInsert = `Insert into pa18.thv_ct values('VST1L-373','${fullNameTCVN3}','${genderCode}',to_date('${extractedInfo.dayOfBirth}','dd/mm/yyyy'),'D','${extractedInfo.provinceCode}','1','8','${extractedInfo.provinceCode}','${extractedInfo.districtCode}','${extractedInfo.communeCode}','${villageTCVN3}','','${extractedInfo.cardID}','${extractedInfo.provinceCode}',to_date('${extractedInfo.createdAt}','dd/mm/yyyy'),'tự do','','2','1','','','','',to_date('${currentDate}','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')`;
 
-    const txtFilePath = "./public/txt/VST1L-369.txt";
+    const txtFilePath = "./public/txt/VST1L-373.txt";
     fs.appendFile(txtFilePath, sqlInsert + "\n/\n", (err) => {
       if (err) {
         return res.status(500).json({ error: "Failed to save SQL insert statement to file", details: err });
