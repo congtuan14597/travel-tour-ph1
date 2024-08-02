@@ -40,32 +40,35 @@ const getUploadedFiles = (req, res) => {
     return res.status(200).json({ files: [] });
   }
 
-  // Đọc các tập tin trong thư mục uploads
-  const files = fs.readdirSync(uploadDir).map(fileName => {
-    const filePath = path.join(uploadDir, fileName);
+  try {
+    // Read the files in the uploadDir
+    const files = fs.readdirSync(uploadDir).map(fileName => {
+      const filePath = path.join(uploadDir, fileName);
 
-    try {
-      const stats = fs.statSync(filePath);
+      try {
+        const stats = fs.statSync(filePath);
 
-      // Đảm bảo rằng tập tin là một ảnh
-      if (stats.isFile()) {
-        // Sử dụng tên tệp gốc hoặc xử lý theo cách khác nếu cần
-        return {
-          name: fileName, // Sử dụng tên gốc của tệp
-          url: `/uploads/${fileName}`,
-          uploadedAt: stats.birthtime,
-        };
+        // Ensure the file is a regular file and not a directory
+        if (stats.isFile()) {
+          return {
+            name: fileName,
+            url: `/uploads/${fileName}`,
+            uploadedAt: stats.birthtime,
+          };
+        }
+      } catch (err) {
+        console.error('Error reading file:', fileName, err);
       }
-    } catch (err) {
-      console.error('Error reading file:', fileName, err);
-    }
 
-    return null;
-  }).filter(file => file !== null);
+      return null;
+    }).filter(file => file !== null);
 
-  res.status(200).json({ files });
+    res.status(200).json({ files });
+  } catch (err) {
+    console.error('Error reading directory:', err);
+    res.status(500).json({ error: 'Error reading files' });
+  }
 };
-
 
 module.exports = {
   uploadFiles,
