@@ -48,8 +48,8 @@ tailwind.config = {
 document.addEventListener("DOMContentLoaded", function() {
   const currentPath = window.location.pathname;
 
-  if (currentPath === "/admin/rooms" || currentPath === "/admin/rooms/new") {
-    const dropdownRoom = document.getElementById("dropdown-room");
+  if (currentPath === "/admin/analysis_documents") {
+    const dropdownRoom = document.getElementById("dropdown-documents");
     dropdownRoom.classList.remove("hidden");
     dropdownRoom.previousElementSibling.setAttribute("aria-expanded", "true");
 

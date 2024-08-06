@@ -1,0 +1,6 @@
+Insert into pa18.thv_ct values('VST1L-376','bïi ®øc thÞnh','M',to_date('03/02/1975','dd/mm/yyyy'),'D','101','1','8','101','10108','1010817','toµ nhµ vp2','','034075000052','101',to_date('29/04/2021','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('02/08/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-376','vò thi tÊn','F',to_date('02/01/1991','dd/mm/yyyy'),'D','401','1','8','401','40129','4012905','th«n b¸i xu©n','','038191046127','401',to_date('20/08/2021','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('02/08/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/
+Insert into pa18.thv_ct values('VST1L-376','th¸i duy hiÓn','M',to_date('08/02/1989','dd/mm/yyyy'),'D','101','1','8','101','10123','1012311','tt2-3 k®g qsd ®Êt','','001089025281','101',to_date('10/07/2021','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('02/08/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/

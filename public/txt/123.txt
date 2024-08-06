@@ -1,0 +1,2 @@
+Insert into pa18.thv_ct values('123','Lª C«ng TuÊn','M',to_date('01/08/2024','dd/mm/yyyy'),'D','409','1','8','409','40911','4091115','t­êng v©n','','01234567','409',to_date('02/08/2024','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('06/08/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
+/

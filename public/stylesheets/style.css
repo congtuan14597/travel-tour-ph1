@@ -9,8 +9,8 @@ body, html {
 
 @media screen and (min-width: 1200px) {
   .bg-gradient-black-transparent {
-      background: rgb(0,0,0);
-      background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.1) 100%);
+    background: rgb(0,0,0);
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.1) 100%);
   }
 }
 
