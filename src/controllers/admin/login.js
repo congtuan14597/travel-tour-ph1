@@ -3,7 +3,7 @@ let getAdminLogin = async (req, res) => {
 };
 
 let postAdminLogin = async (req, res) => {
-  res.redirect("/admin/document_export_histories");
+  res.redirect("/admin/analysis_documents");
 };
 
 let getAdminSignUp = async (req, res) => {
