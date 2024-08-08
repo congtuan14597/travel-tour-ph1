@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "travel_web_app",
+    "host": "localhost",
+    "dialect": "mysql",
+    "port": "3306"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "travel_web_app",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "travel_web_app",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}

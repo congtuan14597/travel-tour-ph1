@@ -3,6 +3,7 @@ const router = express.Router();
 const performAnalysisFileController = require("../controllers/admin/api/perform_analysis_file.js");
 const adminLoginController = require("../controllers/admin/login.js");
 const documentExportHistoriesContrtoller = require("../controllers/admin/document_export_histories.js");
+const authenticateToken = require('../middleware/path-to-middleware');
 
 const multer = require('multer');
 const uploadService = require("../controllers/admin/api/upload_service.js");
@@ -16,7 +17,7 @@ router.get("/login", adminLoginController.getAdminLogin);
 router.post("/login", adminLoginController.postAdminLogin);
 router.get("/signup", adminLoginController.getAdminSignUp);
 
-router.get("/document_export_histories", documentExportHistoriesContrtoller.getDocumentExportHistories);
+router.get("/document_export_histories", authenticateToken, documentExportHistoriesContrtoller.getDocumentExportHistories);
 
 router.post("/api/v1/files/perform_analysis", performAnalysisFileController.perform);
 
