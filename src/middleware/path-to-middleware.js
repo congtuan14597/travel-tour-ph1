@@ -1,14 +1,16 @@
-const jwt = require('jsonwebtoken');
+const admin_authentication = require('jsonwebtoken');
 const SECRET_KEY = 'travle123';
 
 const authenticateToken = (req, res, next) => {
-  const token = req.cookies.accessToken;
+  // Lấy token từ header Authorization
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // "Bearer token"
 
   if (!token) {
     return res.redirect('/admin/login');
   }
 
-  jwt.verify(token, SECRET_KEY, (err, user) => {
+  admin_authentication.verify(token, SECRET_KEY, (err, user) => {
     if (err) {
       return res.redirect('/admin/login');
     }

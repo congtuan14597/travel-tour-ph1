@@ -118,15 +118,17 @@
       </div>
     </div>
   </div>
-
+  <script src="/javascripts/admin_author.js"></script>
   <script>
-    // Handle file upload and display images
     document.getElementById('upload-form').addEventListener('submit', function (event) {
       event.preventDefault();
       const formData = new FormData(this);
       fetch('api/upload', {
         method: 'POST',
-        body: formData
+        body: formData,
+        // headers: {
+        //   'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        // }
       })
         .then(response => response.json())
         .then(data => {

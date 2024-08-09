@@ -1,10 +1,10 @@
 'use strict';
 
 const { Admin } = require('../../../models');
-const jwt = require('jsonwebtoken');
+const admin_authentication = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const SECRET_KEY = 'travle123';
+const SECRET_KEY = process.env.SECRET_KEY;
 
 let getAdminLogin = async (req, res) => {
   res.render("admin/login");
@@ -21,17 +21,16 @@ let postAdminLogin = async (req, res) => {
 
     const match = await bcrypt.compare(password, admin.password);
     if (!match) {
-      return res.status(401).json({ success: false, message: 'Mật khẩu không chính xác' });
+      return res.status(404).json({ success: false, message: 'Mật khẩu không chính xác' });
     }
 
-    const token = jwt.sign(
+    const token = admin_authentication.sign(
       { id: admin.id, email: admin.email },
-      SECRET_KEY,
-      { expiresIn: '1h' }
+      SECRET_KEY
     );
 
-    res.cookie('accessToken', token, { httpOnly: true });
-    return res.status(200).json({ success: true, message: 'Đăng nhập thành công' });
+    // res.cookie('accessToken', token, { httpOnly: true });
+    return res.status(200).json({ success: true, message: 'Đăng nhập thành công', token });
   } catch (error) {
     console.error('Lỗi khi đăng nhập:', error);
     return res.status(500).json({ success: false, message: 'Lỗi khi đăng nhập' });
