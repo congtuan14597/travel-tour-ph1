@@ -26,7 +26,7 @@ document.getElementById('login-form').addEventListener('submit', function (event
         sessionStorage.setItem('adminAuthentication', data.token);
 
         setTimeout(() => {
-            window.location.assign('/admin/document_export_histories');
+            window.location.assign('/admin/analysis_documents');
         }, 3000);
         } else {
         Toastify({

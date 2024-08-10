@@ -35,6 +35,7 @@ let postAdminLogin = async (req, res) => {
     console.error('Lỗi khi đăng nhập:', error);
     return res.status(500).json({ success: false, message: 'Lỗi khi đăng nhập' });
   }
+  // res.redirect("/");
 };
 
 let getAdminSignUp = async (req, res) => {
