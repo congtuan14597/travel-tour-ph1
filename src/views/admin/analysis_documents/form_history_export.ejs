@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html data-theme="cupcake">
+
+<head>
+  <title>TRAVEL TOUR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.js"></script>
+  <script src="/javascripts/common.js"></script>
+  <script src="/javascripts/analysis_documents.js"></script>
+</head>
+
+<body class="static">
+  <%- include("../components/header") %>
+  <%- include("../components/left_menu") %>
+
+  <div class="content sm:ml-64 p-6">
+    <h1 class="text-2xl font-bold mb-4">Lịch sử trích xuất file </h1>
+    <table id="files-table" class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-sm">
+        <tr>
+          <th class="px-4 py-2 border-b border-r text-left">Tên file</th>
+          <th class="px-4 py-2 border-b border-r text-left">Kích thước (bytes)</th>
+          <th class="px-4 py-2 border-b border-r text-left">Ngày chỉnh sửa</th>
+          <th class="px-4 py-2 border-b text-left">Tải file</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-700">
+        <!-- Danh sách file sẽ được chèn ở đây -->
+      </tbody>
+    </table>
+  </div>
+</body>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const response = await fetch('/admin/history_export');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const files = await response.json();
+      const tableBody = document.getElementById('files-table').querySelector('tbody');
+      tableBody.innerHTML = '';
+      files.forEach(file => {
+        const row = document.createElement('tr');
+        row.classList.add('hover:bg-gray-50');
+        row.innerHTML = `
+          <td class="px-4 py-2 border-b border-r">${file.name}</td>
+          <td class="px-4 py-2 border-b border-r">${file.size}</td>
+          <td class="px-4 py-2 border-b">${new Date(file.modified).toLocaleString()}</td>
+          <td class="px-4 py-2 border-b"><a href="/admin/download/${file.name}" class="text-blue-500 hover:underline">Download</a></td>
+        `;
+        tableBody.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Error fetching files:', error);
+      const tableBody = document.getElementById('files-table').querySelector('tbody');
+      tableBody.innerHTML = '<tr><td colspan="4" class="border px-4 py-2 text-red-500">Không thể tải dữ liệu file.</td></tr>';
+    }
+  });
+</script>
+
+</html>
