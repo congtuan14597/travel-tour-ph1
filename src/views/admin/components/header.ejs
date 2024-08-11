@@ -1,6 +1,7 @@
 <header style="background-color: #1989cf;">
   <nav class="top-0 z-50 w-full px-2 py-2.5" style="position: relative; background-color: #1989cf;">
     <div class="flex flex-wrap justify-between items-center">
+      <!-- Logo -->
       <div class="flex justify-start items-center">
         <a href="#" class="flex">
           <div class="navbar-brand text-white">
@@ -8,6 +9,35 @@
           </div>
         </a>
       </div>
+
+      <!-- Avatar with Dropdown -->
+      <div class="flex items-center">
+        <div class="relative">
+          <div class="flex items-center">
+            <button id="avatarButton" type="button" class="flex items-center focus:outline-none">
+              <img class="w-8 h-8 rounded-full" src="data:image/svg+xml;utf8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDgiIHdpZHRoPSI0OCI+PHBhdGggZD0iTTI0IDhjLTQuNDIgMC04IDMuNTgtOCA4IDAgNC40MSAzLjU4IDggOCA4czgtMy41OSA4LThjMC00LjQyLTMuNTgtOC04LTh6bTAgMjBjLTUuMzMgMC0xNiAyLjY3LTE2IDh2NGgzMnYtNGMwLTUuMzMtMTAuNjctOC0xNi04eiIvPjxwYXRoIGQ9Ik0wIDBoNDh2NDhIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=" alt="User Avatar">
+            </button>
+            <span>Admin</span>
+          </div>
+
+          <!-- Dropdown Menu -->
+          <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg">
+            <ul class="py-1 text-gray-700">
+              <!-- <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
+              </li>
+              <li>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
+              </li> -->
+              <li>
+                <a href="#" class="block px-4 py-2 text-red-600 hover:bg-gray-100" id="logoutButton">Log out</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 </header>
+
+<script src="/javascripts/header.js"></script>
