@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const performAnalysisFileController = require("../controllers/admin/api/perform_analysis_file.js");
 const adminLoginController = require("../controllers/admin/login.js");
-const documentExportHistoriesContrtoller = require("../controllers/admin/document_export_histories.js");
-// const authenticateToken = require('../middleware/path-to-middleware');
+const adminLogoutController = require("../controllers/admin/logout.js");
+// const documentExportHistoriesContrtoller = require("../controllers/admin/document_export_histories.js");
+const authenticateToken = require('../middleware/path-to-middleware');
 
 const multer = require('multer');
 const uploadService = require("../controllers/admin/api/upload_service.js");
@@ -20,8 +21,10 @@ router.post("/login", adminLoginController.postAdminLogin);
 // FOR SIGN UP
 router.get("/signup", adminLoginController.getAdminSignUp);
 // FOR ANALYSIS DOCUMENTS
-router.get("/analysis_documents", analysisDocumentsContrtoller.getAnalysisDocuments);
+router.get("/analysis_documents",authenticateToken, analysisDocumentsContrtoller.getAnalysisDocuments);
 // FOR API
 router.post("/api/v1/files/perform_analysis", performAnalysisFileController.perform);
+
+router.post("/logout", adminLogoutController.postAdminLogout);
 
 module.exports = router;

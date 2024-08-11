@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "travel_web_app_production",
+    "database": "travel_web_app_development",
     "host": "localhost",
     "dialect": "mysql",
     "port": "3306"
