@@ -4,7 +4,7 @@ const performAnalysisFileController = require("../controllers/admin/api/perform_
 const adminLoginController = require("../controllers/admin/login.js");
 const adminLogoutController = require("../controllers/admin/logout.js");
 // const documentExportHistoriesContrtoller = require("../controllers/admin/document_export_histories.js");
-const authenticateToken = require('../middleware/path-to-middleware');
+const authenticateToken = require('../middleware/admin_authentication_middleware');
 
 const multer = require('multer');
 const uploadService = require("../controllers/admin/api/upload_service.js");

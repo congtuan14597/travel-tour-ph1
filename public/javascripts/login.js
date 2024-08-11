@@ -23,8 +23,6 @@ document.getElementById('login-form').addEventListener('submit', function (event
           backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
       }).showToast();
 
-      // sessionStorage.setItem('adminAuthentication', data.token);
-
       setTimeout(() => {
           window.location.assign('/admin/analysis_documents');
       }, 3000);
@@ -33,8 +31,8 @@ document.getElementById('login-form').addEventListener('submit', function (event
           text: data.message,
           duration: 3000,
           close: true,
-          gravity: "top", // `top` or `bottom`
-          position: "center", // `left`, `center` or `right`
+          gravity: "top",
+          position: "center",
           backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
       }).showToast();
     }
