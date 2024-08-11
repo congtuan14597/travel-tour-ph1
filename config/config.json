@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": null,
+    "password": "password",
     "database": "travel_web_app_development",
     "host": "localhost",
     "dialect": "mysql",
