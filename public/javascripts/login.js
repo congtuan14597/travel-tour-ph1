@@ -7,7 +7,7 @@ document.getElementById('login-form').addEventListener('submit', function (event
   fetch('/admin/login', {
     method: 'POST',
     headers: {
-        'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email, password }),
   })
@@ -15,25 +15,25 @@ document.getElementById('login-form').addEventListener('submit', function (event
   .then(data => {
     if (data.success) {
       Toastify({
-          text: 'Đăng nhập thành công!',
-          duration: 3000,
-          close: true,
-          gravity: "top",
-          position: "center",
-          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+        text: 'Đăng nhập thành công!',
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "center",
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
       }).showToast();
 
       setTimeout(() => {
-          window.location.assign('/admin/analysis_documents');
-      }, 3000);
+        window.location.assign('/admin/analysis_documents');
+      }, 500);
     } else {
       Toastify({
-          text: data.message,
-          duration: 3000,
-          close: true,
-          gravity: "top",
-          position: "center",
-          backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+        text: data.message,
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "center",
+        backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
       }).showToast();
     }
   })

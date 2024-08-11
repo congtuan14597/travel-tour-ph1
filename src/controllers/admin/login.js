@@ -30,9 +30,11 @@ let postAdminLogin = async (req, res) => {
     );
 
     res.cookie('adminAccessToken', token, { httpOnly: true });
+
     return res.status(200).json({ success: true, message: 'Đăng nhập thành công'});
   } catch (error) {
     console.error('Lỗi khi đăng nhập:', error);
+
     return res.status(500).json({ success: false, message: 'Lỗi khi đăng nhập' });
   }
 };
