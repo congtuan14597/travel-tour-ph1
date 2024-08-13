@@ -1,12 +1,15 @@
 const { ImageAnnotatorClient } = require("@google-cloud/vision");
 const fs = require("fs");
+const path = require("path");
 const processFile = require("../../../middleware/upload");
 const {CommonConstant} = require("../../../constants/common");
 const CommonUltil = require("../../../utils/common");
+const {DocumentExportHistory} = require("../../../../models");
 
 const perform =  async (req, res) => {
   const keyFilename = process.env.KEY_FILE_NAME;
   const client = new ImageAnnotatorClient({ keyFilename });
+  let documentExport = null;
 
   try {
     await processFile(req, res);
@@ -17,12 +20,14 @@ const perform =  async (req, res) => {
       errorsInfo.push({message: "Vui lòng chọn file để trích xuất."});
     }
     if (errorsInfo.length !== 0) {
-      return res.status(400).send({
-        success: false,
-        isValidateRequired: true,
-        errors: errorsInfo
-      });
+      throw {errors: errorsInfo, isValidateRequired: true};
     }
+
+    const fileName = req.body.fileName;
+    documentExport = await DocumentExportHistory.create({
+      kind: "encryptedList",
+      fileName: fileName
+    });
 
     let usersInfo = [];
     for (let i = 1; i < Object.entries(req.body).length; i++) {
@@ -146,14 +151,14 @@ const perform =  async (req, res) => {
       console.log("========================================================================================");
     }
 
-    if (errorsInfo.length !== 0) {
-      return res.status(400).send({
-        success: false,
-        errors: errorsInfo
-      });
-    }
+    if (errorsInfo.length !== 0) {throw {errors: errorsInfo};}
 
+    const txtFilePath = `./public/export/encrypted_list/${fileName}.txt`;
     const currentDate = new Date().toLocaleDateString("en-GB");
+
+    documentExport.fileName = fileName;
+    documentExport.filePath = txtFilePath;
+
     for (let i = 0; i < usersInfo.length; i++) {
       let userInfo = usersInfo[i];
 
@@ -161,26 +166,32 @@ const perform =  async (req, res) => {
       console.log(`user${i + 1}_extractedInfo`, userInfo);
       console.log("========================================================================================");
 
-      const fileName = req.body.fileName;
       const fullNameTCVN3 = CommonUltil.convertUnicodeToTcvn3Map(userInfo.fullName);
       const villageTCVN3 = CommonUltil.convertUnicodeToTcvn3Map(userInfo.village);
       const genderCode = userInfo.gender === "Nam" ? "M" : "F";
 
       const sqlInsert = `Insert into pa18.thv_ct values('${fileName}','${fullNameTCVN3}','${genderCode}',to_date('${userInfo.dayOfBirth}','dd/mm/yyyy'),'D','${userInfo.provinceCode}','1','8','${userInfo.provinceCode}','${userInfo.districtCode}','${userInfo.communeCode}','${villageTCVN3}','','${userInfo.cardID}','${userInfo.provinceCode}',to_date('${userInfo.createdAt}','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('${currentDate}','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')`;
 
-      const txtFilePath = `./public/txt/${fileName}.txt`;
       fs.appendFile(txtFilePath, sqlInsert + "\n/\n", (err) => {
-        if (err) {
-          return res.status(500).json({ error: "Failed to save SQL insert statement to file", details: err });
-        }
+        if (err) {throw {errors: [err]};}
+
         console.log(`SQL insert statement appended to ${txtFilePath}`);
       });
     }
 
-    res.status(200).json({success: true, message: "Trích xuất thông tin thành công!"});
+    documentExport.status = "success"
+    await documentExport.save();
+
+    return res.status(200).json({success: true, message: "Trích xuất thông tin thành công!"});
   } catch (error) {
+    if (documentExport) {
+      documentExport.status = "fail"
+      await documentExport.save();
+    }
+
     console.error("Error during file upload:", error);
-    res.status(500).json({success: false, errors: [error]});
+
+    return res.status(500).json({success: false, errors: error.errors, isValidateRequired: error.isValidateRequired});
   }
 }
 
