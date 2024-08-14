@@ -28,7 +28,3 @@ document.getElementById('logoutButton').addEventListener('click', function (even
     console.error('Logout failed:', error);
   });
 });
-
-window.addEventListener('beforeunload', function (event) {
-  navigator.sendBeacon('/admin/logout');
-});

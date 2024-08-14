@@ -1,8 +1,0 @@
-Insert into pa18.thv_ct values('VST1L-369A','d��ng v�n th�ng','M',to_date('12/02/1994','dd/mm/yyyy'),'D','209','1','8','209','20905','2090511','th�n n� v�c','','020094007077','209',to_date('04/03/2024','dd/mm/yyyy'),'t� do','','2','1','','','','C',to_date('24/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
-/
-Insert into pa18.thv_ct values('VST1L-369A','d��ng b�ch tuy�t','F',to_date('26/09/1987','dd/mm/yyyy'),'D','209','1','8','209','20905','2090529','b�n th�u','','020187005368','209',to_date('09/05/2021','dd/mm/yyyy'),'t� do','','2','1','','','','',to_date('24/07/2024','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')
-/
-commit
-/
-quit
-/
