@@ -2,7 +2,7 @@
 
 let postAdminLogout = async (req, res) => {
   res.clearCookie('adminAccessToken', { path: '/' });
-  res.render("admin/login");
+  return res.status(200).json({ success: true});
 };
 
 module.exports = {

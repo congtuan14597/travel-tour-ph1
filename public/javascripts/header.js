@@ -22,9 +22,33 @@ document.getElementById('logoutButton').addEventListener('click', function (even
     credentials: 'include'
   }).then(response => {
     if (response.ok) {
-      window.location.href = '/admin/login';
+      response.json().then(data => {
+        if (data.success) {
+          window.location.href = '/admin/login';
+        } else {
+          console.error('Logout unsuccessful:', data.message);
+        }
+      });
+    } else {
+      console.error('Network response was not ok:', response.statusText);
     }
   }).catch(error => {
     console.error('Logout failed:', error);
   });
+});
+
+let isTabClosing = false;
+
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'hidden') {
+    isTabClosing = true;
+  } else {
+    isTabClosing = false;
+  }
+});
+
+window.addEventListener('beforeunload', function(event) {
+  if (isTabClosing) {
+    navigator.sendBeacon('/admin/logout');
+  }
 });
