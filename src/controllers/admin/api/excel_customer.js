@@ -1,7 +1,7 @@
 const ExcelJS = require('exceljs');
 const fs = require('fs');
 
-async function copyAndModifyExcel({
+async function customerExcelFiles({
   fileName, name, gioitinh, day, month, year,
   tinh_cc, cccd, ngaycc, thangcc, namcc, tinhcc, dantoc, tongiao,
   thon, phuong, quan, tinh
@@ -83,7 +83,7 @@ async function copyAndModifyExcel({
   console.log('File đã được lưu thành công.');
 }
 
-copyAndModifyExcel({
+customerExcelFiles({
   fileName: 'VST1L-999',
   name: "lê hải đăng lâm",
   gioitinh: "nam",

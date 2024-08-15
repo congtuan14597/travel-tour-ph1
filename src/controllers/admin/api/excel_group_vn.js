@@ -1,11 +1,11 @@
 const ExcelJS = require('exceljs');
 const fs = require('fs');
 
-async function copyAndModifyExcel({
-  fileName, hoten, gioitinh, namsinh, cccd, noisinh
+async function groupVNExcelFiles({
+  fileName, stt, hoten, gioitinh, namsinh, cccd, noisinh
 }) {
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile('form_excel/form_group.xlsx');
+  await workbook.xlsx.readFile('form_excel/form_group_vn.xlsx');
   const worksheet = workbook.getWorksheet(1); 
 
   const sourceCell = worksheet.getCell('A1');
@@ -40,6 +40,7 @@ async function copyAndModifyExcel({
   //   };
   // });
  
+  worksheet.getCell('B6').value = `${stt}`;
   worksheet.getCell('C6').value = `${uppercasedName}`;
   worksheet.getCell('D6').value = `${gioitinh}`;
   worksheet.getCell('E6').value = `${namsinh}`;
@@ -56,11 +57,12 @@ async function copyAndModifyExcel({
   console.log('File đã được lưu thành công.');
 }
 
-copyAndModifyExcel({
+groupVNExcelFiles({
   fileName: 'VST1L-999',
+  stt: 1,
   hoten: "lê hải đăng lâm",
   gioitinh: "M",
-  namsinh: "08/06/2000",
+  namsinh: "08/06/2000", //format dd/mm/yyyy
   cccd: "12345678911214",
   noisinh: "Quang Tri",
 }).catch(console.error);
