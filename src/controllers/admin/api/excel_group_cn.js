@@ -1,11 +1,13 @@
 const ExcelJS = require('exceljs');
+const path = require('path');
 const fs = require('fs');
 
 async function groupCNExcelFiles({
   fileName, stt, hoten, gioitinh, namsinh, cccd
 }) {
+  const excelFile = path.join(__dirname, './form_excel/form_group_cn.xlsx');
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile('form_excel/form_group_cn.xlsx');
+  await workbook.xlsx.readFile(excelFile);
   const worksheet = workbook.getWorksheet(1); 
 
   const sourceCell = worksheet.getCell('A1');
@@ -40,14 +42,14 @@ async function groupCNExcelFiles({
   //     right: { style: 'thin' },
   //   };
   // });
-  worksheet.getCell('B7').value = `${stt}`;
-  worksheet.getCell('C7').value = `${englishName}`;
-  worksheet.getCell('D7').value = `${gioitinh}`;
-  worksheet.getCell('E7').value = `${namsinh}`;
-  worksheet.getCell('F7').value = '';
-  worksheet.getCell('G7').value = `${cccd}`;
+  worksheet.getCell(`B${stt}`).value = `${stt}`;
+  worksheet.getCell(`C${stt}`).value = `${englishName}`;
+  worksheet.getCell(`D${stt}`).value = `${gioitinh}`;
+  worksheet.getCell(`E${stt}`).value = `${namsinh}`;
+  worksheet.getCell(`F${stt}`).value = '';
+  worksheet.getCell(`G${stt}`).value = `${cccd}`;
 
-  const dirPath = `output/${fileName}`
+  const dirPath = path.join(__dirname, `./output/${fileName}`);
   // Ensure the directory exists
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
@@ -57,12 +59,17 @@ async function groupCNExcelFiles({
   console.log('File đã được lưu thành công.');
 }
 
-groupCNExcelFiles({
-  fileName: 'VST1L-999',
-  stt: 1,
-  hoten: "lê hải đăng lâm",
-  gioitinh: "M",
-  namsinh: "08062000", //format ddmmyyy
-  cccd: "12345678911214",
-  noisinh: "Quang Tri",
-}).catch(console.error);
+// groupCNExcelFiles({
+//   fileName: 'VST1L-999',
+//   stt: 1,
+//   hoten: "lê hải đăng lâm",
+//   gioitinh: "M",
+//   namsinh: "08062000", //format ddmmyyy
+//   cccd: "12345678911214",
+//   noisinh: "Quang Tri",
+// }).catch(console.error);
+
+
+module.exports = {
+  groupCNExcelFiles
+};

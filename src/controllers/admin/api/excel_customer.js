@@ -1,13 +1,15 @@
 const ExcelJS = require('exceljs');
+const path = require('path');
 const fs = require('fs');
 
 async function customerExcelFiles({
   fileName, name, gioitinh, day, month, year,
-  tinh_cc, cccd, ngaycc, thangcc, namcc, tinhcc, dantoc, tongiao,
+  tinh_cc, cccd, ngaycc, thangcc, namcc, tinhcc,
   thon, phuong, quan, tinh
 }) {
+  const excelFile = path.join(__dirname, './form_excel/form_customer.xlsx');
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile('form_excel/form_customer.xlsx');
+  await workbook.xlsx.readFile(excelFile);
   const worksheet = workbook.getWorksheet(1); 
 
   const sourceCell = worksheet.getCell('A1');
@@ -48,9 +50,11 @@ async function customerExcelFiles({
   let nam = "";
   let nu = "";
   
-  if (gioitinh == "nam") {
+  if (gioitinh == "M") {
       nam = "X";
-  } else if (gioitinh == "nu") {
+      nu = "";
+  } else{
+      nam = "";
       nu = "X";
   }
 
@@ -65,15 +69,15 @@ async function customerExcelFiles({
   worksheet.getCell('H11').value = `${thangcc}`;
   worksheet.getCell('J11').value = `${namcc}`;
   worksheet.getCell('S11').value = `${tinhcc}`;
-  worksheet.getCell('E12').value = `${dantoc}`;
-  worksheet.getCell('K12').value = `${tongiao}`;
+  // worksheet.getCell('E12').value = `${dantoc}`;
+  // worksheet.getCell('K12').value = `${tongiao}`;
   worksheet.getCell('S13').value = `${thon}`;
   worksheet.getCell('F14').value = `${phuong}`;
   worksheet.getCell('L14').value = `${quan}`;
   worksheet.getCell('S14').value = `${tinh}`;
   worksheet.getCell('L28').value = `${uppercasedName}`;
 
-  const dirPath = `output/${fileName}`
+  const dirPath = path.join(__dirname, `./output/${fileName}`);
   // Ensure the directory exists
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
@@ -83,23 +87,24 @@ async function customerExcelFiles({
   console.log('File đã được lưu thành công.');
 }
 
-customerExcelFiles({
-  fileName: 'VST1L-999',
-  name: "lê hải đăng lâm",
-  gioitinh: "nam",
-  day: "18",
-  month: "5",
-  year: "2022",
-  tinh_cc: "Quảng Trị",
-  cccd: "12345678912121",
-  ngaycc: "",
-  thangcc: "18",
-  namcc: "5",
-  tinhcc: "2022",
-  dantoc: "Kinh",
-  tongiao: "X",
-  thon: "Hoàn Cát",
-  phuong: "Cam Nghĩa",
-  quan: "Cam Lộ",
-  tinh: "2022"
-}).catch(console.error);
+// customerExcelFiles({
+//   fileName: 'VST1L-999',
+//   name: "lê hải đăng lâm",
+//   gioitinh: "nam",
+//   day: "18",
+//   month: "5",
+//   year: "2022",
+//   tinh_cc: "Quảng Trị",
+//   cccd: "12345678912121",
+//   ngaycc: "",
+//   thangcc: "18",
+//   namcc: "5",
+//   tinhcc: "2022",
+//   thon: "Hoàn Cát",
+//   phuong: "Cam Nghĩa",
+//   quan: "Cam Lộ",
+//   tinh: "2022"
+// }).catch(console.error);
+module.exports = {
+  customerExcelFiles
+};

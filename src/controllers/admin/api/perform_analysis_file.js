@@ -6,6 +6,12 @@ const {CommonConstant} = require("../../../constants/common");
 const CommonUltil = require("../../../utils/common");
 const {DocumentExportHistory} = require("../../../../models");
 
+// export excel
+ const {customerExcelFiles } = require("./excel_customer")
+ const {groupVNExcelFiles } = require("./excel_group_vn")
+ const {groupCNExcelFiles } = require("./excel_group_cn")
+
+
 const perform =  async (req, res) => {
   const keyFilename = process.env.KEY_FILE_NAME;
   const client = new ImageAnnotatorClient({ keyFilename });
@@ -13,7 +19,6 @@ const perform =  async (req, res) => {
 
   try {
     await processFile(req, res);
-
     let errorsInfo = [];
     if (!req.body.fileName) {errorsInfo.push({message: "Vui lòng nhập file name."});}
     if (!req.files || req.files.length === 0) {
@@ -104,6 +109,10 @@ const perform =  async (req, res) => {
       }
       if (userInfo.birthDate && userInfo.birthDate.length !== 0) {
         const [year, month, day] = userInfo.birthDate.split("-");
+        let birthDay = day;
+        let birthMonth = month;
+        let birthYear = year;
+        let birthDate = `${day}${month}${year}`
         extractedInfo.dayOfBirth = `${day}/${month}/${year}`;
       }
       if (userInfo.gender && userInfo.gender.length !== 0) {
@@ -111,6 +120,9 @@ const perform =  async (req, res) => {
       }
       if (userInfo.createdAt && userInfo.createdAt.length !== 0) {
         const [year, month, day] = userInfo.createdAt.split("-");
+        let identificationDay = day;
+        let identificationMonth = month;
+        let identificationYear = year;
         extractedInfo.createdAt = `${day}/${month}/${year}`;
       }
       if (userInfo.address && userInfo.address.length !== 0) {
@@ -149,6 +161,47 @@ const perform =  async (req, res) => {
       console.log("========================================================================================");
       console.log("extractedInfo", extractedInfo);
       console.log("========================================================================================");
+
+
+      // export excel
+      await customerExcelFiles({
+        fileName: fileName,               //'VST1L-999'
+        name: userInfo.fullName,          //"nguyễn văn a"
+        gioitinh: genderCode,             //"nam"
+        day: birthDay,                    //"11"
+        month: birthMonth,                // "1"
+        year: birthYear,                  //"2011"
+        tinh_cc: provinceName,            //"Quảng Trị"
+        cccd: userInfo.cardID,            //"12345678912121"
+        ngaycc: identificationDay,        //"12"  
+        thangcc: identificationMonth,     // "12"    
+        namcc: identificationYear,        //"2015"  
+        tinhcc: provinceName,         // "2022"
+        thon: userInfo.village,         //"Hoàn Cát"
+        phuong: communeName,          //"Cam Nghĩa"
+        quan: districtName,         //"Cam Lộ"
+        tinh: provinceName          // "Quảng trị"
+      });
+      await groupVNExcelFiles({
+        fileName: fileName,
+        stt: i,
+        hoten: userInfo.fullName,
+        gioitinh: genderCode,
+        namsinh: extractedInfo.dayOfBirth, //format dd/mm/yyyy
+        cccd: userInfo.cardID,
+        noisinh: provinceName,
+      });
+      await groupCNExcelFiles({
+        fileName: fileName,
+        stt: i,
+        hoten: userInfo.fullName,
+        gioitinh: genderCode,
+        namsinh: birthDate , //format ddmmyyy
+        cccd:userInfo.cardID,
+        noisinh: provinceName,
+      });
+
+
     }
 
     if (errorsInfo.length !== 0) {throw {errors: errorsInfo};}

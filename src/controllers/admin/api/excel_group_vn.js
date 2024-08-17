@@ -1,11 +1,13 @@
 const ExcelJS = require('exceljs');
+const path = require('path');
 const fs = require('fs');
 
 async function groupVNExcelFiles({
   fileName, stt, hoten, gioitinh, namsinh, cccd, noisinh
 }) {
+  const excelFile = path.join(__dirname, './form_excel/form_group_vn.xlsx');
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile('form_excel/form_group_vn.xlsx');
+  await workbook.xlsx.readFile(excelFile);
   const worksheet = workbook.getWorksheet(1); 
 
   const sourceCell = worksheet.getCell('A1');
@@ -40,14 +42,14 @@ async function groupVNExcelFiles({
   //   };
   // });
  
-  worksheet.getCell('B6').value = `${stt}`;
-  worksheet.getCell('C6').value = `${uppercasedName}`;
-  worksheet.getCell('D6').value = `${gioitinh}`;
-  worksheet.getCell('E6').value = `${namsinh}`;
-  worksheet.getCell('F6').value = `${cccd}`;
-  worksheet.getCell('G6').value = `${noisinh}`;
+  worksheet.getCell(`B${stt}`).value = `${stt}`;
+  worksheet.getCell(`C${stt}`).value = `${uppercasedName}`;
+  worksheet.getCell(`D${stt}`).value = `${gioitinh}`;
+  worksheet.getCell(`E${stt}`).value = `${namsinh}`;
+  worksheet.getCell(`F${stt}`).value = `${cccd}`;
+  worksheet.getCell(`G${stt}`).value = `${noisinh}`;
 
-  const dirPath = `output/${fileName}`
+  const dirPath = path.join(__dirname, `./output/${fileName}`);
   // Ensure the directory exists
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
@@ -57,12 +59,17 @@ async function groupVNExcelFiles({
   console.log('File đã được lưu thành công.');
 }
 
-groupVNExcelFiles({
-  fileName: 'VST1L-999',
-  stt: 1,
-  hoten: "lê hải đăng lâm",
-  gioitinh: "M",
-  namsinh: "08/06/2000", //format dd/mm/yyyy
-  cccd: "12345678911214",
-  noisinh: "Quang Tri",
-}).catch(console.error);
+// groupVNExcelFiles({
+//   fileName: 'VST1L-999',
+//   stt: 1,
+//   hoten: "lê hải đăng lâm",
+//   gioitinh: "M",
+//   namsinh: "08/06/2000", //format dd/mm/yyyy
+//   cccd: "12345678911214",
+//   noisinh: "Quang Tri",
+// }).catch(console.error);
+
+
+module.exports = {
+  groupVNExcelFiles
+};
