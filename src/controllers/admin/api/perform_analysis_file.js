@@ -2,6 +2,7 @@ const { ImageAnnotatorClient } = require("@google-cloud/vision");
 const ExcelJS = require("exceljs");
 const fs = require("fs");
 const archiver = require("archiver");
+const moment = require("moment");
 const processFile = require("../../../middleware/upload");
 const {CommonConstant} = require("../../../constants/common");
 const CommonUltil = require("../../../utils/common");
@@ -12,10 +13,11 @@ const perform =  async (req, res) => {
   const client = new ImageAnnotatorClient({ keyFilename });
   let documentExportTxt = null;
   let documentExportDeclaration = null;
+  let documentExportGroupVN = null;
+  let documentExportGroupCN = null;
 
   try {
     await processFile(req, res);
-
     let errorsInfo = [];
     if (!req.body.fileName) {errorsInfo.push({message: "Vui lòng nhập file name."});}
     if (!req.files || req.files.length === 0) {
@@ -32,6 +34,14 @@ const perform =  async (req, res) => {
     });
     documentExportDeclaration = await DocumentExportHistory.create({
       kind: "declarationList",
+      fileName: fileName
+    });
+    documentExportGroupVN = await DocumentExportHistory.create({
+      kind: "groupListVN",
+      fileName: fileName
+    });
+    documentExportGroupCN = await DocumentExportHistory.create({
+      kind: "groupListCN",
       fileName: fileName
     });
 
@@ -163,11 +173,15 @@ const perform =  async (req, res) => {
     if (errorsInfo.length !== 0) {throw {errors: errorsInfo};}
 
     const txtFilePath = `./public/export/encrypted_list/${fileName}.txt`;
-    const declarationListFilePath = `./public/export/declaration_list/${fileName}.zip`;
+    const declarationListFilePath = `./public/export/declaration_list/${fileName}_form.zip`;
+    const groupVNFilePath = `./public/export/group_list_vn/${fileName}_danh_sach_vn.xlsx`;
+    const groupCNFilePath = `./public/export/group_list_cn/${fileName}_danh_sach_cn.xlsx`;
     const currentDate = new Date().toLocaleDateString("en-GB");
 
     documentExportTxt.filePath = txtFilePath;
     documentExportDeclaration.filePath = declarationListFilePath;
+    documentExportGroupVN.filePath = groupVNFilePath;
+    documentExportGroupCN.filePath = groupCNFilePath;
 
     const output = fs.createWriteStream(declarationListFilePath);
     const archive = archiver("zip", {
@@ -203,6 +217,7 @@ const perform =  async (req, res) => {
 
       const sqlInsert = `Insert into pa18.thv_ct values('${fileName}','${fullNameTCVN3}','${genderCode}',to_date('${userInfo.dayOfBirth}','dd/mm/yyyy'),'D','${userInfo.provinceCode}','1','8','${userInfo.provinceCode}','${userInfo.districtCode}','${userInfo.communeCode}','${villageTCVN3}','','${userInfo.cardID}','${userInfo.provinceCode}',to_date('${userInfo.createdAt}','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('${currentDate}','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')`;
 
+      // EXPORT FILE MÃ HOÁ THÔNG TIN
       fs.appendFile(txtFilePath, sqlInsert + "\n/\n", (err) => {
         if (err) {throw {errors: [err]};}
 
@@ -211,8 +226,14 @@ const perform =  async (req, res) => {
 
       // ZIP LẠI THÔNG TIN TỜ KHAI
       const filePathDeclaration = await exportDeclarationFile(userInfo, fileName);
-      archive.file(filePathDeclaration, {name: `${userInfo.fullName.toUpperCase()}.xlsx`})
+      archive.file(filePathDeclaration, {name: `${i + 1}.${userInfo.fullName.toUpperCase()}.${fileName}.${userInfo.cardID}.xlsx`})
     }
+
+    // EXPORT DANH SÁCH VN
+    await exportGroupVN(usersInfo, fileName);
+
+    // EXPORT DANH SÁCH CN
+    await exportGroupCN(usersInfo, fileName);
 
     documentExportTxt.status = "success"
     await documentExportTxt.save();
@@ -220,6 +241,12 @@ const perform =  async (req, res) => {
     await archive.finalize();
     documentExportDeclaration.status = "success"
     await documentExportDeclaration.save();
+
+    documentExportGroupVN.status = "success"
+    await documentExportGroupVN.save();
+
+    documentExportGroupCN.status = "success"
+    await documentExportGroupCN.save();
 
     return res.status(200).json({success: true, message: "Trích xuất thông tin thành công!"});
   } catch (error) {
@@ -230,6 +257,14 @@ const perform =  async (req, res) => {
     if (documentExportDeclaration) {
       documentExportDeclaration.status = "fail"
       await documentExportDeclaration.save();
+    }
+    if (documentExportGroupVN) {
+      documentExportGroupVN.status = "fail"
+      await documentExportGroupVN.save();
+    }
+    if (documentExportGroupCN) {
+      documentExportGroupCN.status = "fail"
+      await documentExportGroupCN.save();
     }
 
     console.error("Error during file upload:", error);
@@ -245,6 +280,7 @@ async function exportDeclarationFile(user, fileName) {
 
   const sourceCell = worksheet.getCell("A1");
   const targetCell = worksheet.getCell("B2");
+
   targetCell.value = sourceCell.value;
   targetCell.fill = sourceCell.fill;
   targetCell.font = sourceCell.font;
@@ -254,6 +290,7 @@ async function exportDeclarationFile(user, fileName) {
 
   const dayOfBirths = user.dayOfBirth.split("/");
   const createdAts = user.createdAt.split("/");
+
   worksheet.getCell("H8").value = user.fullName.toUpperCase();
   worksheet.getCell("U8").value = user.gender === "Nam" ? "X" : "";
   worksheet.getCell("S8").value = user.gender === "Nu" ? "X" : "";
@@ -296,6 +333,72 @@ async function exportDeclarationFile(user, fileName) {
 
   return outputPath;
 };
+
+async function exportGroupCN(users, fileName) {
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.readFile("public/export/group_list_cn/group_list_cn_tmp.xlsx");
+  const worksheet = workbook.getWorksheet(1);
+
+  const sourceCell = worksheet.getCell("A1");
+  const targetCell = worksheet.getCell("B2");
+
+  targetCell.value = sourceCell.value;
+  targetCell.fill = sourceCell.fill;
+  targetCell.font = sourceCell.font;
+  targetCell.border = sourceCell.border;
+  targetCell.alignment = sourceCell.alignment;
+  targetCell.numberFormat = sourceCell.numberFormat;
+
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+    const numOrder = i + 7;
+    const englishName = user.fullName.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const dayOfBirth = moment(user.dayOfBirth, "DD/MM/YYYY").format("YYYYMMDD")
+
+    worksheet.getCell(`B${numOrder}`).value = `${i + 1}`;
+    worksheet.getCell(`C${numOrder}`).value = `${englishName}`;
+    worksheet.getCell(`D${numOrder}`).value = `${user.genderCode}`;
+    worksheet.getCell(`E${numOrder}`).value = `${dayOfBirth}`;
+    worksheet.getCell(`F${numOrder}`).value = "";
+    worksheet.getCell(`G${numOrder}`).value = `${user.cardID}`;
+  }
+
+  const outputPath = `./public/export/group_list_cn/${fileName}_danh_sach_cn.xlsx`;
+
+  await workbook.xlsx.writeFile(outputPath);
+}
+
+async function exportGroupVN(users, fileName) {
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.readFile("public/export/group_list_vn/group_list_vn_tmp.xlsx");
+  const worksheet = workbook.getWorksheet(1);
+
+  const sourceCell = worksheet.getCell("A1");
+  const targetCell = worksheet.getCell("B2");
+
+  targetCell.value = sourceCell.value;
+  targetCell.fill = sourceCell.fill;
+  targetCell.font = sourceCell.font;
+  targetCell.border = sourceCell.border;
+  targetCell.alignment = sourceCell.alignment;
+  targetCell.numberFormat = sourceCell.numberFormat;
+
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+    const numOrder = i + 6;
+
+    worksheet.getCell(`B${numOrder}`).value = `${i + 1}`;
+    worksheet.getCell(`C${numOrder}`).value = `${user.fullName.toUpperCase()}`;
+    worksheet.getCell(`D${numOrder}`).value = `${user.genderCode}`;
+    worksheet.getCell(`E${numOrder}`).value = `${user.dayOfBirth}`;
+    worksheet.getCell(`F${numOrder}`).value = `${user.cardID}`;
+    worksheet.getCell(`G${numOrder}`).value = `${user.provinceName}`;
+  }
+
+  const outputPath = `./public/export/group_list_vn/${fileName}_danh_sach_vn.xlsx`;
+
+  await workbook.xlsx.writeFile(outputPath);
+}
 
 module.exports = {
   perform
