@@ -84,6 +84,7 @@ const perform =  async (req, res) => {
         }
         if (!extractedInfo.gender || extractedInfo.gender.length === 0) {
           extractedInfo.gender = gender;
+          extractedInfo.genderCode = gender === "Nam" ? "M" : "F";
         }
         if (!extractedInfo.village || extractedInfo.village.length === 0) {
           extractedInfo.village = village.toLocaleLowerCase();
@@ -102,12 +103,15 @@ const perform =  async (req, res) => {
 
           provinceCode = await CommonUltil.findCodeByName(provinceName, null, "./src/data/tinh_tp.json");
           extractedInfo.provinceCode = provinceCode;
+          extractedInfo.provinceName = provinceName;
 
           districtCode = await CommonUltil.findCodeByName(districtName, provinceCode, "./src/data/quan_huyen.json");
           extractedInfo.districtCode = districtCode;
+          extractedInfo.districtName = districtName;
 
           communeCode = await CommonUltil.findCodeByName(communeName, districtCode, "./src/data/xa_phuong.json");
           extractedInfo.communeCode = communeCode;
+          extractedInfo.communeName = communeName;
         }
       }
 
@@ -124,6 +128,7 @@ const perform =  async (req, res) => {
       }
       if (userInfo.gender && userInfo.gender.length !== 0) {
         extractedInfo.gender = userInfo.gender;
+        extractedInfo.genderCode = userInfo.gender === "Nam" ? "M" : "F";
       }
       if (userInfo.createdAt && userInfo.createdAt.length !== 0) {
         const [year, month, day] = userInfo.createdAt.split("-");
@@ -213,9 +218,8 @@ const perform =  async (req, res) => {
 
       const fullNameTCVN3 = CommonUltil.convertUnicodeToTcvn3Map(userInfo.fullName);
       const villageTCVN3 = CommonUltil.convertUnicodeToTcvn3Map(userInfo.village);
-      const genderCode = userInfo.gender === "Nam" ? "M" : "F";
 
-      const sqlInsert = `Insert into pa18.thv_ct values('${fileName}','${fullNameTCVN3}','${genderCode}',to_date('${userInfo.dayOfBirth}','dd/mm/yyyy'),'D','${userInfo.provinceCode}','1','8','${userInfo.provinceCode}','${userInfo.districtCode}','${userInfo.communeCode}','${villageTCVN3}','','${userInfo.cardID}','${userInfo.provinceCode}',to_date('${userInfo.createdAt}','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('${currentDate}','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')`;
+      const sqlInsert = `Insert into pa18.thv_ct values('${fileName}','${fullNameTCVN3}','${userInfo.genderCode}',to_date('${userInfo.dayOfBirth}','dd/mm/yyyy'),'D','${userInfo.provinceCode}','1','8','${userInfo.provinceCode}','${userInfo.districtCode}','${userInfo.communeCode}','${villageTCVN3}','','${userInfo.cardID}','${userInfo.provinceCode}',to_date('${userInfo.createdAt}','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('${currentDate}','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')`;
 
       // EXPORT FILE MÃ HOÁ THÔNG TIN
       fs.appendFile(txtFilePath, sqlInsert + "\n/\n", (err) => {
@@ -292,8 +296,8 @@ async function exportDeclarationFile(user, fileName) {
   const createdAts = user.createdAt.split("/");
 
   worksheet.getCell("H8").value = user.fullName.toUpperCase();
-  worksheet.getCell("U8").value = user.gender === "Nam" ? "X" : "";
-  worksheet.getCell("S8").value = user.gender === "Nu" ? "X" : "";
+  worksheet.getCell("U8").value = user.gender === "Nu" ? "X" : "";
+  worksheet.getCell("S8").value = user.gender === "Nam" ? "X" : "";
   worksheet.getCell("E9").value = dayOfBirths[0];
   worksheet.getCell("I9").value = dayOfBirths[1];
   worksheet.getCell("L9").value = dayOfBirths[2];
@@ -355,12 +359,30 @@ async function exportGroupCN(users, fileName) {
     const englishName = user.fullName.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const dayOfBirth = moment(user.dayOfBirth, "DD/MM/YYYY").format("YYYYMMDD")
 
-    worksheet.getCell(`B${numOrder}`).value = `${i + 1}`;
-    worksheet.getCell(`C${numOrder}`).value = `${englishName}`;
-    worksheet.getCell(`D${numOrder}`).value = `${user.genderCode}`;
-    worksheet.getCell(`E${numOrder}`).value = `${dayOfBirth}`;
-    worksheet.getCell(`F${numOrder}`).value = "";
-    worksheet.getCell(`G${numOrder}`).value = `${user.cardID}`;
+    const cells = [
+      worksheet.getCell(`B${numOrder}`),
+      worksheet.getCell(`C${numOrder}`),
+      worksheet.getCell(`D${numOrder}`),
+      worksheet.getCell(`E${numOrder}`),
+      worksheet.getCell(`F${numOrder}`),
+      worksheet.getCell(`G${numOrder}`)
+    ];
+
+    cells[0].value = `${i + 1}`;
+    cells[1].value = `${englishName}`;
+    cells[2].value = `${user.genderCode}`;
+    cells[3].value = `${dayOfBirth}`;
+    cells[4].value = "";
+    cells[5].value = `${user.cardID}`;
+
+    cells.forEach(cell => {
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" }
+      };
+    });
   }
 
   const outputPath = `./public/export/group_list_cn/${fileName}_danh_sach_cn.xlsx`;
@@ -387,12 +409,30 @@ async function exportGroupVN(users, fileName) {
     const user = users[i];
     const numOrder = i + 6;
 
-    worksheet.getCell(`B${numOrder}`).value = `${i + 1}`;
-    worksheet.getCell(`C${numOrder}`).value = `${user.fullName.toUpperCase()}`;
-    worksheet.getCell(`D${numOrder}`).value = `${user.genderCode}`;
-    worksheet.getCell(`E${numOrder}`).value = `${user.dayOfBirth}`;
-    worksheet.getCell(`F${numOrder}`).value = `${user.cardID}`;
-    worksheet.getCell(`G${numOrder}`).value = `${user.provinceName}`;
+    const cells = [
+      worksheet.getCell(`B${numOrder}`),
+      worksheet.getCell(`C${numOrder}`),
+      worksheet.getCell(`D${numOrder}`),
+      worksheet.getCell(`E${numOrder}`),
+      worksheet.getCell(`F${numOrder}`),
+      worksheet.getCell(`G${numOrder}`)
+    ];
+
+    cells[0].value = `${i + 1}`;
+    cells[1].value = `${user.fullName.toUpperCase()}`;
+    cells[2].value = `${user.genderCode}`;
+    cells[3].value = `${user.dayOfBirth}`;
+    cells[4].value = `${user.cardID}`;
+    cells[5].value = `${user.provinceName}`;
+
+    cells.forEach(cell => {
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
+      };
+    });
   }
 
   const outputPath = `./public/export/group_list_vn/${fileName}_danh_sach_vn.xlsx`;
