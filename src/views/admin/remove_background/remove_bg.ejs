@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html data-theme="cupcake">
+<head>
+    <title>Image Background Remover</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.js"></script>
+</head>
+<body class="static">
+    <%- include("../components/header") %>
+    <%- include("../components/left_menu") %>
+
+    <div class="content sm:ml-64">
+        <div id="app" class="flex justify-center h-full bg-gray-200 p-4" style="min-height: 86vh;">
+            <div class="w-full shadow-lg max-w-8xl bg-white p-6 rounded-lg">
+                <h1 class="text-3xl mb-6">Xóa nền ảnh và đổi kích thước 4x6</h1>
+
+                <div class="file-input mb-6">
+                    <input type="file" id="fileInput" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <label for="fileInput" class="block text-sm font-medium text-gray-700 mt-2">Choose Image</label>
+                </div>
+
+                <div id="loadingBar" class="w-full bg-gray-200 rounded-full h-2.5 mb-6 hidden">
+                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0"></div>
+                </div>
+
+                <div id="output" class="mb-6">
+                    <!-- Processed image will be displayed here -->
+                </div>
+
+                <a href="#" id="downloadButton" download class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Download Image</a>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', async function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const loadingBar = document.getElementById('loadingBar');
+                const loadingBarInner = loadingBar.querySelector('div');
+                loadingBar.classList.remove('hidden');
+                loadingBarInner.style.width = '50%'; 
+
+                const formData = new FormData();
+                formData.append('image_file', file);
+
+                try {
+                    const response = await fetch('/admin/process-image', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        const resultURL = await response.text();
+                        loadingBarInner.style.width = '100%'; 
+
+                        document.getElementById('output').innerHTML = `<img src="${resultURL}" alt="Processed Image" class="rounded-lg shadow-lg">`;
+
+                        const downloadButton = document.getElementById('downloadButton');
+                        downloadButton.href = resultURL;
+                        downloadButton.classList.remove('hidden');
+
+                        downloadButton.download = file.name;
+                    } else {
+                        document.getElementById('output').innerText = 'Failed to process image.';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    document.getElementById('output').innerText = 'Error processing image.';
+                }
+
+                loadingBar.classList.add('hidden');
+                loadingBarInner.style.width = '0';
+            }
+        });
+
+    </script>
+</body>
+</html>
