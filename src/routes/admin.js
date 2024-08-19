@@ -37,7 +37,10 @@ router.get("/document_export_hitories/:id", adminAuthentication, documentExportH
 // FOR API
 router.post("/api/v1/files/perform_analysis", performAnalysisFileController.perform);
 // REMOVE BACKGROUND
-router.get("/view_remove_background", adminAuthentication, removeBackgroundController.getViewRemoveBg);
-router.post("/process-image", adminAuthentication, upload.single('image_file'), removeBackgroundController.remove_background);
+// router.get("/view_remove_background", adminAuthentication, removeBackgroundController.getViewRemoveBg);
+// router.post("/process-image", adminAuthentication, upload.single('image_file'), removeBackgroundController.remove_background);
 
+// FOR REMOVE BACKGROUND
+router.get("/view_remove_background", adminAuthentication, removeBackgroundController.getViewRemoveBg);
+router.post("/process-images", adminAuthentication, upload.array('image_files', 10), removeBackgroundController.remove_background);
 module.exports = router;

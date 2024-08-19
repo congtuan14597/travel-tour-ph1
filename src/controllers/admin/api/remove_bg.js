@@ -2,34 +2,84 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const FormData = require('form-data');
 const sharp = require('sharp');
+const path = require('path');
+const archiver = require('archiver');
 
 const remove_background = async (req, res) => {
     try {
-        const filePath = req.file.path;
-        const imageData = fs.readFileSync(filePath);
+        const processedImages = [];
+        const outputDir = path.join(__dirname, 'output');
+        const zipFilePath = path.join(__dirname, 'output.zip');
 
-        const resultURL = await processImageWithAPIs(imageData, req.file.mimetype);
-
-        if (resultURL) {
-            const base64Data = resultURL.split(';base64,').pop();
-            const imageBuffer = Buffer.from(base64Data, 'base64');
-
-            const processedImageBuffer = await processImageFurther(imageBuffer);
-
-            const finalImageURL = `data:image/png;base64,${processedImageBuffer.toString('base64')}`;
-            res.send(finalImageURL);
-        } else {
-            res.status(500).send('Failed to process image.');
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true });
         }
 
-        fs.unlink(filePath, (err) => {
-            if (err) console.error('Failed to delete file:', err);
+        for (const file of req.files) {
+            const filePath = file.path;
+            const originalFileName = file.originalname;
+            const imageData = fs.readFileSync(filePath);
+
+            const resultURL = await processImageWithAPIs(imageData, file.mimetype);
+
+            if (resultURL) {
+                const base64Data = resultURL.split(';base64,').pop();
+                const imageBuffer = Buffer.from(base64Data, 'base64');
+
+                const processedImageBuffer = await processImageFurther(imageBuffer);
+
+                const outputFileName = path.basename(originalFileName, path.extname(originalFileName)) + '-processed.png';
+                const outputPath = path.join(outputDir, outputFileName);
+
+                await saveImageAsync(processedImageBuffer, outputPath); // Use await here
+                processedImages.push(outputPath);
+            } else {
+                processedImages.push(null);
+            }
+
+            fs.unlink(filePath, (err) => {
+                if (err) console.error('Failed to delete file:', err);
+            });
+        }
+
+        const output = fs.createWriteStream(zipFilePath);
+        const archive = archiver('zip', {
+            zlib: { level: 9 } 
         });
 
+        output.on('close', function() {
+            console.log(`${archive.pointer()} total bytes`);
+            console.log('Zip file has been finalized and the output file descriptor has been closed.');
+
+            res.json({ zipFilePath: '/output.zip' }); 
+        });
+
+        archive.on('error', function(err) {
+            throw err;
+        });
+
+        archive.pipe(output);
+        archive.directory(outputDir, false);
+        archive.finalize();
+
     } catch (error) {
-        console.error('Error processing image:', error);
-        res.status(500).send('Error processing image.');
+        console.error('Error processing images:', error);
+        res.status(500).send('Error processing images.');
     }
+};
+
+const saveImageAsync = (buffer, filename) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(filename, buffer, (err) => {
+            if (err) {
+                console.error('Failed to save image:', err);
+                reject(err);
+            } else {
+                console.log(`Image saved as ${filename}`);
+                resolve();
+            }
+        });
+    });
 };
 
 async function processImageWithAPIs(imageData, mimeType) {
@@ -73,11 +123,11 @@ async function processImageFurther(imageBuffer) {
 }
 
 const apis = [
+    { name: 'clipdrop.co', url: 'https://clipdrop-api.co/remove-background/v1', key: process.env.KEY_RLIPDROP },
+    { name: 'slazzer.com', url: 'https://api.slazzer.com/v2.0/remove_image_background', key: process.env.KEY_LAZZER },
     { name: 'remove.bg', url: 'https://api.remove.bg/v1.0/removebg', key: process.env.KEY_REMOVE },
     { name: 'removal.ai', url: 'https://api.removal.ai/3.0/remove', key: process.env.KEY_REMOVAL },
     { name: 'photoroom.com', url: 'https://sdk.photoroom.com/v1/segment', key: process.env.KEY_PHOTOROOM },
-    { name: 'clipdrop.co', url: 'https://clipdrop-api.co/remove-background/v1', key: process.env.KEY_RLIPDROP },
-    { name: 'slazzer.com', url: 'https://api.slazzer.com/v2.0/remove_image_background', key: process.env.KEY_LAZZER },
 ];
 
 let getViewRemoveBg = async (req, res) => {

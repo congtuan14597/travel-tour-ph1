@@ -17,19 +17,15 @@
                 <h1 class="text-3xl mb-6">Xóa nền ảnh và đổi kích thước 4x6</h1>
 
                 <div class="file-input mb-6">
-                    <input type="file" id="fileInput" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    <label for="fileInput" class="block text-sm font-medium text-gray-700 mt-2">Choose Image</label>
+                    <input type="file" id="fileInput" accept="image/*" multiple class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <label for="fileInput" class="block text-sm font-medium text-gray-700 mt-2">Chọn hình ảnh</label>
                 </div>
 
                 <div id="loadingBar" class="w-full bg-gray-200 rounded-full h-2.5 mb-6 hidden">
                     <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0"></div>
                 </div>
 
-                <div id="output" class="mb-6">
-                    <!-- Processed image will be displayed here -->
-                </div>
-
-                <a href="#" id="downloadButton" download class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Download Image</a>
+                <a href="#" id="downloadButton" class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tải xuống ZIP</a>
 
             </div>
         </div>
@@ -37,46 +33,48 @@
 
     <script>
         document.getElementById('fileInput').addEventListener('change', async function(event) {
-            const file = event.target.files[0];
-            if (file) {
+            const files = event.target.files;
+            if (files.length > 0) {
                 const loadingBar = document.getElementById('loadingBar');
                 const loadingBarInner = loadingBar.querySelector('div');
                 loadingBar.classList.remove('hidden');
                 loadingBarInner.style.width = '50%'; 
-
+    
                 const formData = new FormData();
-                formData.append('image_file', file);
-
+                for (const file of files) {
+                    formData.append('image_files', file);
+                }
+    
                 try {
-                    const response = await fetch('/admin/process-image', {
+                    const response = await fetch('/admin/process-images', {
                         method: 'POST',
                         body: formData,
                     });
-
+    
                     if (response.ok) {
-                        const resultURL = await response.text();
+                        const result = await response.json();
+                        const zipFileURL = result.zipFilePath; // Đảm bảo máy chủ trả về URL của file ZIP
+                        console.log('Zip file URL:', zipFileURL); // Debugging
+    
                         loadingBarInner.style.width = '100%'; 
-
-                        document.getElementById('output').innerHTML = `<img src="${resultURL}" alt="Processed Image" class="rounded-lg shadow-lg">`;
-
+    
                         const downloadButton = document.getElementById('downloadButton');
-                        downloadButton.href = resultURL;
                         downloadButton.classList.remove('hidden');
-
-                        downloadButton.download = file.name;
+                        downloadButton.href = zipFileURL; // Đặt liên kết tải về cho file ZIP
+                        downloadButton.textContent = 'Tải xuống ZIP'; // Cập nhật văn bản nút
                     } else {
-                        document.getElementById('output').innerText = 'Failed to process image.';
+                        document.getElementById('downloadButton').classList.add('hidden');
+                        console.error('Failed to process images.');
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    document.getElementById('output').innerText = 'Error processing image.';
+                    document.getElementById('downloadButton').classList.add('hidden');
                 }
-
+    
                 loadingBar.classList.add('hidden');
                 loadingBarInner.style.width = '0';
             }
         });
-
     </script>
 </body>
 </html>
