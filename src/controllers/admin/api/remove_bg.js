@@ -8,8 +8,11 @@ const archiver = require('archiver');
 const remove_background = async (req, res) => {
     try {
         const processedImages = [];
-        const outputDir = path.join(__dirname, 'output');
-        const zipFilePath = path.join(__dirname, 'output.zip');
+        // const outputDir = path.join(__dirname, 'output');
+        const outputDir = './public/images/output';
+        // const zipFilePath = path.join(__dirname, 'output.zip');
+        const zipFilePath ='./public/images/output.zip';
+
 
         if (!fs.existsSync(outputDir)) {
             fs.mkdirSync(outputDir, { recursive: true });
@@ -51,7 +54,7 @@ const remove_background = async (req, res) => {
             console.log(`${archive.pointer()} total bytes`);
             console.log('Zip file has been finalized and the output file descriptor has been closed.');
 
-            res.json({ zipFilePath: '/output.zip' }); 
+            res.json({ zipFilePath: './public/images/output.zip' }); 
         });
 
         archive.on('error', function(err) {
