@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html data-theme="cupcake">
+<head>
+    <title>Image Background Remover</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.js"></script>
+</head>
+<body class="static">
+    <%- include("../components/header") %>
+    <%- include("../components/left_menu") %>
+
+    <div class="content sm:ml-64">
+        <div id="app" class="flex justify-center h-full bg-gray-200 p-4" style="min-height: 86vh;">
+            <div class="w-full shadow-lg max-w-8xl bg-white p-6 rounded-lg">
+                <div class="file-input mb-6">
+                    <input type="file" id="fileInput" accept="image/*" multiple class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <label for="fileInput" class="block text-sm font-medium text-gray-700 mt-2">Choose Images</label>
+                </div>
+                
+                <div id="loadingBar" class="w-full bg-gray-200 rounded-full h-2.5 mb-6 hidden">
+                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0"></div>
+                </div>
+                
+                <div id="output" class="mb-6">
+                    <!-- Processed images will be displayed here -->
+                </div>
+                
+                <a href="#" id="downloadButton" download class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Download All Images</a>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', async function(event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                const loadingBar = document.getElementById('loadingBar');
+                const loadingBarInner = loadingBar.querySelector('div');
+                loadingBar.classList.remove('hidden');
+                loadingBarInner.style.width = '50%'; 
+    
+                const formData = new FormData();
+                for (const file of files) {
+                    formData.append('image_files', file);
+                }
+    
+                try {
+                    const response = await fetch('/admin/process-images', {
+                        method: 'POST',
+                        body: formData,
+                    });
+    
+                    if (response.ok) {
+                        const resultURLs = await response.json();
+                        loadingBarInner.style.width = '100%'; 
+    
+                        const output = document.getElementById('output');
+                        output.innerHTML = ''; // Clear previous output
+                        resultURLs.forEach((url, index) => {
+                            if (url) {
+                                output.innerHTML += `<img src="${url}" alt="Processed Image ${index + 1}" class="rounded-lg shadow-lg mb-4">`;
+                            } else {
+                                output.innerHTML += `<p>Failed to process image ${index + 1}.</p>`;
+                            }
+                        });
+    
+                        const downloadButton = document.getElementById('downloadButton');
+                        downloadButton.classList.remove('hidden');
+                        downloadButton.href = resultURLs[0]; // Set the download link to the first image
+                    } else {
+                        document.getElementById('output').innerText = 'Failed to process images.';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    document.getElementById('output').innerText = 'Error processing images.';
+                }
+    
+                loadingBar.classList.add('hidden');
+                loadingBarInner.style.width = '0';
+            }
+        });
+    </script>
+</body>
+</html>
