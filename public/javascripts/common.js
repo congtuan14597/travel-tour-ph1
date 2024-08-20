@@ -49,7 +49,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const currentPath = window.location.pathname;
 
   if (currentPath === "/admin/analysis_documents" ||
-    currentPath === "/admin/document_export_hitories") {
+    currentPath === "/admin/document_export_hitories" ||
+    currentPath === "/admin/analysis_images") {
     const dropdownRoom = document.getElementById("dropdown-documents");
     dropdownRoom.classList.remove("hidden");
     dropdownRoom.previousElementSibling.setAttribute("aria-expanded", "true");

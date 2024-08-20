@@ -5,6 +5,7 @@ const adminLoginController = require("../controllers/admin/login.js");
 const adminLogoutController = require("../controllers/admin/logout.js");
 const adminAuthentication = require('../middleware/admin_authentication_middleware');
 const analysisDocumentsContrtoller = require("../controllers/admin/analysis_documents.js");
+const analysisImagesContrtoller = require("../controllers/admin/analysis_images.js");
 const documentExportHistoriesController = require("../controllers/admin/document_export_hitories.js");
 
 // FOR LOGIN
@@ -17,6 +18,7 @@ router.post("/logout", adminLogoutController.postAdminLogout);
 router.get("/signup", adminLoginController.getAdminSignUp);
 // FOR ANALYSIS DOCUMENTS
 router.get("/analysis_documents", adminAuthentication, analysisDocumentsContrtoller.getAnalysisDocuments);
+router.get("/analysis_images", adminAuthentication, analysisImagesContrtoller.getAnalysisImages);
 router.get("/document_export_hitories", adminAuthentication, documentExportHistoriesController.getDocumentExportHistories);
 router.get("/document_export_hitories/:id", adminAuthentication, documentExportHistoriesController.downloadDocumentExportHistories);
 // FOR API
