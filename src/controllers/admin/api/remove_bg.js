@@ -8,19 +8,9 @@ const archiver = require('archiver');
 const remove_background = async (req, res) => {
     try {
         const processedImages = [];
-        // const outputDir = path.join(__dirname, 'output');
-        const outputDir = './public/images/output';
-        // const zipFilePath = path.join(__dirname, 'output.zip');
-        const zipFilePath ='./public/images/output.zip';
-
-
-        if (!fs.existsSync(outputDir)) {
-            fs.mkdirSync(outputDir, { recursive: true });
-        }
 
         for (const file of req.files) {
             const filePath = file.path;
-            const originalFileName = file.originalname;
             const imageData = fs.readFileSync(filePath);
 
             const resultURL = await processImageWithAPIs(imageData, file.mimetype);
@@ -31,45 +21,30 @@ const remove_background = async (req, res) => {
 
                 const processedImageBuffer = await processImageFurther(imageBuffer);
 
-                const outputFileName = path.basename(originalFileName, path.extname(originalFileName)) + '-processed.png';
-                const outputPath = path.join(outputDir, outputFileName);
-
-                await saveImageAsync(processedImageBuffer, outputPath); // Use await here
-                processedImages.push(outputPath);
+                const finalImageURL = `data:image/png;base64,${processedImageBuffer.toString('base64')}`;
+                processedImages.push(finalImageURL);
             } else {
                 processedImages.push(null);
             }
 
+            // Delete the uploaded file after processing
             fs.unlink(filePath, (err) => {
                 if (err) console.error('Failed to delete file:', err);
             });
         }
 
-        const output = fs.createWriteStream(zipFilePath);
-        const archive = archiver('zip', {
-            zlib: { level: 9 } 
-        });
-
-        output.on('close', function() {
-            console.log(`${archive.pointer()} total bytes`);
-            console.log('Zip file has been finalized and the output file descriptor has been closed.');
-
-            res.json({ zipFilePath: './public/images/output.zip' }); 
-        });
-
-        archive.on('error', function(err) {
-            throw err;
-        });
-
-        archive.pipe(output);
-        archive.directory(outputDir, false);
-        archive.finalize();
+        if (processedImages.length) {
+            res.send(processedImages); // Return an array of processed image URLs
+        } else {
+            res.status(500).send('Failed to process images.');
+        }
 
     } catch (error) {
         console.error('Error processing images:', error);
         res.status(500).send('Error processing images.');
     }
 };
+
 
 const saveImageAsync = (buffer, filename) => {
     return new Promise((resolve, reject) => {
