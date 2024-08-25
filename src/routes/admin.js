@@ -6,6 +6,8 @@ const adminLogoutController = require("../controllers/admin/logout.js");
 const adminAuthentication = require('../middleware/admin_authentication_middleware');
 const analysisDocumentsContrtoller = require("../controllers/admin/analysis_documents.js");
 const documentExportHistoriesController = require("../controllers/admin/document_export_hitories.js");
+const removeBackgroudController = require("../controllers/admin/remove_backgroud.js");
+
 
 // FOR LOGIN
 router.get("/", adminLoginController.getAdminLogin);
@@ -21,5 +23,6 @@ router.get("/document_export_hitories", adminAuthentication, documentExportHisto
 router.get("/document_export_hitories/:id", adminAuthentication, documentExportHistoriesController.downloadDocumentExportHistories);
 // FOR API
 router.post("/api/v1/files/perform_analysis", performAnalysisFileController.perform);
-
+// FOR REMOVE BACKGROUND
+router.get("/remove_background", adminAuthentication, removeBackgroudController.getRemoveBackgroud);
 module.exports = router;
