@@ -312,7 +312,6 @@ async function exportDeclarationFile(user, fileName) {
   worksheet.getCell("F14").value = user.communeName;
   worksheet.getCell("L14").value = user.districtName;
   worksheet.getCell("S14").value = user.provinceName;
-  worksheet.getCell("L28").value = user.fullName.toUpperCase();
 
   const digits = user.cardID.split("");
   let startRow = 10;
