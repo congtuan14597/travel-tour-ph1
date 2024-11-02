@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
             fullName: fullName,
             dayOfBirth: dayOfBirthWithFormat,
             gender: gender,
-            genderCode: gender === "Name" ? "M" : "F",
+            genderCode: gender === "Nam" ? "M" : "F",
             provinceName: provinceName ? provinceName.trimStart() : "",
             districtName: districtName ? districtName.trimStart() : "",
             communeName: communeName ? communeName.trimStart() : "",
