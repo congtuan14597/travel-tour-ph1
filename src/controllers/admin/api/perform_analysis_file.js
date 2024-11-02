@@ -100,6 +100,13 @@ const perform =  async (req, res) => {
       archive.file(filePathDeclaration, {name: `${i + 1}.${userInfo.fullName.toUpperCase()}.${fileName}.${userInfo.cardID}.xlsx`})
     }
 
+    const suffixSqlInsert = "commit" + "\r\n/\r\n" + "quit" + "\r\n/\r\n"
+    fs.appendFile(txtFilePath, suffixSqlInsert, (err) => {
+      if (err) {throw {errors: [err]};}
+
+      console.log(`SQL insert statement appended to ${txtFilePath}`);
+    });
+
     // EXPORT DANH SÁCH VN
     await exportGroupVN(usersInfo, fileName);
 

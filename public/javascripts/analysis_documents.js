@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let users = [];
     const frontFiles = document.querySelector(".front-cccd-image").files;
-    const qrVNeIDFiles = document.querySelector(".qr-vneid-image").files;
-    const allFiles = [...frontFiles, ...qrVNeIDFiles];
+    // const qrVNeIDFiles = document.querySelector(".qr-vneid-image").files;
+    const allFiles = [...frontFiles];
 
     if (allFiles.length === 0) {
       errorMessageWithoutExecuteApi.innerHTML = "VUI LÒNG CHỌN FILE.";
@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
       let promise = QrScanner.scanImage(file, { returnDetailedScanResult: true })
         .then(result => {
           const data = result.data;
+          console.log(data);
           if (!data) {
             errorMessageWithoutExecuteApi.innerHTML = `${file.name} KHÔNG HỢP LỆ, VUI LÒNG CHỌN ẢNH CÓ CHẤT LƯỢNG TỐT HƠN.`;
             if (errorMessageForm.classList.contains("hidden")) {
@@ -65,17 +66,17 @@ document.addEventListener("DOMContentLoaded", function() {
             dayOfBirth: dayOfBirthWithFormat,
             gender: gender,
             genderCode: gender === "Name" ? "M" : "F",
-            provinceName: provinceName.trimStart(),
-            districtName: districtName.trimStart(),
-            communeName: communeName.trimStart(),
-            villageName: villageName.trimStart(),
+            provinceName: provinceName ? provinceName.trimStart() : "",
+            districtName: districtName ? districtName.trimStart() : "",
+            communeName: communeName ? communeName.trimStart() : "",
+            villageName: villageName ? villageName.trimStart() : "",
             createdAt: createdAtWithFormat
           };
 
-          debugger
           users.push(user);
         })
         .catch(e => {
+          console.log(e);
           errorMessageWithoutExecuteApi.innerHTML = `${file.name} KHÔNG HỢP LỆ, VUI LÒNG CHỌN ẢNH CÓ CHẤT LƯỢNG TỐT HƠN.`;
           if (errorMessageForm.classList.contains("hidden")) {
             errorMessageForm.classList.remove("hidden");
@@ -90,7 +91,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     const fileName = document.querySelector(".analysis-file-name").value
+
     Promise.all(promises).then(() => {
+      if (allFiles.length !== users.length) {return;}
+
       if (users.length !== 0) {
         fetch("api/v1/files/perform_analysis", {
           method: "POST",
