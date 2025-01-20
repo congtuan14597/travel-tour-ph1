@@ -82,11 +82,11 @@ const perform =  async (req, res) => {
       userInfo.communeCode = communeCode;
       console.log(`user${i + 1}_extractedInfo`, userInfo);
       console.log("========================================================================================");
+      
+      const fullNameIso8859 = CommonUltil.convertUnicodeToIso8859Map(userInfo.fullName);
+      const villageIso8859 = CommonUltil.convertUnicodeToIso8859Map(userInfo.villageName);
 
-      const fullNameTCVN3 = CommonUltil.convertUnicodeToTcvn3Map(userInfo.fullName.toLowerCase());
-      const villageTCVN3 = CommonUltil.convertUnicodeToTcvn3Map(userInfo.villageName.toLowerCase());
-
-      const sqlInsert = `Insert into pa18.thv_ct values('${fileName}','${fullNameTCVN3}','${userInfo.genderCode}',to_date('${userInfo.dayOfBirth}','dd/mm/yyyy'),'D','${provinceCode}','1','8','${provinceCode}','${districtCode}','${communeCode}','${villageTCVN3}','','${userInfo.cardID}','${provinceCode}',to_date('${userInfo.createdAt}','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('${currentDate}','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')`;
+      const sqlInsert = `Insert into pa18.thv_ct values('${fileName}','${fullNameIso8859}','${userInfo.genderCode}',to_date('${userInfo.dayOfBirth}','dd/mm/yyyy'),'D','${provinceCode}','1','8','${provinceCode}','${districtCode}','${communeCode}','${villageIso8859}','','${userInfo.cardID}','${provinceCode}',to_date('${userInfo.createdAt}','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('${currentDate}','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')`;
 
       // EXPORT FILE MÃ HOÁ THÔNG TIN
       fs.appendFile(txtFilePath, sqlInsert + "\n/\n", (err) => {
