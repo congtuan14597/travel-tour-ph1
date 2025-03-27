@@ -5,6 +5,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var expressLayouts = require("express-ejs-layouts");
 
 const adminRouter = require("./src/routes/admin");
 
@@ -12,6 +13,16 @@ var app = express();
 
 app.set("views", path.join(__dirname, "src/views"));
 app.set("view engine", "ejs");
+app.use(expressLayouts);
+
+// Đặt layout mặc định cho tất cả các trang
+app.set("layout", "admin/components/common");
+
+// Cho phép bỏ qua layout ở một số trang nhất định
+app.use((req, res, next) => {
+  res.locals.noLayout = false;
+  next();
+});
 
 app.use(logger("dev"));
 app.use(express.json());
