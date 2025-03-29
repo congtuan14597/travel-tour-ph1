@@ -40,7 +40,29 @@ let newCustomers = async (req, res) => {
   res.render("admin/customers/new");
 }
 
+let createCustomer = async (req, res) => {
+  try {
+    if (req.body.dayOfBirth) {
+      req.body.dayOfBirth = moment(
+        req.body.dayOfBirth, "DD-MM-YYYY"
+      ).format("YYYY-MM-DD");
+    }
+
+    if (req.body.createdAtCard) {
+      req.body.createdAtCard = moment(
+        req.body.createdAtCard, "DD-MM-YYYY"
+      ).format("YYYY-MM-DD");
+    }
+
+    await Customer.create(req.body);
+    res.redirect("/admin/customers");
+  } catch (error) {
+    res.status(500).send("Lỗi khi tạo khách hàng");
+  }
+}
+
 module.exports = {
   getCustomers,
-  newCustomers
+  newCustomers,
+  createCustomer
 };

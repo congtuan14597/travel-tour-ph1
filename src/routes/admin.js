@@ -28,5 +28,7 @@ router.post("/api/v1/files/perform_analysis", performAnalysisFileController.perf
 router.get("/remove_background", adminAuthentication, removeBackgroudController.getRemoveBackgroud);
 // FOR CUSTOMER
 router.get("/customers", customerController.getCustomers);
+router.get("/customers/new", customerController.newCustomers);
+router.post("/customers/create", customerController.createCustomer);
 
 module.exports = router;

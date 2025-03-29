@@ -1,0 +1,175 @@
+<h2 class="flex justify-center text-2xl font-semibold mb-4">
+  <%= formTitle %>
+</h2>
+
+<div class="grid grid-cols-12">
+  <form
+    method="<%= formMethod %>" action="<%= formAction %>"
+    class="col-span-8 col-start-3"
+  >
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> Số công văn:
+      </label>
+      <input
+        type="text" name="documentNumber"
+        value="<%= formData?.documentNumber || '' %>" required
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> ID thẻ:
+      </label>
+      <input
+        type="text" name="cardID"
+        value="<%= formData?.cardID || '' %>" required
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> Họ và Tên:
+      </label>
+      <input
+        type="text" name="fullName"
+        value="<%= formData?.fullName || '' %>" required
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> Ngày sinh:
+      </label>
+      <input
+        type="text" id="dayOfBirth" name="dayOfBirth" required
+        value="<%= formData?.dayOfBirth
+          ? moment(formData.dayOfBirth, 'YYYY-MM-DD').format('DD-MM-YYYY')
+          : '' %>"
+        class="datepicker px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> Giới tính:
+      </label>
+      <select
+        name="gender" class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+        <option value="Nam" <%= formData?.gender === 'Nam' ? 'selected' : '' %>>
+          Nam
+        </option>
+        <option value="Nữ" <%= formData?.gender === 'Nữ' ? 'selected' : '' %>>
+          Nữ
+        </option>
+      </select>
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> Quốc tịch:
+      </label>
+      <input
+        type="text" name="national"
+        value="<%= formData?.national || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> Địa chỉ:
+      </label>
+      <input
+        type="text" name="address"
+        value="<%= formData?.address || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Thôn:</label>
+      <input
+        type="text" name="village"
+        value="<%= formData?.village || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Ngày làm thẻ:</label>
+      <input
+        type="text" id="createdAtCard" name="createdAtCard"
+        value="<%= formData?.createdAtCard
+          ? moment(formData.createdAtCard, 'YYYY-MM-DD').format('DD-MM-YYYY')
+          : '' %>"
+        class="datepicker px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Tỉnh:</label>
+      <input
+        type="text" name="province"
+        value="<%= formData?.province || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Huyện:</label>
+      <input
+        type="text" name="district"
+        value="<%= formData?.district || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Xã:</label>
+      <input
+        type="text" name="commune"
+        value="<%= formData?.commune || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Mã tỉnh:</label>
+      <input
+        type="text" name="provinceCode"
+        value="<%= formData?.provinceCode || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Mã huyện:</label>
+      <input
+        type="text" name="districtCode"
+        value="<%= formData?.districtCode || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Mã xã:</label>
+      <input
+        type="text" name="communeCode"
+        value="<%= formData?.communeCode || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="mt-4 flex justify-center">
+      <button type="submit"
+        class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        <%= formSubmitBtn %>
+      </button>
+    </div>
+  </form>
+</div>

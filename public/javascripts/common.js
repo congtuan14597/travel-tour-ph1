@@ -51,7 +51,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const dropdownConfig = {
     "/admin/analysis_documents": "dropdown-documents",
     "/admin/document_export_hitories": "dropdown-documents",
-    "/admin/customers": "dropdown-customers"
+    "/admin/customers": "dropdown-customers",
+    "/admin/customers/new": "dropdown-customers"
   };
 
   if (dropdownConfig[currentPath]) {
@@ -66,5 +67,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
     }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const dateInputs = document.querySelectorAll(".datepicker");
+  if (dateInputs.length) {
+    dateInputs.forEach(input => {
+      flatpickr(input, {
+        dateFormat: "d-m-Y",
+        altInput: true,
+        altFormat: "d-m-Y",
+        allowInput: true
+      });
+    });
   }
 });
