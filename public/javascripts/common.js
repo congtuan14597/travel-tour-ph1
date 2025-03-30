@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const dropdownConfig = {
     "/admin/analysis_documents": "dropdown-documents",
     "/admin/document_export_hitories": "dropdown-documents",
+    "/admin/remove_background": "dropdown-documents",
     "/admin/customers": "dropdown-customers",
     "/admin/customers/new": "dropdown-customers"
   };
