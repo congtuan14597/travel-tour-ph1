@@ -48,17 +48,39 @@ tailwind.config = {
 document.addEventListener("DOMContentLoaded", function() {
   const currentPath = window.location.pathname;
 
-  if (currentPath === "/admin/analysis_documents" ||
-    currentPath === "/admin/document_export_hitories") {
-    const dropdownRoom = document.getElementById("dropdown-documents");
-    dropdownRoom.classList.remove("hidden");
-    dropdownRoom.previousElementSibling.setAttribute("aria-expanded", "true");
+  const dropdownConfig = {
+    "/admin/analysis_documents": "dropdown-documents",
+    "/admin/document_export_hitories": "dropdown-documents",
+    "/admin/remove_background": "dropdown-documents",
+    "/admin/customers": "dropdown-customers",
+    "/admin/customers/new": "dropdown-customers"
+  };
 
-    const links = dropdownRoom.querySelectorAll("a");
-    links.forEach(link => {
-      if (link.getAttribute("href") === currentPath) {
-        link.classList.add("active-link");
-      }
+  if (dropdownConfig[currentPath]) {
+    const dropdown = document.getElementById(dropdownConfig[currentPath]);
+    if (dropdown) {
+      dropdown.classList.remove("hidden");
+      dropdown.previousElementSibling.setAttribute("aria-expanded", "true");
+
+      dropdown.querySelectorAll("a").forEach(link => {
+        if (link.getAttribute("href") === currentPath) {
+          link.classList.add("active-link");
+        }
+      });
+    }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const dateInputs = document.querySelectorAll(".datepicker");
+  if (dateInputs.length) {
+    dateInputs.forEach(input => {
+      flatpickr(input, {
+        dateFormat: "d-m-Y",
+        altInput: true,
+        altFormat: "d-m-Y",
+        allowInput: true
+      });
     });
   }
 });

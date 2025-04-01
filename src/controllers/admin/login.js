@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const SECRET_KEY = process.env.SECRET_KEY;
 
 let getAdminLogin = async (req, res) => {
-  res.render("admin/login");
+  res.render("admin/login", { layout: false });
 };
 
 let postAdminLogin = async (req, res) => {
@@ -40,7 +40,7 @@ let postAdminLogin = async (req, res) => {
 };
 
 let getAdminSignUp = async (req, res) => {
-  res.render("admin/signup");
+  res.render("admin/signup", { layout: false });
 };
 
 module.exports = {
