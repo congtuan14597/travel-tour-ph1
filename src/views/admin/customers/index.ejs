@@ -7,7 +7,8 @@
           <form method="GET" action="/admin/customers" class="flex space-x-2 w-full">
             <input
               type="text" name="search" placeholder="Nhập số công văn..."
-              value="<%= searchQuery %>" class="px-4 py-2 border rounded-md w-1/3"
+              value="<%= searchQuery %>" id="search-customers"
+              class="px-4 py-2 border rounded-md w-1/3"
             />
             <button
               type="submit"
@@ -121,60 +122,80 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-              <% customers.forEach((customer, index) => { %>
+              <% if(customers.length > 0) { %>
+                <% customers.forEach((customer, index) => { %>
+                  <tr class="hover:bg-gray-50">
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.documentNumber %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.cardID %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.fullName %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= moment(customer.dayOfBirth).format("DD/MM/YYYY") %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.gender %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.national %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.address %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= moment(customer.createdAtCard).format("DD/MM/YYYY") %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.village %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.province %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.district %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.commune %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.provinceCode %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.districtCode %>
+                    </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <%= customer.communeCode %>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
                 <tr class="hover:bg-gray-50">
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.documentNumber %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.cardID %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.fullName %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= moment(customer.dayOfBirth).format("DD/MM/YYYY") %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.gender %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.national %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.address %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= moment(customer.createdAtCard).format("DD/MM/YYYY") %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.village %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.province %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.district %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.commune %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.provinceCode %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.districtCode %>
-                  </td>
-                  <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                    <%= customer.communeCode %>
+                  <td
+                    class="p-2 text-sm text-gray-800 text-center"
+                    colspan="15"
+                  >
+                    <p>Không có dữ liệu được tìm thấy</p>
                   </td>
                 </tr>
-              <% }); %>
+              <% } %>
             </tbody>
           </table>
         </div>
 
         <%- include("../components/pagination") %>
+
+        <div class="mt-4">
+          <button
+            type="button" id="exportBtn"
+            class="p-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+          >
+            Xuất tập tin
+          </button>
+        </div>
       </div>
     </div>
   </div>

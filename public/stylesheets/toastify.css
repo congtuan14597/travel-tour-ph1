@@ -74,6 +74,12 @@
     max-width: -moz-fit-content;
 }
 
+.custom-toast .toast-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
 @media only screen and (max-width: 360px) {
     .toastify-right, .toastify-left {
         margin-left: auto;
