@@ -1,7 +1,9 @@
 $(function () {
   // Kiểm tra và disable nút Export nếu không có dữ liệu
   function checkExportBtn() {
-    let searchValue = $("#search-customers").val().trim();
+    let searchValue = $("#search-customers").length > 0
+      ? $("#search-customers").val().trim()
+      : "";
     let rowCount = $("tbody tr").length;
 
     if (!searchValue && rowCount == 0) {
