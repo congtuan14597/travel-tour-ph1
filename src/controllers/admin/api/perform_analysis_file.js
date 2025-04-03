@@ -83,29 +83,29 @@ const perform =  async (req, res) => {
       console.log(`user${i + 1}_extractedInfo`, userInfo);
       console.log("========================================================================================");
       
-      const fullNameIso8859 = CommonUltil.convertUnicodeToIso8859Map(userInfo.fullName);
-      const villageIso8859 = CommonUltil.convertUnicodeToIso8859Map(userInfo.villageName);
+      // const fullNameIso8859 = CommonUltil.convertUnicodeToIso8859Map(userInfo.fullName);
+      // const villageIso8859 = CommonUltil.convertUnicodeToIso8859Map(userInfo.villageName);
 
-      const sqlInsert = `Insert into pa18.thv_ct values('${fileName}','${fullNameIso8859}','${userInfo.genderCode}',to_date('${userInfo.dayOfBirth}','dd/mm/yyyy'),'D','${provinceCode}','1','8','${provinceCode}','${districtCode}','${communeCode}','${villageIso8859}','','${userInfo.cardID}','${provinceCode}',to_date('${userInfo.createdAt}','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('${currentDate}','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')`;
+      // const sqlInsert = `Insert into pa18.thv_ct values('${fileName}','${fullNameIso8859}','${userInfo.genderCode}',to_date('${userInfo.dayOfBirth}','dd/mm/yyyy'),'D','${provinceCode}','1','8','${provinceCode}','${districtCode}','${communeCode}','${villageIso8859}','','${userInfo.cardID}','${provinceCode}',to_date('${userInfo.createdAt}','dd/mm/yyyy'),'tù do','','2','1','','','','',to_date('${currentDate}','dd/mm/yyyy'),'','','',to_date('','dd/mm/yyyy'),to_date('','dd/mm/yyyy'),'','','','','',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'',to_date('','dd/mm/yyyy'),'')`;
 
       // EXPORT FILE MÃ HOÁ THÔNG TIN
-      fs.appendFile(txtFilePath, sqlInsert + "\n/\n", (err) => {
-        if (err) {throw {errors: [err]};}
+      // fs.appendFile(txtFilePath, sqlInsert + "\n/\n", (err) => {
+      //   if (err) {throw {errors: [err]};}
 
-        console.log(`SQL insert statement appended to ${txtFilePath}`);
-      });
+      //   console.log(`SQL insert statement appended to ${txtFilePath}`);
+      // });
 
       // ZIP LẠI THÔNG TIN TỜ KHAI
       const filePathDeclaration = await exportDeclarationFile(userInfo, fileName);
       archive.file(filePathDeclaration, {name: `${i + 1}.${userInfo.fullName.toUpperCase()}.${fileName}.${userInfo.cardID}.xlsx`})
     }
 
-    const suffixSqlInsert = "commit" + "\r\n/\r\n" + "quit" + "\r\n/\r\n"
-    fs.appendFile(txtFilePath, suffixSqlInsert, (err) => {
-      if (err) {throw {errors: [err]};}
+    // const suffixSqlInsert = "commit" + "\r\n/\r\n" + "quit" + "\r\n/\r\n"
+    // fs.appendFile(txtFilePath, suffixSqlInsert, (err) => {
+    //   if (err) {throw {errors: [err]};}
 
-      console.log(`SQL insert statement appended to ${txtFilePath}`);
-    });
+    //   console.log(`SQL insert statement appended to ${txtFilePath}`);
+    // });
 
     // EXPORT DANH SÁCH VN
     await exportGroupVN(usersInfo, fileName);
@@ -187,7 +187,7 @@ async function exportDeclarationFile(user, fileName) {
   worksheet.getCell("L14").value = user.districtName;
   worksheet.getCell("S14").value = user.provinceName;
   worksheet.getCell("L28").value = user.fullName.toUpperCase();
-
+  console.log(user.cardID);
   const digits = user.cardID.split("");
   let startRow = 10;
   let startCol = "G".charCodeAt(0);
