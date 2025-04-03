@@ -56,8 +56,12 @@ document.addEventListener("DOMContentLoaded", function() {
     "/admin/customers/new": "dropdown-customers"
   };
 
-  if (dropdownConfig[currentPath]) {
-    const dropdown = document.getElementById(dropdownConfig[currentPath]);
+  if (currentPath.startsWith("/admin/customers/edit/")) {
+    dropdownConfig["/admin/customers/edit/:id"] = "dropdown-customers";
+  }
+
+  if (dropdownConfig[currentPath] || currentPath.startsWith("/admin/customers/edit/")) {
+    const dropdown = document.getElementById(dropdownConfig[currentPath] || "dropdown-customers");
     if (dropdown) {
       dropdown.classList.remove("hidden");
       dropdown.previousElementSibling.setAttribute("aria-expanded", "true");

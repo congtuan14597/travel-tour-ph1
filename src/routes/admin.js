@@ -30,5 +30,8 @@ router.get("/remove_background", adminAuthentication, removeBackgroudController.
 router.get("/customers", customerController.getCustomers);
 router.get("/customers/new", customerController.newCustomers);
 router.post("/customers/create", customerController.createCustomer);
+router.get("/customers/edit/:id", customerController.editCustomer);
+router.patch("/customers/:id", customerController.updateCustomer);
+router.delete("/customers/:id", customerController.deleteCustomer);
 
 module.exports = router;

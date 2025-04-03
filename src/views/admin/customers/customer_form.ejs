@@ -4,7 +4,7 @@
 
 <div class="grid grid-cols-12">
   <form
-    method="<%= formMethod %>" action="<%= formAction %>"
+    method="POST" action="<%= formAction %>"
     class="col-span-8 col-start-3"
   >
     <div class="grid grid-cols-4 gap-4 items-center mb-5">
@@ -101,9 +101,11 @@
     </div>
 
     <div class="grid grid-cols-4 gap-4 items-center mb-5">
-      <label class="block text-sm font-medium">Ngày làm thẻ:</label>
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> Ngày làm thẻ:
+      </label>
       <input
-        type="text" id="createdAtCard" name="createdAtCard"
+        type="text" id="createdAtCard" name="createdAtCard" required
         value="<%= formData?.createdAtCard
           ? moment(formData.createdAtCard, 'YYYY-MM-DD').format('DD-MM-YYYY')
           : '' %>"
