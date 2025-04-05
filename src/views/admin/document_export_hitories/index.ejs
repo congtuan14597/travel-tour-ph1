@@ -27,31 +27,37 @@
             </thead>
             <tbody class="text-gray-700">
               <% documentExportHistories.forEach(documentExportHistory => { %>
-                <tr>
-                  <td class="px-4 py-2 border-b border-r"><%= documentExportHistory.fileName %></td>
-                  <td class="px-4 py-2 border-b border-r">
-                    <% if (documentExportHistory.kind === "declarationList") { %>
-                      DANH SÁCH TỜ KHAI
-                    <% } else if (documentExportHistory.kind === "groupListVN") { %>
-                      DANH SÁCH ĐOÀN BẢN VN
-                    <% } else if (documentExportHistory.kind === "groupListCN") { %>
-                      DANH SÁCH ĐOÀN BẢN TQ
-                    <% } else { %>
-                      FILE MÃ HOÁ
-                    <% } %>
-                  </td>
-                  <td class="px-4 py-2 border-b border-r"><%= moment(new Date(documentExportHistory.createdAt)).format('DD/MM/YYYY') %></td>
-                  <td class="px-4 py-2 border-b border-r">
-                    <% if (documentExportHistory.status === "fail") { %>
-                      THẤT BẠI
-                    <% } else { %>
-                      THÀNH CÔNG
+                <% if (
+                  documentExportHistory.kind === "declarationList" ||
+                  documentExportHistory.kind === "groupListVN" ||
+                  documentExportHistory.kind === "groupListCN"
+                ) { %>
+                  <tr>
+                    <td class="px-4 py-2 border-b border-r"><%= documentExportHistory.fileName %></td>
+                    <td class="px-4 py-2 border-b border-r">
+                      <% if (documentExportHistory.kind === "declarationList") { %>
+                        DANH SÁCH TỜ KHAI
+                      <% } else if (documentExportHistory.kind === "groupListVN") { %>
+                        DANH SÁCH ĐOÀN BẢN VN
+                      <% } else if (documentExportHistory.kind === "groupListCN") { %>
+                        DANH SÁCH ĐOÀN BẢN TQ
+                      <% } else { %>
+                        FILE MÃ HOÁ
                       <% } %>
-                  </td>
-                  <td class="px-4 py-2 border-b border-r">
-                    <a href="/admin/document_export_hitories/<%= documentExportHistory.id %>" class="text-blue-500 hover:underline">DOWNLOAD</a>
-                  </td>
-                </tr>
+                    </td>
+                    <td class="px-4 py-2 border-b border-r"><%= moment(new Date(documentExportHistory.createdAt)).format('DD/MM/YYYY') %></td>
+                    <td class="px-4 py-2 border-b border-r">
+                      <% if (documentExportHistory.status === "fail") { %>
+                        THẤT BẠI
+                      <% } else { %>
+                        THÀNH CÔNG
+                        <% } %>
+                    </td>
+                    <td class="px-4 py-2 border-b border-r">
+                      <a href="/admin/document_export_hitories/<%= documentExportHistory.id %>" class="text-blue-500 hover:underline">DOWNLOAD</a>
+                    </td>
+                  </tr>
+                <% }; %>
               <% }); %>
             </tbody>
           </table>
