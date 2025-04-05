@@ -1,5 +1,5 @@
 const moment = require("moment");
-const { Op } = require("sequelize");
+const { Op, ValidationError } = require("sequelize");
 const { Customer } = require("../../../models");
 
 let getCustomers = async (req, res) => {
@@ -9,7 +9,10 @@ let getCustomers = async (req, res) => {
   const searchQuery = req.query.search || "";
 
   try {
-    const whereCondition = {};
+    const whereCondition = {
+      deletedAt: null,
+    };
+
     if (searchQuery) {
       whereCondition.documentNumber = { [Op.like]: `%${searchQuery}%` };
     }
@@ -23,13 +26,17 @@ let getCustomers = async (req, res) => {
 
     const totalPages = Math.ceil(count / limit);
 
+
+    const error = req.query.error;
+
     res.render("admin/customers/index", {
       customers: rows,
       currentPage: page,
       totalPages: totalPages,
       limit: limit,
       moment: moment,
-      searchQuery: searchQuery
+      searchQuery: searchQuery,
+      error
     });
   } catch (error) {
     res.status(500).send("Internal Server Error");
@@ -57,12 +64,101 @@ let createCustomer = async (req, res) => {
     await Customer.create(req.body);
     res.redirect("/admin/customers");
   } catch (error) {
-    res.status(500).send("Lỗi khi tạo khách hàng");
+    let errorMessage = "Lỗi khi tạo khách hàng";
+
+    if (error instanceof ValidationError) {
+      const errors = error.errors
+        .map((err) => {
+          if (err.type === "unique violation" && err.path === "cardID") {
+            return "• ID thẻ đã tồn tại";
+          } else {
+            return `• ${err.message}`;
+          }
+        })
+        .join("<br>");
+
+      errorMessage += "<br>" + errors;
+    }
+
+    res.redirect(`/admin/customers?error=${encodeURIComponent(errorMessage)}`);
+  }
+}
+
+let editCustomer = async (req, res) => {
+  try {
+    const customer = await Customer.findByPk(req.params.id);
+
+    if (!customer) {
+      return res.status(404).send("Khách hàng không tồn tại");
+    }
+
+    res.render("admin/customers/edit", {formData: customer, moment});
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+}
+
+let updateCustomer = async (req, res) => {
+  try {
+    const customer = await Customer.findByPk(req.params.id);
+
+    if (req.body.dayOfBirth) {
+      req.body.dayOfBirth = moment(
+        req.body.dayOfBirth, "DD-MM-YYYY"
+      ).format("YYYY-MM-DD");
+    }
+
+    if (req.body.createdAtCard) {
+      req.body.createdAtCard = moment(
+        req.body.createdAtCard, "DD-MM-YYYY"
+      ).format("YYYY-MM-DD");
+    }
+
+    await customer.update(req.body);
+
+    res.redirect(`/admin/customers/edit/${customer.id}`);
+  } catch (error) {
+    let errorMessage = "Lỗi khi cập nhật khách hàng";
+
+    if (error instanceof ValidationError) {
+      const errors = error.errors
+        .map((err) => {
+          if (err.type === "unique violation" && err.path === "cardID") {
+            return "• ID thẻ đã tồn tại";
+          } else {
+            return `• ${err.message}`;
+          }
+        })
+        .join("<br>");
+
+      errorMessage += "<br>" + errors;
+    }
+
+    res.redirect(`/admin/customers?error=${encodeURIComponent(errorMessage)}`);
+  }
+}
+
+let deleteCustomer = async (req, res) => {
+  try {
+    const customer = await Customer.findByPk(req.params.id);
+
+    if (!customer) {
+      return res.status(404).send("Khách hàng không tồn tại");
+    }
+
+    await customer.destroy();
+
+    res.json({ message: "Xóa thành công" });
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
   }
 }
 
 module.exports = {
   getCustomers,
   newCustomers,
-  createCustomer
+  createCustomer,
+  editCustomer,
+  updateCustomer,
+  deleteCustomer
 };

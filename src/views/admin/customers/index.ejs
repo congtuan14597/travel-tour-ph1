@@ -2,6 +2,12 @@
   <div id="app" class="flex justify-center h-full bg-gray-200 p-4 mt-[53px]">
     <div class="w-full shadow-lg max-w-8xl bg-white p-6 rounded-lg sm:flex">
       <div class="w-full">
+        <% if (typeof error !== 'undefined') { %>
+          <div class="col-span-12 bg-red-100 text-red-800 p-3 rounded mb-4">
+            <%= error %>
+          </div>
+        <% } %>
+
         <div class="flex justify-between items-center">
           <!-- Form tìm kiếm -->
           <form method="GET" action="/admin/customers" class="flex space-x-2 w-full">
@@ -118,7 +124,12 @@
                   class="p-2 text-left text-sm font-semibold whitespace-nowrap
                         text-gray-600 uppercase border-b"
                 >
-                  Mã xã</thclass=>
+                  Mã xã
+                </th>
+                <th
+                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
+                        text-gray-600 uppercase border-b"
+                ></th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -170,6 +181,25 @@
                     <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
                       <%= customer.communeCode %>
                     </td>
+                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                      <!-- Nút chỉnh sửa -->
+                      <a
+                        href="/admin/customers/edit/<%= customer.id %>"
+                        class="w-[6rem] p-2 bg-gray-500 text-center
+                              text-white rounded-md hover:bg-gray-600"
+                      >
+                        Chỉnh sửa
+                      </a>
+                      <!-- Nút xóa -->
+                      <button
+                        type="button"
+                        class="w-[3rem] p-[0.35rem] bg-red-500 text-center ml-2
+                              text-white rounded-md hover:bg-red-600"
+                        onclick="deleteCustomer('<%= customer.id %>');"
+                      >
+                        Xóa
+                      </button>
+                    </td>
                   </tr>
                 <% }); %>
               <% } else { %>
@@ -200,3 +230,20 @@
     </div>
   </div>
 </div>
+
+<script>
+  function deleteCustomer(customerId) {
+    if (confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) {
+      $.ajax({
+        url: `/admin/customers/${customerId}`,
+        type: "DELETE",
+        success: function () {
+          window.location.reload();
+        },
+        error: function () {
+          alert("Lỗi khi xóa khách hàng!");
+        },
+      });
+    }
+  }
+</script>
