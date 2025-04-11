@@ -26,7 +26,6 @@ let getCustomers = async (req, res) => {
 
     const totalPages = Math.ceil(count / limit);
 
-
     const error = req.query.error;
 
     res.render("admin/customers/index", {

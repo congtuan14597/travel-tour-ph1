@@ -1,0 +1,77 @@
+<h2 class="flex justify-center text-2xl font-semibold mb-4">
+  <%= formTitle %>
+</h2>
+
+<div class="grid grid-cols-12">
+  <form
+    method="POST" action="<%= formAction %>"
+    class="col-span-8 col-start-3"
+  >
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> Họ và Tên:
+      </label>
+      <input
+        type="text" name="name"
+        value="<%= formData?.name || '' %>" required
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> Email:
+      </label>
+      <input
+        type="email" name="email"
+        value="<%= formData?.email || '' %>" required
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">
+        <span class="text-red-500">*</span> Mật khẩu:
+      </label>
+      <input
+        type="password" name="password"
+        value="<%= formData?.password || '' %>" required
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Số điện thoại:</label>
+      <input
+        type="tel" id="phoneNumber" name="phoneNumber"
+        value="<%= formData?.phoneNumber || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Ngày sinh:</label>
+      <input
+        type="date" id="dayOfBirth" name="dayOfBirth"
+        value="<%= formData?.dayOfBirth || '' %>"
+        class="datepicker px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Địa chỉ:</label>
+      <input
+        type="text" name="address"
+        value="<%= formData?.address || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="mt-4 flex justify-center">
+      <button type="submit"
+        class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        <%= formSubmitBtn %>
+      </button>
+    </div>
+  </form>
+</div>
