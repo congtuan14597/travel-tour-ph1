@@ -1,6 +1,6 @@
 const moment = require("moment");
 const { ValidationError } = require("sequelize");
-const { User } = require("../../../models");
+const { User, Task } = require("../../../models");
 const bcrypt = require("bcrypt");
 
 let getEmployees = async (req, res) => {
@@ -146,11 +146,71 @@ let deleteEmployee = async (req, res) => {
   }
 };
 
+let newTaskEmployees = async (req, res) => {
+  try {
+    const whereCondition = {
+      deletedAt: null,
+      role: "employee"
+    }
+
+    const { rows } = await User.findAndCountAll({
+      where: whereCondition,
+      order: [["createdAt", "DESC"]],
+    });
+
+    const error = req.query.error;
+
+    res.render("admin/employees/tasks/new", {
+      employees: rows,
+      moment: moment,
+      error
+    })
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+let createTaskEmployees = async (req, res) => {
+  try {
+    if (req.body.startDate) {
+      req.body.startDate = moment(
+        req.body.startDate, "DD-MM-YYYY"
+      ).format("YYYY-MM-DD");
+    }
+
+    if (req.body.endDate) {
+      req.body.endDate = moment(
+        req.body.endDate, "DD-MM-YYYY"
+      ).format("YYYY-MM-DD");
+    }
+
+    await Task.create(req.body)
+    res.redirect("/admin/employees/task/new");
+  } catch (error) {
+    let errorMessage = "Lỗi khi tạo công việc";
+
+    console.log(error.errors);
+    if (error instanceof ValidationError) {
+      const errors = error.errors
+        .map((err) => {
+          return `• ${err.message}`;
+        })
+        .join("<br>");
+
+      errorMessage += "<br>" + errors;
+    }
+
+    res.redirect(`/admin/employees/task/new?error=${encodeURIComponent(errorMessage)}`);
+  }
+};
+
 module.exports = {
   getEmployees,
   newEmployees,
   createEmployee,
   editEmployee,
   updateEmployee,
-  deleteEmployee
+  deleteEmployee,
+  newTaskEmployees,
+  createTaskEmployees
 };

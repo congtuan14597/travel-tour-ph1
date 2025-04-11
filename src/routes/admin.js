@@ -40,5 +40,7 @@ router.post("/employees", adminAuthentication, employeeController.createEmployee
 router.get("/employees/edit/:id", adminAuthentication, employeeController.editEmployee);
 router.patch("/employees/:id", adminAuthentication, employeeController.updateEmployee);
 router.delete("/employees/:id", adminAuthentication, employeeController.deleteEmployee);
+router.get("/employees/task/new", adminAuthentication, employeeController.newTaskEmployees);
+router.post("/employees/task", adminAuthentication, employeeController.createTaskEmployees);
 
 module.exports = router;
