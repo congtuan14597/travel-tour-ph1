@@ -9,6 +9,7 @@ const documentExportHistoriesController = require("../controllers/admin/document
 const removeBackgroudController = require("../controllers/admin/remove_backgroud.js");
 const customerController = require("../controllers/admin/customers.js");
 const employeeController = require("../controllers/admin/employees.js");
+const collaboratorController = require("../controllers/admin/collaborators.js");
 
 // FOR LOGIN
 router.get("/", adminLoginController.getAdminLogin);
@@ -42,5 +43,12 @@ router.patch("/employees/:id", adminAuthentication, employeeController.updateEmp
 router.delete("/employees/:id", adminAuthentication, employeeController.deleteEmployee);
 router.get("/employees/task/new", adminAuthentication, employeeController.newTaskEmployees);
 router.post("/employees/task", adminAuthentication, employeeController.createTaskEmployees);
+// FOR COLLABORATOR
+router.get("/collaborators", adminAuthentication, collaboratorController.getCollaborators);
+router.get("/collaborators/new", adminAuthentication, collaboratorController.newCollaborators);
+router.post("/collaborators", adminAuthentication, collaboratorController.createCollaborator);
+router.get("/collaborators/edit/:id", adminAuthentication, collaboratorController.editCollaborator);
+router.patch("/collaborators/:id", adminAuthentication, collaboratorController.updateCollaborator);
+router.delete("/collaborators/:id", adminAuthentication, collaboratorController.deleteCollaborator);
 
 module.exports = router;

@@ -56,7 +56,8 @@ document.addEventListener("DOMContentLoaded", function() {
     "/admin/customers/new": "dropdown-customers",
     "/admin/employees": "dropdown-employees",
     "/admin/employees/new": "dropdown-employees",
-    "/admin/employees/task/new": "dropdown-employees"
+    "/admin/employees/task/new": "dropdown-employees",
+    "/admin/collaborators": "dropdown-collaborators"
   };
 
   switch (true) {
@@ -65,6 +66,9 @@ document.addEventListener("DOMContentLoaded", function() {
       break;
     case currentPath.startsWith("/admin/employees/edit/"):
       dropdownConfig[currentPath] = "dropdown-employees";
+      break;
+    case currentPath.startsWith("/admin/collaborators/edit/"):
+      dropdownConfig[currentPath] = "dropdown-collaborators";
       break;
     default:
       break;
