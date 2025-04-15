@@ -23,15 +23,12 @@ let getEmployees = async (req, res) => {
 
     const totalPages = Math.ceil(count / limit);
 
-    const error = req.query.error;
-
     res.render("admin/employees/index", {
       employees: rows,
       currentPage: page,
       totalPages: totalPages,
       limit: limit,
-      moment: moment,
-      error
+      moment: moment
     });
   } catch (error) {
     res.status(500).send("Internal Server Error");
@@ -39,7 +36,9 @@ let getEmployees = async (req, res) => {
 };
 
 let newEmployees = async (req, res) => {
-  res.render("admin/employees/new");
+  const error = req.query.error;
+
+  res.render("admin/employees/new", { error });
 };
 
 let createEmployee = async (req, res) => {
@@ -52,8 +51,11 @@ let createEmployee = async (req, res) => {
       ).format("YYYY-MM-DD");
     }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    req.body.password = hashedPassword;
+    if (req.body.password && req.body.password.trim() !== "") {
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+    } else {
+      req.body.password;
+    }
 
     await User.create(req.body);
     res.redirect("/admin/employees");
@@ -63,18 +65,16 @@ let createEmployee = async (req, res) => {
     if (error instanceof ValidationError) {
       const errors = error.errors
         .map((err) => {
-          if (err.type === "unique violation" && err.path === "email") {
-            return "• Email đã tồn tại";
-          } else {
-            return `• ${err.message}`;
-          }
+          return `• ${err.message}`;
         })
         .join("<br>");
 
       errorMessage += "<br>" + errors;
     }
 
-    res.redirect(`/admin/employees?error=${encodeURIComponent(errorMessage)}`);
+    res.redirect(
+      `/admin/employees/new?error=${encodeURIComponent(errorMessage)}`
+    );
   }
 };
 
@@ -86,9 +86,10 @@ let editEmployee = async (req, res) => {
       return res.status(404).send("Nhân viên không tồn tại");
     }
 
-    res.render("admin/employees/edit", {formData: employee, moment});
+    const error = req.query.error;
+
+    res.render("admin/employees/edit", { formData: employee, moment, error });
   } catch (error) {
-    console.log(error.errors)
     res.status(500).send("Internal Server Error");
   }
 };
@@ -103,8 +104,11 @@ let updateEmployee = async (req, res) => {
       ).format("YYYY-MM-DD");
     }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    req.body.password = hashedPassword;
+    if (req.body.password && req.body.password.trim() !== "") {
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+    } else {
+      req.body.password;
+    }
 
     await employee.update(req.body);
 
@@ -115,18 +119,18 @@ let updateEmployee = async (req, res) => {
     if (error instanceof ValidationError) {
       const errors = error.errors
         .map((err) => {
-          if (err.type === "unique violation" && err.path === "email") {
-            return "• Email đã tồn tại";
-          } else {
-            return `• ${err.message}`;
-          }
+          return `• ${err.message}`;
         })
         .join("<br>");
 
       errorMessage += "<br>" + errors;
     }
 
-    res.redirect(`/admin/employees?error=${encodeURIComponent(errorMessage)}`);
+    res.redirect(
+      `/admin/employees/edit/${req.params.id}?error=${
+        encodeURIComponent(errorMessage)
+      }`
+    );
   }
 };
 
@@ -189,7 +193,6 @@ let createTaskEmployees = async (req, res) => {
   } catch (error) {
     let errorMessage = "Lỗi khi tạo công việc";
 
-    console.log(error.errors);
     if (error instanceof ValidationError) {
       const errors = error.errors
         .map((err) => {
@@ -200,7 +203,9 @@ let createTaskEmployees = async (req, res) => {
       errorMessage += "<br>" + errors;
     }
 
-    res.redirect(`/admin/employees/task/new?error=${encodeURIComponent(errorMessage)}`);
+    res.redirect(
+      `/admin/employees/task/new?error=${encodeURIComponent(errorMessage)}`
+    );
   }
 };
 

@@ -23,15 +23,12 @@ let getCollaborators = async (req, res) => {
 
     const totalPages = Math.ceil(count / limit);
 
-    const error = req.query.error;
-
     res.render("admin/collaborators/index", {
       collaborators: rows,
       currentPage: page,
       totalPages: totalPages,
       limit: limit,
       moment: moment,
-      error
     });
   } catch (error) {
     res.status(500).send("Internal Server Error");
@@ -39,7 +36,9 @@ let getCollaborators = async (req, res) => {
 };
 
 let newCollaborators = async (req, res) => {
-  res.render("admin/collaborators/new");
+  const error = req.query.error;
+
+  res.render("admin/collaborators/new", { error });
 };
 
 let createCollaborator = async (req, res) => {
@@ -52,8 +51,11 @@ let createCollaborator = async (req, res) => {
       ).format("YYYY-MM-DD");
     }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    req.body.password = hashedPassword;
+    if (req.body.password && req.body.password.trim() !== "") {
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+    } else {
+      req.body.password;
+    }
 
     await User.create(req.body);
     res.redirect("/admin/collaborators");
@@ -63,18 +65,16 @@ let createCollaborator = async (req, res) => {
     if (error instanceof ValidationError) {
       const errors = error.errors
         .map((err) => {
-          if (err.type === "unique violation" && err.path === "email") {
-            return "• Email đã tồn tại";
-          } else {
-            return `• ${err.message}`;
-          }
+          return `• ${err.message}`;
         })
         .join("<br>");
 
       errorMessage += "<br>" + errors;
     }
 
-    res.redirect(`/admin/collaborators?error=${encodeURIComponent(errorMessage)}`);
+    res.redirect(
+      `/admin/collaborators/new?error=${encodeURIComponent(errorMessage)}`
+    );
   }
 };
 
@@ -86,9 +86,12 @@ let editCollaborator = async (req, res) => {
       return res.status(404).send("Cộng tác viên không tồn tại");
     }
 
-    res.render("admin/collaborators/edit", {formData: collaborator, moment});
+    const error = req.query.error;
+
+    res.render(
+      "admin/collaborators/edit", {formData: collaborator, moment, error}
+    );
   } catch (error) {
-    console.log(error.errors)
     res.status(500).send("Internal Server Error");
   }
 };
@@ -103,8 +106,11 @@ let updateCollaborator = async (req, res) => {
       ).format("YYYY-MM-DD");
     }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    req.body.password = hashedPassword;
+    if (req.body.password && req.body.password.trim() !== "") {
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+    } else {
+      req.body.password;
+    }
 
     await collaborator.update(req.body);
 
@@ -115,18 +121,18 @@ let updateCollaborator = async (req, res) => {
     if (error instanceof ValidationError) {
       const errors = error.errors
         .map((err) => {
-          if (err.type === "unique violation" && err.path === "email") {
-            return "• Email đã tồn tại";
-          } else {
-            return `• ${err.message}`;
-          }
+          return `• ${err.message}`;
         })
         .join("<br>");
 
       errorMessage += "<br>" + errors;
     }
 
-    res.redirect(`/admin/collaborators?error=${encodeURIComponent(errorMessage)}`);
+    res.redirect(
+      `/admin/collaborators/edit/${req.params.id}?error=${
+        encodeURIComponent(errorMessage)
+      }`
+    );
   }
 };
 

@@ -12,8 +12,7 @@
         <span class="text-red-500">*</span> Nhân viên:
       </label>
       <select
-        name="userId" required
-        class="px-4 py-2 border rounded-md w-full col-span-3"
+        name="userId" class="px-4 py-2 border rounded-md w-full col-span-3"
       >
         <option value="">-- Chọn nhân viên --</option>
         <% employees.forEach(employee => { %>
@@ -29,8 +28,7 @@
         <span class="text-red-500">*</span> Tiêu đề:
       </label>
       <input
-        type="text" name="title"
-        value="<%= formData?.title || '' %>" required
+        type="text" name="title" value="<%= formData?.title || '' %>"
         class="px-4 py-2 border rounded-md w-full col-span-3"
       >
     </div>
@@ -40,7 +38,7 @@
         <span class="text-red-500">*</span> Nội dung công việc:
       </label>
       <textarea
-        name="content" rows="4" required
+        name="content" rows="4"
         class="px-4 py-2 border rounded-md w-full col-span-3"
       >
         <%= formData?.content || '' %>
@@ -52,8 +50,7 @@
         <span class="text-red-500">*</span> Trạng thái:
       </label>
       <select
-        name="status" required
-        class="px-4 py-2 border rounded-md w-full col-span-3"
+        name="status" class="px-4 py-2 border rounded-md w-full col-span-3"
       >
         <option value="1">Mở</option>
         <option value="2">Đang thực hiện</option>

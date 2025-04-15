@@ -57,7 +57,8 @@ document.addEventListener("DOMContentLoaded", function() {
     "/admin/employees": "dropdown-employees",
     "/admin/employees/new": "dropdown-employees",
     "/admin/employees/task/new": "dropdown-employees",
-    "/admin/collaborators": "dropdown-collaborators"
+    "/admin/collaborators": "dropdown-collaborators",
+    "/admin/collaborators/new": "dropdown-collaborators",
   };
 
   switch (true) {

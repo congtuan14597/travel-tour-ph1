@@ -20,12 +20,27 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Tên không được để trống"
+        }
+      }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: {
+        msg: "Email đã tồn tại"
+      },
+      validate: {
+        notEmpty: {
+          msg: "Email không được để trống"
+        },
+        isEmail: {
+          msg: "Email không đúng định dạng"
+        }
+      }
     },
     role: {
       type: DataTypes.ENUM("1", "2"),
@@ -35,6 +50,11 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Mật khẩu không được để trống"
+        }
+      }
     },
     phoneNumber: {
       type: DataTypes.STRING,
