@@ -364,16 +364,14 @@ async function exportGroupCN(users, fileName) {
       worksheet.getCell(`C${numOrder}`),
       worksheet.getCell(`D${numOrder}`),
       worksheet.getCell(`E${numOrder}`),
-      worksheet.getCell(`F${numOrder}`),
-      worksheet.getCell(`G${numOrder}`)
+      worksheet.getCell(`F${numOrder}`)
     ];
 
     cells[0].value = `${i + 1}`;
     cells[1].value = `${englishName}`;
     cells[2].value = `${user.genderCode}`;
     cells[3].value = `${dayOfBirth}`;
-    cells[4].value = "";
-    cells[5].value = `${user.cardID}`;
+    cells[4].value = `${user.documentNumber}`;
 
     cells.forEach(cell => {
       cell.border = {
