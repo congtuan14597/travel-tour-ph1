@@ -281,7 +281,6 @@ async function exportDeclarationFile(user, fileName) {
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.readFile("public/export/declaration_list/declaration_tmp.xlsx");
   const worksheet = workbook.getWorksheet(1);
-
   const sourceCell = worksheet.getCell("A1");
   const targetCell = worksheet.getCell("B2");
 

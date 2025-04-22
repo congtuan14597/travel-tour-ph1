@@ -4,6 +4,7 @@ const archiver = require("archiver");
 const moment = require("moment");
 const CommonUltil = require("../../../utils/common");
 const {DocumentExportHistory} = require("../../../../models");
+const { Customer } = require("../../../../models");
 
 const perform =  async (req, res) => {
   let documentExportTxt = null;
@@ -19,6 +20,7 @@ const perform =  async (req, res) => {
     }
 
     const fileName = req.body.file_name;
+    console.log("Name file", fileName)
     documentExportTxt = await DocumentExportHistory.create({
       kind: "encryptedList",
       fileName: fileName
@@ -47,16 +49,21 @@ const perform =  async (req, res) => {
     documentExportGroupVN.filePath = groupVNFilePath;
     documentExportGroupCN.filePath = groupCNFilePath;
 
-    let usersInfo = req.body.users;
+    // let usersInfo = req.body.users;
+    // console.log("usersInfo88888", usersInfo)
 
+    const usersInfo2 = await Customer.findAll({
+      where: {
+        documentNumber: fileName
+      }
+    }).then(results => results.map(item => item.dataValues));
+    
     const output = fs.createWriteStream(declarationListFilePath);
     const archive = archiver("zip", {
       zlib: { level: 9 }
     });
     output.on("close", function() {
-      console.log(archive.pointer() + " bytes tổng cộng");
-      console.log(`File zip đã được lưu tại ${declarationListFilePath}`);
-      for (const user of usersInfo) {
+      for (const user of usersInfo2) {
         const filePath = `./public/export/declaration_list/${fileName}_${user.cardID}.xlsx`;
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
@@ -70,18 +77,18 @@ const perform =  async (req, res) => {
 
     archive.pipe(output);
 
-    for (let i = 0; i < usersInfo.length; i++) {
-      let userInfo = usersInfo[i];
-      const provinceCode = await CommonUltil.findCodeByName(userInfo.provinceName, null, "./src/data/tinh_tp.json");
-      const districtCode = await CommonUltil.findCodeByName(userInfo.districtName, provinceCode, "./src/data/quan_huyen.json");
-      const communeCode = await CommonUltil.findCodeByName(userInfo.communeName, districtCode, "./src/data/xa_phuong.json");
+    for (let i = 0; i < usersInfo2.length; i++) {
+      let userInfo = usersInfo2[i];
+      // const provinceCode = await CommonUltil.findCodeByName(userInfo.provinceName, null, "./src/data/tinh_tp.json");
+      // const districtCode = await CommonUltil.findCodeByName(userInfo.districtName, provinceCode, "./src/data/quan_huyen.json");
+      // const communeCode = await CommonUltil.findCodeByName(userInfo.communeName, districtCode, "./src/data/xa_phuong.json");
 
-      console.log("========================================================================================");
-      userInfo.provinceCode = provinceCode;
-      userInfo.districtCode = districtCode;
-      userInfo.communeCode = communeCode;
-      console.log(`user${i + 1}_extractedInfo`, userInfo);
-      console.log("========================================================================================");
+      // console.log("========================================================================================");
+      // userInfo.provinceCode = provinceCode;
+      // userInfo.districtCode = districtCode;
+      // userInfo.communeCode = communeCode;
+      // console.log(`user${i + 1}_extractedInfo`, userInfo);
+      // console.log("========================================================================================");
       
       // const fullNameIso8859 = CommonUltil.convertUnicodeToIso8859Map(userInfo.fullName);
       // const villageIso8859 = CommonUltil.convertUnicodeToIso8859Map(userInfo.villageName);
@@ -108,10 +115,10 @@ const perform =  async (req, res) => {
     // });
 
     // EXPORT DANH SÁCH VN
-    await exportGroupVN(usersInfo, fileName);
+    await exportGroupVN(usersInfo2, fileName);
 
     // EXPORT DANH SÁCH CN
-    await exportGroupCN(usersInfo, fileName);
+    await exportGroupCN(usersInfo2, fileName);
 
     documentExportTxt.status = "success"
     await documentExportTxt.save();
@@ -155,7 +162,6 @@ async function exportDeclarationFile(user, fileName) {
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.readFile("public/export/declaration_list/declaration_tmp.xlsx");
   const worksheet = workbook.getWorksheet(1);
-
   const sourceCell = worksheet.getCell("A1");
   const targetCell = worksheet.getCell("B2");
 
@@ -166,8 +172,8 @@ async function exportDeclarationFile(user, fileName) {
   targetCell.alignment = sourceCell.alignment;
   targetCell.numberFormat = sourceCell.numberFormat;
 
-  const dayOfBirths = user.dayOfBirth.split("/");
-  const createdAts = user.createdAt.split("/");
+  const dayOfBirths = moment(user.dayOfBirth).format("DD-MM-YYYY").split("-");
+  const createdAts = moment(user.createdAtCard).format("DD-MM-YYYY").split("-");
 
   worksheet.getCell("H8").value = user.fullName.toUpperCase();
   worksheet.getCell("U8").value = user.gender === "Nu" ? "X" : "";
@@ -175,28 +181,45 @@ async function exportDeclarationFile(user, fileName) {
   worksheet.getCell("E9").value = dayOfBirths[0];
   worksheet.getCell("I9").value = dayOfBirths[1];
   worksheet.getCell("L9").value = dayOfBirths[2];
-  worksheet.getCell("R9").value = user.provinceName;
+  worksheet.getCell("R9").value = user.province;
   worksheet.getCell("F11").value = createdAts[0];
   worksheet.getCell("H11").value = createdAts[1];
   worksheet.getCell("J11").value = createdAts[2];
-  worksheet.getCell("S11").value = user.provinceName;
+  worksheet.getCell("S11").value = user.province;
   worksheet.getCell("E12").value = "Kinh";
   worksheet.getCell("K12").value = "Không";
-  worksheet.getCell("S13").value = user.villageName;
-  worksheet.getCell("F14").value = user.communeName;
-  worksheet.getCell("L14").value = user.districtName;
-  worksheet.getCell("S14").value = user.provinceName;
+  worksheet.getCell("S13").value = user.village;
+  worksheet.getCell("F14").value = user.commune;
+  worksheet.getCell("L14").value = user.district;
+  worksheet.getCell("S14").value = user.province;
   worksheet.getCell("L28").value = user.fullName.toUpperCase();
-  console.log(user.cardID);
   const digits = user.cardID.split("");
   let startRow = 10;
   let startCol = "G".charCodeAt(0);
+
+  // Thiết lập font size 12 cho các ô dữ liệu
+  const cellsToFormat = [
+    "H8", "U8", "S8", "E9", "I9", "L9", "R9",
+    "F11", "H11", "J11", "S11", "E12", "K12",
+    "S13", "F14", "L14", "S14", "L28"
+  ];
+
+  cellsToFormat.forEach(cellAddress => {
+    const cell = worksheet.getCell(cellAddress);
+    cell.font = {
+      ...cell.font,
+      size: 12  // Đặt kích thước font là 12
+    };
+  });
 
   digits.forEach((digit, index) => {
     const cellAddress = String.fromCharCode(startCol + index) + startRow;
     const cellcc = worksheet.getCell(cellAddress);
     cellcc.value = digit;
-    cellcc.font = { bold: true };
+    cellcc.font = { 
+      bold: true,
+      size: 12  // Thêm kích thước font cho các chữ số
+    };
     cellcc.border = {
       top: { style: "thin" },
       left: { style: "thin" },
@@ -231,7 +254,7 @@ async function exportGroupCN(users, fileName) {
     const user = users[i];
     const numOrder = i + 7;
     const englishName = user.fullName.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const dayOfBirth = moment(user.dayOfBirth, "DD/MM/YYYY").format("YYYYMMDD")
+    const dayOfBirth = moment(user.dayOfBirth).format("YYYYMMDD")
 
     const cells = [
       worksheet.getCell(`B${numOrder}`),
@@ -241,10 +264,10 @@ async function exportGroupCN(users, fileName) {
       worksheet.getCell(`F${numOrder}`),
       worksheet.getCell(`G${numOrder}`)
     ];
-
+    const genderCode = user.gender === "Nu" ? "F" : "M";
     cells[0].value = `${i + 1}`;
     cells[1].value = `${englishName}`;
-    cells[2].value = `${user.genderCode}`;
+    cells[2].value = `${genderCode}`;
     cells[3].value = `${dayOfBirth}`;
     cells[4].value = "";
     cells[5].value = `${user.cardID}`;
@@ -291,13 +314,14 @@ async function exportGroupVN(users, fileName) {
       worksheet.getCell(`F${numOrder}`),
       worksheet.getCell(`G${numOrder}`)
     ];
-
+    const genderCode = user.gender === "Nu" ? "F" : "M";
+    const dayOfBirth = moment(user.dayOfBirth).format("DD/MM/YYYY")
     cells[0].value = `${i + 1}`;
     cells[1].value = `${user.fullName.toUpperCase()}`;
-    cells[2].value = `${user.genderCode}`;
-    cells[3].value = `${user.dayOfBirth}`;
+    cells[2].value = `${genderCode}`;
+    cells[3].value = `${dayOfBirth}`;
     cells[4].value = `${user.cardID}`;
-    cells[5].value = `${user.provinceName}`;
+    cells[5].value = `${user.province}`;
 
     cells.forEach(cell => {
       cell.border = {
