@@ -10,7 +10,7 @@ let getCustomers = async (req, res) => {
 
   try {
     const whereCondition = {
-      deletedAt: null,
+      deletedAt: null
     };
 
     if (searchQuery) {
@@ -77,7 +77,7 @@ let createCustomer = async (req, res) => {
         })
         .join("<br>");
 
-      errorMessage += "<br>" + errors;
+      errorMessage += ": " + errors;
     }
 
     res.redirect(`/admin/customers?error=${encodeURIComponent(errorMessage)}`);

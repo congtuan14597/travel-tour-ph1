@@ -80,29 +80,14 @@
                   class="p-2 text-left text-sm font-semibold whitespace-nowrap
                         text-gray-600 uppercase border-b"
                 >
-                  Địa chỉ</thclass=>
-                <th
-                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
-                        text-gray-600 uppercase border-b"
-                >
                   Ngày tạo thẻ
                 </th>
                 <th
                   class="p-2 text-left text-sm font-semibold whitespace-nowrap
                         text-gray-600 uppercase border-b"
                 >
-                  Thôn</thclass=>
-                <th
-                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
-                        text-gray-600 uppercase border-b"
-                >
-                  Tỉnh
+                  Thôn
                 </th>
-                <th
-                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
-                        text-gray-600 uppercase border-b"
-                >
-                  Huyện</thclass=>
                 <th
                   class="p-2 text-left text-sm font-semibold whitespace-nowrap
                         text-gray-600 uppercase border-b"
@@ -113,18 +98,13 @@
                   class="p-2 text-left text-sm font-semibold whitespace-nowrap
                         text-gray-600 uppercase border-b"
                 >
-                  Mã tỉnh</thclass=>
-                <th
-                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
-                        text-gray-600 uppercase border-b"
-                >
-                  Mã huyện
+                  Huyện
                 </th>
                 <th
                   class="p-2 text-left text-sm font-semibold whitespace-nowrap
                         text-gray-600 uppercase border-b"
                 >
-                  Mã xã
+                  Tỉnh
                 </th>
                 <th
                   class="p-2 text-left text-sm font-semibold whitespace-nowrap
@@ -155,31 +135,19 @@
                       <%= customer.national %>
                     </td>
                     <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                      <%= customer.address %>
-                    </td>
-                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
                       <%= moment(customer.createdAtCard).format("DD/MM/YYYY") %>
                     </td>
                     <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
                       <%= customer.village %>
                     </td>
                     <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                      <%= customer.province %>
+                      <%= customer.commune %>
                     </td>
                     <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
                       <%= customer.district %>
                     </td>
                     <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                      <%= customer.commune %>
-                    </td>
-                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                      <%= customer.provinceCode %>
-                    </td>
-                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                      <%= customer.districtCode %>
-                    </td>
-                    <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                      <%= customer.communeCode %>
+                      <%= customer.province %>
                     </td>
                     <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
                       <!-- Nút chỉnh sửa -->
