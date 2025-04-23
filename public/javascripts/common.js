@@ -53,15 +53,31 @@ document.addEventListener("DOMContentLoaded", function() {
     "/admin/document_export_hitories": "dropdown-documents",
     "/admin/remove_background": "dropdown-documents",
     "/admin/customers": "dropdown-customers",
-    "/admin/customers/new": "dropdown-customers"
+    "/admin/customers/new": "dropdown-customers",
+    "/admin/employees": "dropdown-employees",
+    "/admin/employees/new": "dropdown-employees",
+    "/admin/employees/task/new": "dropdown-employees",
+    "/admin/collaborators": "dropdown-collaborators",
+    "/admin/collaborators/new": "dropdown-collaborators",
+    "/admin/collaborators/customers": "dropdown-collaborators",
   };
 
-  if (currentPath.startsWith("/admin/customers/edit/")) {
-    dropdownConfig["/admin/customers/edit/:id"] = "dropdown-customers";
+  switch (true) {
+    case currentPath.startsWith("/admin/customers/edit/"):
+      dropdownConfig[currentPath] = "dropdown-customers";
+      break;
+    case currentPath.startsWith("/admin/employees/edit/"):
+      dropdownConfig[currentPath] = "dropdown-employees";
+      break;
+    case currentPath.startsWith("/admin/collaborators/edit/"):
+      dropdownConfig[currentPath] = "dropdown-collaborators";
+      break;
+    default:
+      break;
   }
 
-  if (dropdownConfig[currentPath] || currentPath.startsWith("/admin/customers/edit/")) {
-    const dropdown = document.getElementById(dropdownConfig[currentPath] || "dropdown-customers");
+  if (dropdownConfig[currentPath]) {
+    const dropdown = document.getElementById(dropdownConfig[currentPath]);
     if (dropdown) {
       dropdown.classList.remove("hidden");
       dropdown.previousElementSibling.setAttribute("aria-expanded", "true");

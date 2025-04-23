@@ -9,6 +9,7 @@ var expressLayouts = require("express-ejs-layouts");
 const methodOverride = require("method-override");
 
 const adminRouter = require("./src/routes/admin");
+const userRouter = require("./src/routes/user");
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/admin", adminRouter);
+app.use("/", userRouter);
 
 app.use(function(req, res, next) {
   next(createError(404));
