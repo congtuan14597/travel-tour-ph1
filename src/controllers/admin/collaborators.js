@@ -1,6 +1,6 @@
 const moment = require("moment");
 const { ValidationError } = require("sequelize");
-const { User } = require("../../../models");
+const { User, Customer } = require("../../../models");
 const bcrypt = require("bcrypt");
 
 let getCollaborators = async (req, res) => {
@@ -152,11 +152,48 @@ let deleteCollaborator = async (req, res) => {
   }
 };
 
+let getCollaboratorCustomers = async (req, res) => {
+  const limit = 20;
+  const page = parseInt(req.query.page) || 1;
+  const offset = (page - 1) * limit;
+
+  try {
+    const whereCondition = {
+      deletedAt: null,
+      role: "2"
+    };
+
+    const { count, rows } = await User.findAndCountAll({
+      where: whereCondition,
+      offset: offset,
+      limit: limit,
+      order: [["createdAt", "DESC"]],
+      include: [{
+        model: Customer,
+        as: "customers"
+      }]
+    });
+
+    const totalPages = Math.ceil(count / limit);
+
+    res.render("admin/collaborators/customers/index", {
+      collaborators: rows,
+      currentPage: page,
+      totalPages: totalPages,
+      limit: limit,
+      moment: moment,
+    });
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 module.exports = {
   getCollaborators,
   newCollaborators,
   createCollaborator,
   editCollaborator,
   updateCollaborator,
-  deleteCollaborator
+  deleteCollaborator,
+  getCollaboratorCustomers,
 };

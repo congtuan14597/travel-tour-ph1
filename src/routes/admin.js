@@ -50,5 +50,6 @@ router.post("/collaborators", adminAuthentication, collaboratorController.create
 router.get("/collaborators/edit/:id", adminAuthentication, collaboratorController.editCollaborator);
 router.patch("/collaborators/:id", adminAuthentication, collaboratorController.updateCollaborator);
 router.delete("/collaborators/:id", adminAuthentication, collaboratorController.deleteCollaborator);
+router.get("/collaborators/customers", adminAuthentication, collaboratorController.getCollaboratorCustomers);
 
 module.exports = router;

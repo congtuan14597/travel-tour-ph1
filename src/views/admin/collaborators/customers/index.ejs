@@ -1,0 +1,106 @@
+<div class="content sm:ml-[17rem]">
+  <div id="app" class="flex justify-center h-full bg-gray-200 p-4 mt-[53px]">
+    <div class="w-full shadow-lg max-w-8xl bg-white p-6 rounded-lg sm:flex">
+      <div class="w-full">
+        <div class="overflow-x-auto">
+          <!-- Danh sách khách hàng theo cộng tác viên -->
+          <table
+            class="table-auto border border-gray-200 rounded-lg w-full
+                  overflow-hidden shadow-lg mt-5"
+          >
+            <thead class="bg-gray-200">
+              <tr>
+                <th
+                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
+                        text-gray-600 uppercase border-b"
+                >
+                  ID
+                </th>
+                <th
+                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
+                        text-gray-600 uppercase border-b"
+                >
+                  Tên cộng tác viên
+                </th>
+                <th
+                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
+                        text-gray-600 uppercase border-b"
+                >
+                  Email
+                </th>
+                <th
+                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
+                        text-gray-600 uppercase border-b"
+                >
+                  Số công văn
+                </th>
+                <th
+                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
+                        text-gray-600 uppercase border-b"
+                >
+                  ID thẻ
+                </th>
+                <th
+                  class="p-2 text-left text-sm font-semibold whitespace-nowrap
+                        text-gray-600 uppercase border-b"
+                >
+                  Tên khách hàng
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <% if(collaborators.length > 0) { %>
+                <% collaborators.forEach((collaborator, index) => { %>
+                  <% collaborator.customers.forEach((customer, index) => { %>
+                    <tr class="hover:bg-gray-50">
+                      <% if (index === 0) { %>
+                        <td
+                          class="p-2 text-sm text-gray-800 whitespace-nowrap"
+                          rowspan="<%= collaborator.customers.length %>"
+                        >
+                          <%= collaborator.id %>
+                        </td>
+                        <td
+                          class="p-2 text-sm text-gray-800 whitespace-nowrap"
+                          rowspan="<%= collaborator.customers.length %>"
+                        >
+                          <%= collaborator.name %>
+                        </td>
+                        <td
+                          class="p-2 text-sm text-gray-800 whitespace-nowrap"
+                          rowspan="<%= collaborator.customers.length %>"
+                        >
+                          <%= collaborator.email %>
+                        </td>
+                      <% } %>
+                      <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                        <%= customer.documentNumber %>
+                      </td>
+                      <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                        <%= customer.cardID %>
+                      </td>
+                      <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                        <%= customer.fullName %>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% }); %>
+              <% } else { %>
+                <tr class="hover:bg-gray-50">
+                  <td
+                    class="p-2 text-sm text-gray-800 text-center"
+                    colspan="15"
+                  >
+                    <p>Không có dữ liệu được tìm thấy</p>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <%- include("../../components/pagination") %>
+      </div>
+    </div>
+  </div>
+</div>
