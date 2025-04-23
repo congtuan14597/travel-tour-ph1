@@ -262,7 +262,6 @@ async function exportGroupCN(users, fileName) {
       worksheet.getCell(`D${numOrder}`),
       worksheet.getCell(`E${numOrder}`),
       worksheet.getCell(`F${numOrder}`),
-      worksheet.getCell(`G${numOrder}`)
     ];
     const genderCode = user.gender === "Nu" ? "F" : "M";
     cells[0].value = `${i + 1}`;
@@ -270,7 +269,6 @@ async function exportGroupCN(users, fileName) {
     cells[2].value = `${genderCode}`;
     cells[3].value = `${dayOfBirth}`;
     cells[4].value = "";
-    cells[5].value = `${user.cardID}`;
 
     cells.forEach(cell => {
       cell.border = {
