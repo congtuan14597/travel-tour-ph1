@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       });
+      Customer.hasMany(models.TourReview, {
+        foreignKey: 'customerId',
+        as: 'tour_reviews',
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      });
     }
   }
   Customer.init({
