@@ -10,6 +10,7 @@ const removeBackgroudController = require("../controllers/admin/remove_backgroud
 const customerController = require("../controllers/admin/customers.js");
 const employeeController = require("../controllers/admin/employees.js");
 const collaboratorController = require("../controllers/admin/collaborators.js");
+const tourController = require("../controllers/admin/tours.js");
 
 // FOR LOGIN
 router.get("/", adminLoginController.getAdminLogin);
@@ -51,5 +52,7 @@ router.get("/collaborators/edit/:id", adminAuthentication, collaboratorControlle
 router.patch("/collaborators/:id", adminAuthentication, collaboratorController.updateCollaborator);
 router.delete("/collaborators/:id", adminAuthentication, collaboratorController.deleteCollaborator);
 router.get("/collaborators/customers", adminAuthentication, collaboratorController.getCollaboratorCustomers);
+// FOR TOURS
+router.get("/tours", tourController.getTours);
 
 module.exports = router;
