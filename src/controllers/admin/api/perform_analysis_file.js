@@ -162,6 +162,21 @@ async function exportDeclarationFile(user, fileName) {
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.readFile("public/export/declaration_list/declaration_tmp.xlsx");
   const worksheet = workbook.getWorksheet(1);
+  worksheet.pageSetup = {
+    paperSize: 9,              // A4 size
+    orientation: "portrait",   // hoặc "landscape" nếu muốn ngang
+    margins: {
+      top: 1,
+      bottom: 1,
+      left: 0.5,
+      right: 0.5,
+      header: 0.5,
+      footer: 0.5
+    },
+    fitToPage: true,
+    fitToHeight: 1,
+    fitToWidth: 1,
+  };
   const sourceCell = worksheet.getCell("A1");
   const targetCell = worksheet.getCell("B2");
 
@@ -174,9 +189,10 @@ async function exportDeclarationFile(user, fileName) {
 
   const dayOfBirths = moment(user.dayOfBirth).format("DD-MM-YYYY").split("-");
   const createdAts = moment(user.createdAtCard).format("DD-MM-YYYY").split("-");
+  const address = user.address.split(",");
 
   worksheet.getCell("H8").value = user.fullName.toUpperCase();
-  worksheet.getCell("U8").value = user.gender === "Nu" ? "X" : "";
+  worksheet.getCell("U8").value = user.gender === "Nữ" ? "X" : "";
   worksheet.getCell("S8").value = user.gender === "Nam" ? "X" : "";
   worksheet.getCell("E9").value = dayOfBirths[0];
   worksheet.getCell("I9").value = dayOfBirths[1];
@@ -188,7 +204,7 @@ async function exportDeclarationFile(user, fileName) {
   worksheet.getCell("S11").value = user.province;
   worksheet.getCell("E12").value = "Kinh";
   worksheet.getCell("K12").value = "Không";
-  worksheet.getCell("S13").value = user.village;
+  worksheet.getCell("S13").value = address[0] || user.village;
   worksheet.getCell("F14").value = user.commune;
   worksheet.getCell("L14").value = user.district;
   worksheet.getCell("S14").value = user.province;
@@ -216,7 +232,7 @@ async function exportDeclarationFile(user, fileName) {
     const cellAddress = String.fromCharCode(startCol + index) + startRow;
     const cellcc = worksheet.getCell(cellAddress);
     cellcc.value = digit;
-    cellcc.font = { 
+    cellcc.font = {
       bold: true,
       size: 12  // Thêm kích thước font cho các chữ số
     };
@@ -263,7 +279,7 @@ async function exportGroupCN(users, fileName) {
       worksheet.getCell(`E${numOrder}`),
       worksheet.getCell(`F${numOrder}`),
     ];
-    const genderCode = user.gender === "Nu" ? "F" : "M";
+    const genderCode = user.gender === "Nữ" ? "F" : "M";
     cells[0].value = `${i + 1}`;
     cells[1].value = `${englishName}`;
     cells[2].value = `${genderCode}`;
@@ -312,7 +328,7 @@ async function exportGroupVN(users, fileName) {
       worksheet.getCell(`F${numOrder}`),
       worksheet.getCell(`G${numOrder}`)
     ];
-    const genderCode = user.gender === "Nu" ? "F" : "M";
+    const genderCode = user.gender === "Nữ" ? "F" : "M";
     const dayOfBirth = moment(user.dayOfBirth).format("DD/MM/YYYY")
     cells[0].value = `${i + 1}`;
     cells[1].value = `${user.fullName.toUpperCase()}`;
