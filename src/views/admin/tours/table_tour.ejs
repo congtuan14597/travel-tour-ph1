@@ -43,125 +43,44 @@
       <th
         class="p-2 text-left text-sm font-semibold whitespace-nowrap
               text-gray-600 uppercase border-b"
-      >
-        Ngày bắt đầu
-      </th>
-      <th
-        class="p-2 text-left text-sm font-semibold whitespace-nowrap
-              text-gray-600 uppercase border-b"
-      >
-        Ngày kết thúc
-      </th>
-      <th
-        class="p-2 text-left text-sm font-semibold whitespace-nowrap
-              text-gray-600 uppercase border-b"
-      >
-        Ngày đặt
-      </th>
-      <th
-        class="p-2 text-left text-sm font-semibold whitespace-nowrap
-              text-gray-600 uppercase border-b"
-      >
-        Số lượng người trong đoàn
-      </th>
-      <th
-        class="p-2 text-left text-sm font-semibold whitespace-nowrap
-              text-gray-600 uppercase border-b"
-      >
-        Trạng thái đặt tour
-      </th>
-
-      <th
-        class="p-2 text-left text-sm font-semibold whitespace-nowrap
-              text-gray-600 uppercase border-b"
       ></th>
     </tr>
   </thead>
   <tbody class="divide-y divide-gray-200">
     <% if (tours.length > 0) { %>
-      <% tours.forEach((tour) => { %>
-        <% if (tour.bookings.length > 0) { %>
-          <% tour.bookings.forEach((booking, index) => { %>
-            <tr class="hover:bg-gray-50">
-              <% if (index === 0) { %>
-                <td class="p-2 text-sm text-gray-800 whitespace-nowrap" rowspan="<%= tour.bookings.length %>">
-                  <%= tour.name %>
-                </td>
-                <td class="p-2 text-sm text-gray-800 whitespace-nowrap" rowspan="<%= tour.bookings.length %>">
-                  <%= tour.destination %>
-                </td>
-                <td class="p-2 text-sm text-gray-800 whitespace-nowrap" rowspan="<%= tour.bookings.length %>">
-                  <%= tour.departure %>
-                </td>
-                <td class="p-2 text-sm text-gray-800 whitespace-nowrap" rowspan="<%= tour.bookings.length %>">
-                  <%= tour.durationDays %>
-                </td>
-                <td class="p-2 text-sm text-gray-800 whitespace-nowrap" rowspan="<%= tour.bookings.length %>">
-                  <%= tour.price.toLocaleString() %>
-                  <span>
-                    (<%= tour.vatIncluded ? "Đã bao gồm VAT" : "Chưa bao gồm VAT" %>)
-                  </span>
-                </td>
-                <td class="p-2 text-sm text-gray-800 whitespace-nowrap" rowspan="<%= tour.bookings.length %>">
-                  <%= tour.textType %>
-                </td>
-              <% } %>
-              <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                <%= moment(booking.startDate).format("DD/MM/YYYY") %>
-              </td>
-              <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                <%= moment(booking.endDate).format("DD/MM/YYYY") %>
-              </td>
-              <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                <%= moment(booking.bookingDate).format("DD/MM/YYYY") %>
-              </td>
-              <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                <%= booking.numberPeople %>
-              </td>
-              <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                <div class="border bg-blue-400 text-center rounded-full">
-                  <%= booking.textStatus %>
-                </div>
-              </td>
-              <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                <a
-                  href="/admin/tours/<%= tour.id %>"
-                  class="w-[6rem] p-2 bg-gray-500 text-center text-white
-                        rounded-md hover:bg-gray-600"
-                >
-                  Chi tiết
-                </a>
-              </td>
-            </tr>
-          <% }); %>
-        <% } else { %>
-          <tr class="hover:bg-gray-50">
-            <td class="p-2 text-sm text-gray-800" rowspan="1">
-              <%= tour.name %>
-            </td>
-            <td class="p-2 text-sm text-gray-800" rowspan="1">
-              <%= tour.destination %>
-            </td>
-            <td class="p-2 text-sm text-gray-800" rowspan="1">
-              <%= tour.departure %>
-            </td>
-            <td class="p-2 text-sm text-gray-800" rowspan="1">
-              <%= tour.durationDays %>
-            </td>
-            <td class="p-2 text-sm text-gray-800" rowspan="1">
-              <%= tour.price.toLocaleString() %>
-              <span>
-                (<%= tour.vatIncluded ? "Đã bao gồm VAT" : "Chưa bao gồm VAT" %>)
-              </span>
-            </td>
-            <td class="p-2 text-sm text-gray-800" rowspan="1">
-              <%= tour.textType %>
-            </td>
-            <td class="p-2 text-sm text-gray-800" rowspan="1" colspan="6">
-              <p class="text-center text-gray-500">Tour này chưa có booking</p>
-            </td>
-          </tr>
-        <% } %>
+      <% tours.forEach((tour, index) => { %>
+        <tr class="hover:bg-gray-50">
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.name %>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.destination %>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.departure %>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.durationDays %>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.price.toLocaleString() %>
+            <span>
+              (<%= tour.vatIncluded ? "Đã bao gồm VAT" : "Chưa bao gồm VAT" %>)
+            </span>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.textType %>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <a
+              href="/admin/tours/<%= tour.id %>"
+              class="w-[6rem] p-2 bg-gray-500 text-center text-white
+                    rounded-md hover:bg-gray-600"
+            >
+              Chi tiết
+            </a>
+          </td>
+        </tr>
       <% }); %>
     <% } else { %>
       <tr class="hover:bg-gray-50">

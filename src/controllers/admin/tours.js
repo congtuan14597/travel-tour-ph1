@@ -57,25 +57,13 @@ let getTours = async (req, res) => {
       offset: offset,
       limit: limit,
       order: [["createdAt", "DESC"]],
-      include: [{
-        model: Booking,
-        as: "bookings"
-      }]
     });
 
     const tours = rows.map(tour => {
-      const mappedBookings = tour.bookings.map(booking => {
-        const bookingData = booking.toJSON();
-        return {
-          ...bookingData,
-          textStatus: bookingStatusMap[bookingData.status],
-        };
-      });
       const tourData = tour.toJSON();
       return {
         ... tourData,
         textType: tourTypeMap[tourData.type],
-        bookings: mappedBookings,
       }
     });
 
