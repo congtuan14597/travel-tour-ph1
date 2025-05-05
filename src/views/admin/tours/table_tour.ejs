@@ -1,0 +1,96 @@
+<table
+  class="table-auto border border-gray-200 rounded-lg
+        overflow-hidden shadow-lg mt-5"
+>
+  <thead class="bg-gray-200">
+    <tr>
+      <th
+        class="p-2 text-left text-sm font-semibold whitespace-nowrap
+              text-gray-600 uppercase border-b"
+      >
+        Tên tour
+      </th>
+      <th
+        class="p-2 text-left text-sm font-semibold whitespace-nowrap
+              text-gray-600 uppercase border-b"
+      >
+        Điểm đến chính
+      </th>
+      <th
+        class="p-2 text-left text-sm font-semibold whitespace-nowrap
+              text-gray-600 uppercase border-b"
+      >
+        Nơi khởi hành
+      </th>
+      <th
+        class="p-2 text-left text-sm font-semibold whitespace-nowrap
+              text-gray-600 uppercase border-b"
+      >
+        Thời gian
+      </th>
+      <th
+        class="p-2 text-left text-sm font-semibold whitespace-nowrap
+              text-gray-600 uppercase border-b"
+      >
+        Giá
+      </th>
+      <th
+        class="p-2 text-left text-sm font-semibold whitespace-nowrap
+              text-gray-600 uppercase border-b"
+      >
+        Loại tour
+      </th>
+      <th
+        class="p-2 text-left text-sm font-semibold whitespace-nowrap
+              text-gray-600 uppercase border-b"
+      ></th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-gray-200">
+    <% if (tours.length > 0) { %>
+      <% tours.forEach((tour, index) => { %>
+        <tr class="hover:bg-gray-50">
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.name %>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.destination %>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.departure %>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.durationDays %>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.price.toLocaleString() %>
+            <span>
+              (<%= tour.vatIncluded ? "Đã bao gồm VAT" : "Chưa bao gồm VAT" %>)
+            </span>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <%= tour.textType %>
+          </td>
+          <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+            <a
+              href="/admin/tours/<%= tour.id %>"
+              class="w-[6rem] p-2 bg-gray-500 text-center text-white
+                    rounded-md hover:bg-gray-600"
+            >
+              Chi tiết
+            </a>
+          </td>
+        </tr>
+      <% }); %>
+    <% } else { %>
+      <tr class="hover:bg-gray-50">
+        <td
+          class="p-2 text-sm text-gray-800 text-center"
+          colspan="15"
+        >
+          <p>Không có dữ liệu được tìm thấy</p>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
