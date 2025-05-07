@@ -189,7 +189,7 @@ async function exportDeclarationFile(user, fileName) {
 
   const dayOfBirths = moment(user.dayOfBirth).format("DD-MM-YYYY").split("-");
   const createdAts = moment(user.createdAtCard).format("DD-MM-YYYY").split("-");
-  const address = user.address.split(",");
+  // const address = user.address.split(",");
 
   worksheet.getCell("H8").value = user.fullName.toUpperCase();
   worksheet.getCell("U8").value = user.gender === "Nữ" ? "X" : "";
@@ -204,7 +204,7 @@ async function exportDeclarationFile(user, fileName) {
   worksheet.getCell("S11").value = user.province;
   worksheet.getCell("E12").value = "Kinh";
   worksheet.getCell("K12").value = "Không";
-  worksheet.getCell("S13").value = address[0] || user.village;
+  worksheet.getCell("S13").value = user.village;
   worksheet.getCell("F14").value = user.commune;
   worksheet.getCell("L14").value = user.district;
   worksheet.getCell("S14").value = user.province;
