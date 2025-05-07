@@ -224,7 +224,8 @@ async function exportDeclarationFile(user, fileName) {
     const cell = worksheet.getCell(cellAddress);
     cell.font = {
       ...cell.font,
-      size: 12  // Đặt kích thước font là 12
+      size: 12,
+      name: 'Times New Roman'  // Thêm font Times New Roman
     };
   });
 
@@ -234,7 +235,8 @@ async function exportDeclarationFile(user, fileName) {
     cellcc.value = digit;
     cellcc.font = {
       bold: true,
-      size: 12  // Thêm kích thước font cho các chữ số
+      size: 12,
+      name: 'Times New Roman'  // Thêm font Times New Roman
     };
     cellcc.border = {
       top: { style: "thin" },
