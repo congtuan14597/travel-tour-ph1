@@ -1,6 +1,6 @@
 const moment = require("moment");
 const { Tour, Booking } = require("../../../models");
-const { Op } = require("sequelize");
+const { buildTourFilter } = require("../../services/tour.service");
 
 let getTours = async (req, res) => {
   const limit = 20;
@@ -20,37 +20,7 @@ let getTours = async (req, res) => {
   };
 
   try {
-    const {
-      name, destination, departure, type, priceMin, priceMax
-    } = req.query;
-
-    const whereCondition = {
-      deletedAt: null
-    };
-
-    if (req.query.name) {
-      whereCondition.name = { [Op.like]: `%${name}%`}
-    }
-
-    if (req.query.destination) {
-      whereCondition.destination = { [Op.like]: `%${destination}%`}
-    }
-
-    if (req.query.departure) {
-      whereCondition.departure = { [Op.like]: `%${departure}%`}
-    }
-
-    if (type) {
-      whereCondition.type = type;
-    }
-
-    if (priceMin && priceMax) {
-      whereCondition.price = { [Op.between]: [priceMin, priceMax] };
-    } else if (priceMin) {
-      whereCondition.price = { [Op.gte]: priceMin };
-    } else if (priceMax) {
-      whereCondition.price = { [Op.lte]: priceMax };
-    }
+    const whereCondition = buildTourFilter(req.query);
 
     const { count, rows } = await Tour.findAndCountAll({
       where: whereCondition,
