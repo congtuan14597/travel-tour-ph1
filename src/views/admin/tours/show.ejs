@@ -1,0 +1,166 @@
+<div class="content sm:ml-[17rem]">
+  <div id="app" class="flex justify-center h-full bg-gray-200 p-4 mt-[53px]">
+    <div class="w-full shadow-lg max-w-8xl bg-white p-6 rounded-lg sm:flex">
+      <div class="w-full">
+        <div class="overflow-x-auto">
+          <!-- Chi tiết tour -->
+          <h1 class="text-2xl font-bold mb-4">
+            Chi tiết tour: <%= tour.name %>
+          </h1>
+
+          <br>
+
+          <!-- Thông tin tour -->
+          <div class="grid grid-cols-12 gap-4 mb-4">
+            <div class="col-span-2 font-bold">Điểm đến:</div>
+            <div class="col-span-10"><%= tour.destination %></div>
+          </div>
+          <div class="grid grid-cols-12 gap-4 mb-4">
+            <div class="col-span-2 font-bold">Điểm khởi hành:</div>
+            <div class="col-span-10"><%= tour.departure %></div>
+          </div>
+          <div class="grid grid-cols-12 gap-4 mb-4">
+            <div class="col-span-2 font-bold">Loại tour:</div>
+            <div class="col-span-10"><%= tour.textType %></div>
+          </div>
+          <div class="grid grid-cols-12 gap-4 mb-4">
+            <div class="col-span-2 font-bold">Giá:</div>
+            <div class="col-span-10">
+              <%= tour.price.toLocaleString() %> VNĐ
+              (<%= tour.vatIncluded ? "Đã có VAT" : "Chưa có VAT" %>)
+            </div>
+          </div>
+          <div class="grid grid-cols-12 gap-4 mb-4">
+            <div class="col-span-2 font-bold">Thời gian:</div>
+            <div class="col-span-10"><%= tour.durationDays %></div>
+          </div>
+          <div class="grid grid-cols-12 gap-4 mb-4">
+            <div class="col-span-2 font-bold">Mô tả:</div>
+            <div class="col-span-10"><%= tour.description %></div>
+          </div>
+
+          <br>
+
+          <!-- Lịch trình chi tiết -->
+          <% if (tour.journeys && tour.journeys.length > 0) { %>
+            <div class="mb-6">
+              <h2 class="text-xl font-semibold mb-4">Lịch trình chi tiết</h2>
+              <ul class="list-disc pl-6">
+                <% tour.journeys.forEach(journey => { %>
+                  <li class="grid grid-cols-12 gap-4 mb-3">
+                    <div class="col-span-1 font-bold">
+                      Ngày <%= journey.dayNumber %>:
+                    </div>
+                    <div class="col-span-11"><%= journey.description %></div>
+                  </li>
+                <% }) %>
+              </ul>
+            </div>
+          <% } %>
+
+          <br>
+
+          <!-- Danh sách booking -->
+          <div class="overflow-x-auto mb-6">
+            <h2 class="text-xl font-semibold mb-2">Danh sách booking</h2>
+            <table
+              class="table-auto border border-gray-200 rounded-lg
+                    overflow-hidden shadow-lg mt-5"
+            >
+              <thead class="bg-gray-200">
+                <tr>
+                  <th
+                    class="p-2 text-left text-sm font-semibold border-b
+                          text-gray-600 uppercase whitespace-nowrap"
+                  >
+                    Người đặt tour
+                  </th>
+                  <th
+                    class="p-2 text-left text-sm font-semibold border-b
+                          text-gray-600 uppercase whitespace-nowrap"
+                  >
+                    Ngày bắt đầu
+                  </th>
+                  <th
+                    class="p-2 text-left text-sm font-semibold border-b
+                          text-gray-600 uppercase whitespace-nowrap"
+                  >
+                    Ngày kết thúc
+                  </th>
+                  <th
+                    class="p-2 text-left text-sm font-semibold border-b
+                          text-gray-600 uppercase whitespace-nowrap"
+                  >
+                    Ngày đặt
+                  </th>
+                  <th
+                    class="p-2 text-left text-sm font-semibold border-b
+                          text-gray-600 uppercase whitespace-nowrap"
+                  >
+                    Số lượng người
+                  </th>
+                  <th
+                    class="p-2 text-left text-sm font-semibold border-b
+                          text-gray-600 uppercase whitespace-nowrap"
+                  >
+                    Trạng thái
+                  </th>
+                  <th
+                    class="p-2 text-left text-sm font-semibold border-b
+                          text-gray-600 uppercase whitespace-nowrap"
+                  ></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <% if (tour.bookings.length > 0) { %>
+                  <% tour.bookings.forEach((booking, index) => { %>
+                    <tr class="hover:bg-gray-50">
+                      <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                        <%= booking.users.name %>
+                      </td>
+                      <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                        <%= moment(booking.startDate).format("DD/MM/YYYY") %>
+                      </td>
+                      <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                        <%= moment(booking.endDate).format("DD/MM/YYYY") %>
+                      </td>
+                      <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                        <%= moment(booking.bookingDate).format("DD/MM/YYYY") %>
+                      </td>
+                      <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                        <%= booking.numberPeople %>
+                      </td>
+                      <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                        <%= booking.textStatus %>
+                      </td>
+                      <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
+                        <a
+                          href="#"
+                          class="w-[6rem] p-2 bg-gray-500 text-center
+                                rounded-md hover:bg-gray-600 text-white"
+                        >
+                          Chi tiết
+                        </a>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } else { %>
+                  <tr class="hover:bg-gray-50">
+                    <td
+                      class="p-2 text-sm text-gray-800 text-center"
+                      colspan="15"
+                    >
+                      <p>Không có dữ liệu được tìm thấy</p>
+                    </td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+
+          <%- include("../components/pagination") %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
