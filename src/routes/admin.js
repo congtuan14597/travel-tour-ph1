@@ -53,6 +53,7 @@ router.patch("/collaborators/:id", adminAuthentication, collaboratorController.u
 router.delete("/collaborators/:id", adminAuthentication, collaboratorController.deleteCollaborator);
 router.get("/collaborators/customers", adminAuthentication, collaboratorController.getCollaboratorCustomers);
 // FOR TOURS
-router.get("/tours", tourController.getTours);
+router.get("/tours", adminAuthentication, tourController.getTours);
+router.get("/tours/:id", adminAuthentication, tourController.getTourDetails);
 
 module.exports = router;

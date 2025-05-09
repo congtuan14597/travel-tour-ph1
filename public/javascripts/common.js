@@ -73,6 +73,9 @@ document.addEventListener("DOMContentLoaded", function() {
     case currentPath.startsWith("/admin/collaborators/edit/"):
       dropdownConfig[currentPath] = "dropdown-collaborators";
       break;
+    case currentPath.startsWith("/admin/tours"):
+      dropdownConfig[currentPath] = "dropdown-tours";
+      break;
     default:
       break;
   }
