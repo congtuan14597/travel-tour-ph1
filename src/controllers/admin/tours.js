@@ -117,7 +117,58 @@ let getTourDetails = async (req, res) => {
   }
 };
 
+let getTourRevenue = async (req, res) => {
+  try {
+    const bookings = await Booking.findAll({
+      include: [{
+        model: Tour,
+        as: "tours",
+        attributes: ["price", "vatIncluded"]
+      }],
+      where: { deletedAt: null },
+    });
+
+    let totalBookings = 0;
+    let totalCustomers = 0;
+    let totalRevenues = 0;
+
+    let bookingsPerMonth = {};
+    let customersPerMonth = {};
+    let revenuesPerMonth = {};
+
+    for (const booking of bookings) {
+      const month = moment(booking.bookingDate).format("YYYY/MM");
+
+      const people = booking.numberPeople || 0;
+      const price = booking.tours?.price || 0;
+      const vatIncluded = booking.tours?.vatIncluded;
+
+      const revenue = vatIncluded ? people * price : people * price * 1.1;
+
+      totalBookings += 1;
+      totalCustomers += people;
+      totalRevenues += revenue;
+
+      bookingsPerMonth[month] = (bookingsPerMonth[month] || 0) + 1;
+      customersPerMonth[month] = (customersPerMonth[month] || 0) + people;
+      revenuesPerMonth[month] = (revenuesPerMonth[month] || 0) + revenue;
+    }
+
+    res.render("admin/tours/revenue", {
+      totalBookings,
+      totalCustomers,
+      totalRevenues,
+      bookingsPerMonth,
+      customersPerMonth,
+      revenuesPerMonth,
+    });
+  } catch (error) {
+    res.status(500).send("Internet Server Error");
+  }
+};
+
 module.exports = {
   getTours,
   getTourDetails,
+  getTourRevenue,
 };

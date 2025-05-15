@@ -1,0 +1,111 @@
+<div class="content sm:ml-[17rem]">
+  <div id="app" class="flex justify-center h-full bg-gray-200 p-4 mt-[53px]">
+    <div class="w-full shadow-lg max-w-8xl bg-white p-6 rounded-lg sm:flex">
+      <div class="w-full">
+        <h2 class="flex justify-center text-2xl font-semibold mb-4">
+          Tổng doanh số
+        </h2>
+
+        <div class="grid grid-cols-12 gap-4 mb-4">
+          <div class="col-span-2 font-bold">Tổng booking:</div>
+          <div class="col-span-10"><%= totalBookings %></div>
+        </div>
+        <div class="grid grid-cols-12 gap-4 mb-4">
+          <div class="col-span-2 font-bold">Tổng khách:</div>
+          <div class="col-span-10"><%= totalCustomers %></div>
+        </div>
+        <div class="grid grid-cols-12 gap-4 mb-4">
+          <div class="col-span-2 font-bold">Tổng doanh thu:</div>
+          <div class="col-span-10">
+            <%= totalRevenues.toLocaleString() %> VND
+          </div>
+        </div>
+
+        <br>
+
+        <h2 class="flex justify-center text-2xl font-semibold mb-4">
+          Thống kê theo tháng
+        </h2>
+        <canvas id="combinedChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="chartData"
+  data-months='<%- JSON.stringify(Object.keys(bookingsPerMonth)) %>'
+  data-bookings='<%- JSON.stringify(Object.values(bookingsPerMonth)) %>'
+  data-customers='<%- JSON.stringify(Object.values(customersPerMonth)) %>'
+  data-revenues='<%- JSON.stringify(Object.values(revenuesPerMonth)) %>'>
+</div>
+
+<script>
+  const chartDataEl = document.getElementById('chartData');
+  const months = JSON.parse(chartDataEl.dataset.months);
+  const bookingData = JSON.parse(chartDataEl.dataset.bookings);
+  const customerData = JSON.parse(chartDataEl.dataset.customers);
+  const revenueData = JSON.parse(chartDataEl.dataset.revenues);
+
+  new Chart(document.getElementById('combinedChart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: 'Số booking',
+          data: bookingData,
+          borderColor: '#60a5fa',
+          backgroundColor: '#60a5fa',
+          fill: false,
+          yAxisID: 'y'
+        },
+        {
+          label: 'Số khách',
+          data: customerData,
+          borderColor: '#34d399',
+          backgroundColor: '#34d399',
+          fill: false,
+          yAxisID: 'y'
+        },
+        {
+          label: 'Doanh thu',
+          data: revenueData,
+          borderColor: '#fbbf24',
+          backgroundColor: '#fbbf24',
+          fill: false,
+          yAxisID: 'y1'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      scales: {
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: {
+            display: true,
+            text: 'Số lượng (Booking/Khách)'
+          }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          title: {
+            display: true,
+            text: 'Doanh thu (VND)'
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        }
+      }
+    }
+  });
+</script>

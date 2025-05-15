@@ -54,6 +54,7 @@ router.delete("/collaborators/:id", adminAuthentication, collaboratorController.
 router.get("/collaborators/customers", adminAuthentication, collaboratorController.getCollaboratorCustomers);
 // FOR TOURS
 router.get("/tours", adminAuthentication, tourController.getTours);
+router.get("/tours/revenues", adminAuthentication, tourController.getTourRevenue);
 router.get("/tours/:id", adminAuthentication, tourController.getTourDetails);
 
 module.exports = router;
