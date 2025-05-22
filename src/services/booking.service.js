@@ -37,7 +37,7 @@ const buildBookingWhereClause = (startDate, endDate, currentDate) => ({
   ]
 });
 
-const getCompletedBookingsByMonth = async (month) => {
+const getCompletedBookingsByMonthService = async (month) => {
   const [year, monthName] = month.split("-");
   const currentDate = new Date();
   const { startDate, endDate } = getDateRange(year, monthName);
@@ -84,5 +84,5 @@ const getCompletedBookingsByMonth = async (month) => {
 };
 
 module.exports = {
-  getCompletedBookingsByMonth
+  getCompletedBookingsByMonthService
 };
