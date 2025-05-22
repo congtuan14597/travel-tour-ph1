@@ -1,6 +1,9 @@
 const moment = require("moment");
 const { Tour, Booking, Journey, User } = require("../../../models");
 const { buildTourFilter } = require("../../services/tour.service");
+const {
+  getCompletedBookingsByMonth: getCompletedBookingsByMonthService
+} = require("../../services/booking.service");
 
 let getTours = async (req, res) => {
   const limit = 20;
@@ -167,8 +170,28 @@ let getTourRevenue = async (req, res) => {
   }
 };
 
+let getCompletedBookingsByMonth = async (req, res) => {
+  try {
+    let month;
+    if (req.query.month) {
+      month = req.query.month;
+    } else {
+      const today = new Date();
+      const year = today.getFullYear();
+      const monthNum = String(today.getMonth() + 1).padStart(2, '0');
+      month = `${year}-${monthNum}`;
+    }
+
+    const result = await getCompletedBookingsByMonthService(month);
+    res.render("admin/tours/completed_bookings_detail", result);
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 module.exports = {
   getTours,
   getTourDetails,
   getTourRevenue,
+  getCompletedBookingsByMonth,
 };
