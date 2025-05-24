@@ -1,27 +1,99 @@
 <% if (totalPages > 1) { %>
   <div class="flex justify-center mt-6">
-    <nav class="flex space-x-2">
-      <!-- Nút Previous -->
+    <nav class="flex items-center space-x-2">
       <% if (currentPage > 1) { %>
-        <a href="?page=<%= currentPage - 1 %>&search=<%= searchQuery %>"
-          class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
-          Trước
+        <!-- Nút First -->
+        <a
+          href="?page=1&search=<%= searchQuery %>"
+          class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+          title="Trang đầu tiên"
+        >
+          &laquo;
+        </a>
+
+        <!-- Nút Previous -->
+        <a
+          href="?page=<%= currentPage - 1 %>&search=<%= searchQuery %>"
+          class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+          title="Trang trước"
+        >
+          &lsaquo;
         </a>
       <% } %>
 
-      <!-- Các số trang -->
-      <% for (let i = 1; i <= totalPages; i++) { %>
-        <a href="?page=<%= i %>&search=<%= searchQuery %>"
-          class="px-4 py-2 <%= i === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700' %> rounded-md hover:bg-gray-400">
+      <!-- Trang đầu tiên -->
+      <a
+        href="?page=1&search=<%= searchQuery %>"
+        class="px-4 py-2 <%= 1 === currentPage
+          ? 'bg-blue-500 text-white'
+          : 'bg-gray-300 text-gray-700' %> rounded-md hover:bg-gray-400"
+      >
+        1
+      </a>
+
+      <!-- Dấu ... đầu tiên -->
+      <% if (currentPage > 3) { %>
+        <span class="px-2 text-gray-500">...</span>
+      <% } %>
+
+      <!-- Các trang xung quanh trang hiện tại -->
+      <%
+        let startPage = Math.max(2, currentPage - 1);
+        let endPage = Math.min(totalPages - 1, currentPage + 1);
+
+        <!-- Điều chỉnh để luôn hiển thị 3 trang (nếu có thể) -->
+        if (currentPage <= 2) {
+          endPage = Math.min(totalPages - 1, 3);
+        } else if (currentPage >= totalPages - 1) {
+          startPage = Math.max(2, totalPages - 2);
+        }
+      %>
+
+      <% for (let i = startPage; i <= endPage; i++) { %>
+        <a
+          href="?page=<%= i %>&search=<%= searchQuery %>"
+          class="px-4 py-2 <%= i === currentPage
+            ? 'bg-blue-500 text-white'
+            : 'bg-gray-300 text-gray-700' %> rounded-md hover:bg-gray-400"
+        >
           <%= i %>
         </a>
       <% } %>
 
-      <!-- Nút Next -->
+      <!-- Dấu ... cuối cùng -->
+      <% if (currentPage < totalPages - 2) { %>
+        <span class="px-2 text-gray-500">...</span>
+      <% } %>
+
+      <!-- Trang cuối cùng (nếu có nhiều hơn 1 trang) -->
+      <% if (totalPages > 1) { %>
+        <a
+          href="?page=<%= totalPages %>&search=<%= searchQuery %>"
+          class="px-4 py-2 <%= totalPages === currentPage
+            ? 'bg-blue-500 text-white'
+            : 'bg-gray-300 text-gray-700' %> rounded-md hover:bg-gray-400"
+        >
+          <%= totalPages %>
+        </a>
+      <% } %>
+
       <% if (currentPage < totalPages) { %>
-        <a href="?page=<%= currentPage + 1 %>&search=<%= searchQuery %>"
-          class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
-          Tiếp
+        <!-- Nút Next -->
+        <a
+          href="?page=<%= currentPage + 1 %>&search=<%= searchQuery %>"
+          class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+          title="Trang tiếp"
+        >
+          &rsaquo;
+        </a>
+
+        <!-- Nút Last -->
+        <a
+          href="?page=<%= totalPages %>&search=<%= searchQuery %>"
+          class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+          title="Trang cuối"
+        >
+          &raquo;
         </a>
       <% } %>
     </nav>
