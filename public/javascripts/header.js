@@ -16,15 +16,20 @@ document.getElementById('avatarButton').addEventListener('click', function () {
 document.getElementById('logoutButton').addEventListener('click', function (event) {
   event.preventDefault();
 
+  // Kiểm tra xem đang ở trang admin hay user
+  const isAdminPage = window.location.pathname.startsWith('/admin');
+  const logoutUrl = isAdminPage ? '/admin/logout' : '/logout';
+  const redirectUrl = isAdminPage ? '/admin/login' : '/login';
+
   // Gọi API logout
-  fetch('/admin/logout', {
+  fetch(logoutUrl, {
     method: 'POST',
     credentials: 'include'
   }).then(response => {
     if (response.ok) {
       response.json().then(data => {
         if (data.success) {
-          window.location.href = '/admin/login';
+          window.location.href = redirectUrl;
         } else {
           console.error('Logout unsuccessful:', data.message);
         }
@@ -49,6 +54,8 @@ document.addEventListener('visibilitychange', function() {
 
 window.addEventListener('beforeunload', function(event) {
   if (isTabClosing) {
-    navigator.sendBeacon('/admin/logout');
+    const isAdminPage = window.location.pathname.startsWith('/admin');
+    const logoutUrl = isAdminPage ? '/admin/logout' : '/logout';
+    navigator.sendBeacon(logoutUrl);
   }
 });

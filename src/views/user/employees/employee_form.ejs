@@ -80,8 +80,10 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.getElementById('employeeForm');
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
+
     const formData = new FormData(form);
     const changedData = {};
     const inputs = form.querySelectorAll('.form-input');
@@ -90,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const name = input.name;
       const currentValue = input.value;
       const initialValue = input.dataset.initialValue;
+
       if (currentValue !== initialValue) {
         changedData[name] = currentValue;
       }
@@ -104,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => {
       if (response.ok) {
-        window.location.reload();
+        window.location.href = '/employees/edit';
       } else {
         throw new Error('Cập nhật thất bại');
       }

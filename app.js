@@ -17,21 +17,34 @@ app.set("views", path.join(__dirname, "src/views"));
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 
-// Đặt layout mặc định cho tất cả các trang
-app.set("layout", "admin/components/common");
-
-// Cho phép bỏ qua layout ở một số trang nhất định
-app.use((req, res, next) => {
-  res.locals.noLayout = false;
-  next();
-});
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use((req, res, next) => {
+  // Mặc định không sử dụng layout
+  res.locals.noLayout = false;
+
+  const adminToken = req.cookies.adminAccessToken;
+  if (adminToken) {
+    app.set("layout", "admin/components/common");
+    return next();
+  }
+
+  const employeeToken = req.cookies.employeeAccessToken;
+  const collaboratorToken = req.cookies.collaboratorAccessToken;
+  if (employeeToken || collaboratorToken) {
+    app.set("layout", "user/components/common");
+    return next();
+  }
+
+  // Nếu không có token nào, sử dụng layout mặc định
+  app.set("layout", "user/components/common");
+  next();
+});
 
 app.use("/admin", adminRouter);
 app.use("/", userRouter);

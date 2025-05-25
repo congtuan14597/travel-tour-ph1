@@ -97,20 +97,21 @@ let editEmployee = async (req, res) => {
 let updateEmployee = async (req, res) => {
   try {
     const employee = await User.findByPk(req.params.id);
+    const updateData = req.body;
 
-    if (req.body.dayOfBirth) {
-      req.body.dayOfBirth = moment(
-        req.body.dayOfBirth, "DD-MM-YYYY"
+    if (updateData.dayOfBirth) {
+      updateData.dayOfBirth = moment(
+        updateData.dayOfBirth, "DD-MM-YYYY"
       ).format("YYYY-MM-DD");
     }
 
-    if (req.body.password && req.body.password.trim() !== "") {
-      req.body.password = await bcrypt.hash(req.body.password, 10);
+    if (updateData.password && updateData.password.trim() !== "") {
+      updateData.password = await bcrypt.hash(updateData.password, 10);
     } else {
-      req.body.password;
+      updateData.password;
     }
 
-    await employee.update(req.body);
+    await employee.update(updateData);
 
     res.redirect(`/admin/employees/edit/${employee.id}`);
   } catch (error) {
