@@ -55,6 +55,7 @@ router.get("/collaborators/customers", adminAuthentication, collaboratorControll
 // FOR TOURS
 router.get("/tours", adminAuthentication, tourController.getTours);
 router.get("/tours/revenues", adminAuthentication, tourController.getTourRevenue);
-router.get("/tours/:id", adminAuthentication, tourController.getTourDetails);
+router.get("/tours/:id/edit", adminAuthentication, tourController.getTourDetails);
+router.get('/tours/completed_bookings', adminAuthentication, tourController.getCompletedBookingsByMonth);
 
 module.exports = router;
