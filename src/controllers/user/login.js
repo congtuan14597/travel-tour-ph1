@@ -49,7 +49,13 @@ let postUserLogin = async (req, res) => {
     res.cookie(cookieName, token, { httpOnly: true });
 
     return res.status(200).json({
-      success: true, message: "Đăng nhập thành công"
+      success: true,
+      message: "Đăng nhập thành công",
+      user: {
+        id: user.id,
+        role: user.role,
+        email: user.email
+      }
     })
   } catch (error) {
     return res.status(500).json({
