@@ -1,0 +1,19 @@
+<div class="content sm:ml-[17rem]">
+  <div id="app" class="flex justify-center h-full bg-gray-200 p-4 mt-[53px]">
+    <div class="w-full shadow-lg max-w-8xl bg-white p-6 rounded-lg sm:flex">
+      <div class="w-full">
+        <% if (typeof error !== 'undefined') { %>
+          <div class="col-span-12 bg-red-100 text-red-800 p-3 rounded mb-4">
+            <%- error %>
+          </div>
+        <% } %>
+
+        <%- include("../employees/employee_form", {
+          formTitle: "Chỉnh sửa nhân viên",
+          formAction: `/employees/${formData.id}/update?_method=PATCH`,
+          formData: formData,
+          formSubmitBtn: "Chỉnh sửa"
+        }) %>
+      </div>
+    </div>
+</div>

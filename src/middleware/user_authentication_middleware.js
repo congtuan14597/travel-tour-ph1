@@ -33,4 +33,23 @@ const userAuthenticateToken = async (req, res, next) => {
   }
 };
 
-module.exports = userAuthenticateToken;
+const requireEmployeeRole = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.redirect("/login");
+    }
+
+    if (req.user.role !== "1") {
+      return res.redirect("/");
+    }
+
+    next();
+  } catch (error) {
+    return res.redirect("/login");
+  }
+};
+
+module.exports = {
+  userAuthenticateToken,
+  requireEmployeeRole
+};
