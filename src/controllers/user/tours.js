@@ -1,6 +1,7 @@
 const moment = require("moment");
 const {
-  getToursWithPaginationService
+  getTourDetailsWithBookingsService,
+  getToursWithPaginationService,
 } = require("../../services/tour.service");
 const {
   getCompletedBookingsByMonthService
@@ -14,6 +15,25 @@ let getTours = async (req, res) => {
       ...result,
       moment,
       query: req.query,
+    });
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+let getTourDetails = async (req, res) => {
+  try {
+    const tourId = req.params.id;
+    const bookingPage = parseInt(req.query.bookingPage) || 1;
+    const result = await getTourDetailsWithBookingsService(tourId, bookingPage);
+
+    if (!result) {
+      return res.status(404).send("Không tìm thấy tour");
+    }
+
+    res.render("user/tours/show", {
+      ...result,
+      moment
     });
   } catch (error) {
     res.status(500).send("Internal Server Error");
@@ -42,5 +62,6 @@ let getCompletedBookingsByMonth = async (req, res) => {
 
 module.exports = {
   getTours,
+  getTourDetails,
   getCompletedBookingsByMonth,
 };

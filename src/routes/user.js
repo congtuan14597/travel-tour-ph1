@@ -43,6 +43,10 @@ router.patch("/collaborators/:id/update",
 );
 // FOR TOUR
 router.get("/tours", userAuthenticateToken, tourController.getTours);
+router.get("/tours/:id/edit",
+  userAuthenticateToken,
+  tourController.getTourDetails
+);
 router.get('/tours/completed_bookings',
   userAuthenticateToken,
   tourController.getCompletedBookingsByMonth

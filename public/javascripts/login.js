@@ -26,7 +26,7 @@ if ($(formId)) {
             backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
           }).showToast();
 
-          if (data.user.role === "2") {
+          if (data.user && data.user?.role === "2") {
             redirectUrl = "/collaborators/edit";
           }
 
