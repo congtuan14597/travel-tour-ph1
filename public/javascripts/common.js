@@ -65,6 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
     "/employees/edit": "dropdown-employees",
     "/collaborators/edit": "dropdown-collaborators",
     "/tours": "dropdown-tours",
+    "/tours/completed_bookings": "dropdown-tours",
   };
 
   switch (true) {

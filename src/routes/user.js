@@ -42,9 +42,10 @@ router.patch("/collaborators/:id/update",
   collaboratorController.updateCollaborator
 );
 // FOR TOUR
-router.get("/tours",
+router.get("/tours", userAuthenticateToken, tourController.getTours);
+router.get('/tours/completed_bookings',
   userAuthenticateToken,
-  tourController.getTours
+  tourController.getCompletedBookingsByMonth
 );
 
 module.exports = router;
