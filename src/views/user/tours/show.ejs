@@ -131,7 +131,12 @@
                         <%= booking.numberPeople %>
                       </td>
                       <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
-                        <%= booking.textStatus %>
+                        <span
+                          class="border rounded-full px-2 py-1
+                                <%= booking.statusColor %>"
+                        >
+                          <%= booking.textStatus %>
+                        </span>
                       </td>
                       <td class="p-2 text-sm text-gray-800 whitespace-nowrap">
                         <a

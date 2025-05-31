@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM('1','2','3','4','5'),
       allowNull: true,
       defaultValue: '1',
-      comment: '1: Chờ xác nhận, 2: Đã xác nhận, 3: Đã hủy, 4: Đã hoàn thành, 5: Thất bại',
+      comment: '1: Chờ xác nhận, 2: Đã xác nhận, 3: Đang thực hiện, 4: Đã hoàn thành, 5: Đã huỷ',
     },
     deletedAt: {
       type: DataTypes.DATE,
