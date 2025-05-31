@@ -8,7 +8,8 @@ const {
 const userLoginController = require("../controllers/user/login");
 const userLogoutController = require("../controllers/user/logout");
 const employeeController = require("../controllers/user/employees");
-const collaboratorController = require("../controllers/user/collaborators")
+const collaboratorController = require("../controllers/user/collaborators");
+const tourController = require("../controllers/user/tours");
 
 // FOR LOGIN
 router.get("/", userLoginController.getUserLogin);
@@ -39,6 +40,11 @@ router.patch("/collaborators/:id/update",
   userAuthenticateToken,
   requireCollaboratorRole,
   collaboratorController.updateCollaborator
+);
+// FOR TOUR
+router.get("/tours",
+  userAuthenticateToken,
+  tourController.getTours
 );
 
 module.exports = router;

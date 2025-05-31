@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
     "/admin/revenues": "dropdown-tours",
     "/employees/edit": "dropdown-employees",
     "/collaborators/edit": "dropdown-collaborators",
+    "/tours": "dropdown-tours",
   };
 
   switch (true) {
