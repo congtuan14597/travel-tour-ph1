@@ -7,7 +7,9 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var expressLayouts = require("express-ejs-layouts");
 const methodOverride = require("method-override");
-
+const user_authentication = require("jsonwebtoken");
+const SECRET_KEY = process.env.SECRET_KEY;
+const { User } = require("./models");
 const adminRouter = require("./src/routes/admin");
 const userRouter = require("./src/routes/user");
 
@@ -24,9 +26,10 @@ app.use(methodOverride("_method"));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   // Mặc định không sử dụng layout
   res.locals.noLayout = false;
+  res.locals.user = null;
 
   const adminToken = req.cookies.adminAccessToken;
   if (adminToken) {
@@ -37,8 +40,17 @@ app.use((req, res, next) => {
   const employeeToken = req.cookies.employeeAccessToken;
   const collaboratorToken = req.cookies.collaboratorAccessToken;
   if (employeeToken || collaboratorToken) {
-    app.set("layout", "user/components/common");
-    return next();
+    try {
+      const token = employeeToken || collaboratorToken;
+      const decoded = user_authentication.verify(token, SECRET_KEY);
+      const user = await User.findByPk(decoded.id);
+      res.locals.user = user;
+      app.set("layout", "user/components/common");
+      return next();
+    } catch (error) {
+      res.clearCookie("employeeAccessToken", { path: "/" });
+      res.clearCookie("collaboratorAccessToken", { path: "/" });
+    }
   }
 
   // Nếu không có token nào, sử dụng layout mặc định

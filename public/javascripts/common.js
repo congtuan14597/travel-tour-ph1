@@ -63,23 +63,24 @@ document.addEventListener("DOMContentLoaded", function() {
     "/admin/tours": "dropdown-tours",
     "/admin/revenues": "dropdown-tours",
     "/employees/edit": "dropdown-employees",
+    "/collaborators/edit": "dropdown-collaborators",
+    "/tours": "dropdown-tours",
+    "/tours/completed_bookings": "dropdown-tours",
   };
 
-  switch (true) {
-    case currentPath.startsWith("/admin/customers/edit/"):
-      dropdownConfig[currentPath] = "dropdown-customers";
+  const dynamicPath = [
+    {prefix: "/admin/customers/edit/", dropdown: "dropdown-customers"},
+    {prefix: "/admin/employees/edit/", dropdown: "dropdown-employees"},
+    {prefix: "/admin/collaborators/edit/", dropdown: "dropdown-collaborators"},
+    {prefix: "/admin/tours", dropdown: "dropdown-tours"},
+    {prefix: "/tours", dropdown: "dropdown-tours"},
+  ];
+
+  for (const {prefix, dropdown} of dynamicPath) {
+    if (currentPath.startsWith(prefix)) {
+      dropdownConfig[currentPath] = dropdown;
       break;
-    case currentPath.startsWith("/admin/employees/edit/"):
-      dropdownConfig[currentPath] = "dropdown-employees";
-      break;
-    case currentPath.startsWith("/admin/collaborators/edit/"):
-      dropdownConfig[currentPath] = "dropdown-collaborators";
-      break;
-    case currentPath.startsWith("/admin/tours"):
-      dropdownConfig[currentPath] = "dropdown-tours";
-      break;
-    default:
-      break;
+    }
   }
 
   if (dropdownConfig[currentPath]) {

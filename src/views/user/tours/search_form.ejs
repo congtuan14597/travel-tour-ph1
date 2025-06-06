@@ -1,0 +1,86 @@
+<form
+  method="GET" action="/tours"
+  class="w-full"
+>
+  <div class="grid grid-cols-12 gap-4">
+    <div class="col-span-6">
+      <div class="grid grid-cols-4">
+        <label class="col-span-1 my-auto">Tên tour</label>
+        <input
+          type="text" name="name" placeholder="Tên tour"
+          value="<%= typeof query.name !== 'undefined' ? query.name : '' %>"
+          class="col-span-3 px-4 py-2 border rounded-md w-full"
+        />
+      </div>
+    </div>
+    <div class="col-span-6">
+      <div class="grid grid-cols-4">
+        <label class="col-span-1 my-auto">Điểm đến chính</label>
+        <input
+          type="text" name="destination" placeholder="Điểm đến chính"
+          value="<%= typeof query.destination !== 'undefined' ? query.destination : '' %>"
+          class="col-span-3 px-4 py-2 border rounded-md w-full"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-12 gap-4 mt-4">
+    <div class="col-span-6">
+      <div class="grid grid-cols-4">
+        <label class="col-span-1 my-auto">Nơi khởi hành</label>
+        <input
+          type="text" name="departure" placeholder="Nơi khởi hành"
+          value="<%= typeof query.departure !== 'undefined' ? query.departure : '' %>"
+          class="col-span-3 px-4 py-2 border rounded-md w-full"
+        />
+      </div>
+    </div>
+    <div class="col-span-6">
+      <div class="grid grid-cols-4">
+        <label class="col-span-1 my-auto">Loại tour</label>
+        <select
+          name="type"
+          class="col-span-3 p-2 border border-gray-300 rounded-md w-full"
+        >
+          <option value="">-- Loại tour --</option>
+          <option value="1" <%= query.type == '1' ? 'selected' : '' %>>
+            Quốc tế
+          </option>
+          <option value="2" <%= query.type == '2' ? 'selected' : '' %>>
+            Nội địa
+          </option>
+          <option value="3" <%= query.type == '3' ? 'selected' : '' %>>
+            Tự thiết kế
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-12 gap-4 mt-4">
+    <div class="col-span-6">
+      <div class="grid grid-cols-12">
+        <label class="col-span-3 my-auto">Giá</label>
+        <input
+          type="text" name="priceMin"
+          value="<%= typeof query.priceMin !== 'undefined' ? query.priceMin : '' %>"
+          class="col-span-4 px-4 py-2 border rounded-md w-full"
+        />
+        <span class="col-span-1 my-auto mx-auto">~</span>
+        <input
+          type="text" name="priceMax"
+          value="<%= typeof query.priceMax !== 'undefined' ? query.priceMax : '' %>"
+          class="col-span-4 px-4 py-2 border rounded-md w-full"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-center mt-4">
+    <button
+      type="submit"
+      class="col-span-full px-4 py-2 bg-blue-500 text-white
+            rounded-md hover:bg-blue-600 w-1/4"
+    >
+      Tìm kiếm
+    </button>
+  </div>
+</form>

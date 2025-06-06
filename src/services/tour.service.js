@@ -11,10 +11,21 @@ const tourTypeMap = {
 const bookingStatusMap = {
   "1": "Chờ xác nhận",
   "2": "Đã xác nhận",
-  "3": "Đã hủy",
+  "3": "Đang thực hiện",
   "4": "Đã hoàn thành",
-  "5": "Thất bại",
+  "5": "Đã huỷ",
 };
+
+function getStatusColor(status) {
+  switch (status) {
+    case "1": return "bg-gray-300";
+    case "2": return "bg-blue-300";
+    case "3": return "bg-yellow-300";
+    case "4": return "bg-green-300";
+    case "5": return "bg-red-300";
+    default: return "bg-gray-200";
+  }
+}
 
 function buildTourFilter(query) {
   const {
@@ -107,6 +118,7 @@ const getTourDetailsWithBookingsService = async (
   const bookings = bookingRows.map(booking => ({
     ...booking.toJSON(),
     textStatus: bookingStatusMap[booking.status],
+    statusColor: getStatusColor(booking.status),
   }));
 
   return {
@@ -187,4 +199,5 @@ module.exports = {
   getTourRevenueService,
   tourTypeMap,
   bookingStatusMap,
+  getStatusColor,
 };

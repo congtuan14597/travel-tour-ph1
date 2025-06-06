@@ -1,6 +1,6 @@
 const isAdminPage = window.location.pathname.startsWith("/admin");
 const loginUrl = isAdminPage ? "/admin/login" : "/login";
-const redirectUrl = isAdminPage ? "/admin/analysis_documents" : "/employees/edit";
+let redirectUrl = isAdminPage ? "/admin/analysis_documents" : "/employees/edit";
 const formId = isAdminPage ? "#login-form" : "#user-login-form";
 
 if ($(formId)) {
@@ -25,6 +25,10 @@ if ($(formId)) {
             position: "center",
             backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
           }).showToast();
+
+          if (data.user && data.user?.role === "2") {
+            redirectUrl = "/collaborators/edit";
+          }
 
           setTimeout(function() {
             window.location.assign(redirectUrl);
