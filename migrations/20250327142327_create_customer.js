@@ -51,6 +51,10 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true,
       },
+      placeOfBirth: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
       district: {
         type: Sequelize.STRING(100),
         allowNull: true,
