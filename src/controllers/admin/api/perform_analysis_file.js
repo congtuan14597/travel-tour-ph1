@@ -197,7 +197,7 @@ async function exportDeclarationFile(user, fileName) {
   worksheet.getCell("E9").value = dayOfBirths[0];
   worksheet.getCell("I9").value = dayOfBirths[1];
   worksheet.getCell("L9").value = dayOfBirths[2];
-  worksheet.getCell("R9").value = user.province;
+  worksheet.getCell("R9").value = user.placeOfBirth;
   worksheet.getCell("F11").value = createdAts[0];
   worksheet.getCell("H11").value = createdAts[1];
   worksheet.getCell("J11").value = createdAts[2];

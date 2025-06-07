@@ -86,6 +86,15 @@
     </div>
 
     <div class="grid grid-cols-4 gap-4 items-center mb-5">
+      <label class="block text-sm font-medium">Nơi sinh:</label>
+      <input
+        type="text" name="placeOfBirth"
+        value="<%= formData?.placeOfBirth || '' %>"
+        class="px-4 py-2 border rounded-md w-full col-span-3"
+      >
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 items-center mb-5">
       <label class="block text-sm font-medium">Thôn:</label>
       <input
         type="text" name="village"
