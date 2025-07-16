@@ -115,7 +115,6 @@
         class="datepicker px-4 py-2 border rounded-md w-full col-span-3"
       >
     </div>
-
     <div class="grid grid-cols-4 gap-4 items-center mb-5">
       <label class="block text-sm font-medium">Tỉnh/Thành phố:</label>
       <select
@@ -125,25 +124,25 @@
         <option value="">Chọn Tỉnh/Thành phố</option>
       </select>
     </div>
-
+    
     <div class="grid grid-cols-4 gap-4 items-center mb-5">
       <label class="block text-sm font-medium">Quận/Huyện:</label>
-      <select
-        id="district" name="district"
+      <input
+        type="text" id="district" name="district"
+        value="<%= formData?.district || '' %>"
         class="px-4 py-2 border rounded-md w-full col-span-3"
+        placeholder="Nhập Quận/Huyện"
       >
-        <option value="">Chọn Quận/Huyện</option>
-      </select>
     </div>
-
+    
     <div class="grid grid-cols-4 gap-4 items-center mb-5">
       <label class="block text-sm font-medium">Xã/Phường:</label>
-      <select
-        id="commune" name="commune"
+      <input
+        type="text" id="commune" name="commune"
+        value="<%= formData?.commune || '' %>"
         class="px-4 py-2 border rounded-md w-full col-span-3"
+        placeholder="Nhập Xã/Phường"
       >
-        <option value="">Chọn Xã/Phường</option>
-      </select>
     </div>
 
     <div class="mt-4 flex justify-center">
@@ -174,73 +173,84 @@ function sortVietnamese(a, b) {
 
 // Fetch tỉnh/thành phố
 async function fetchProvinces() {
-  const response = await fetch('https://provinces.open-api.vn/api/p/');
+  const response = await fetch('https://api.luat.ai/administrative/provinces', {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
   const data = await response.json();
   
   const sortedData = data.sort((a, b) => 
-    sortVietnamese(formatLocationName(a.name), formatLocationName(b.name))
+    sortVietnamese(formatLocationName(a), formatLocationName(b))
   );
-  
-  sortedData.forEach(province => {
+  data.forEach(province => {
     const option = document.createElement('option');
-    option.value = formatLocationName(province.name);
-    option.dataset.code = province.code;
-    option.textContent = formatLocationName(province.name);
-    if (formatLocationName(province.name) === '<%= formData?.province %>') {
+    option.value = formatLocationName(province);
+    option.dataset.name = province;
+    option.textContent = formatLocationName(province);
+    if (formatLocationName(province) === '<%= formData?.province %>') {
       option.selected = true;
       // Nếu có sẵn tỉnh/thành phố, fetch quận/huyện
-      fetchDistricts(province.code);
+      fetchDistricts(province);
     }
     provinceSelect.appendChild(option);
   });
 }
 
 // Fetch quận/huyện theo tỉnh/thành phố
-async function fetchDistricts(provinceCode) {
+async function fetchDistricts(provinceName) {
   districtSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
   communeSelect.innerHTML = '<option value="">Chọn Xã/Phường</option>';
   
-  if (!provinceCode) return;
+  if (!provinceName) return;
   
-  const response = await fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`);
+  const response = await fetch(`https://api.luat.ai/administrative/districts?province=${encodeURIComponent(provinceName)}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
   const data = await response.json();
   
-  const sortedDistricts = data.districts.sort((a, b) => 
-    sortVietnamese(formatLocationName(a.name), formatLocationName(b.name))
+  const sortedDistricts = data.sort((a, b) => 
+    sortVietnamese(formatLocationName(a), formatLocationName(b))
   );
   
   sortedDistricts.forEach(district => {
     const option = document.createElement('option');
-    option.value = formatLocationName(district.name);
-    option.dataset.code = district.code;
-    option.textContent = formatLocationName(district.name);
-    if (formatLocationName(district.name) === '<%= formData?.district %>') {
+    option.value = formatLocationName(district);
+    option.dataset.name = district;
+    option.textContent = formatLocationName(district);
+    if (formatLocationName(district) === '<%= formData?.district %>') {
       option.selected = true;
       // Nếu có sẵn quận/huyện, fetch xã/phường
-      fetchCommunes(district.code);
+      fetchCommunes(provinceName, district);
     }
     districtSelect.appendChild(option);
   });
 }
 
 // Fetch xã/phường theo quận/huyện
-async function fetchCommunes(districtCode) {
+async function fetchCommunes(provinceName, districtName) {
   communeSelect.innerHTML = '<option value="">Chọn Xã/Phường</option>';
   
-  if (!districtCode) return;
+  if (!provinceName || !districtName) return;
   
-  const response = await fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`);
+  const response = await fetch(`https://api.luat.ai/administrative/wards?province=${encodeURIComponent(provinceName)}&district=${encodeURIComponent(districtName)}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
   const data = await response.json();
   
-  const sortedWards = data.wards.sort((a, b) => 
-    sortVietnamese(formatLocationName(a.name), formatLocationName(b.name))
+  const sortedWards = data.sort((a, b) => 
+    sortVietnamese(formatLocationName(a), formatLocationName(b))
   );
   
   sortedWards.forEach(commune => {
     const option = document.createElement('option');
-    option.value = formatLocationName(commune.name);
-    option.textContent = formatLocationName(commune.name);
-    if (formatLocationName(commune.name) === '<%= formData?.commune %>') {
+    option.value = formatLocationName(commune);
+    option.textContent = formatLocationName(commune);
+    if (formatLocationName(commune) === '<%= formData?.commune %>') {
       option.selected = true;
     }
     communeSelect.appendChild(option);
@@ -250,12 +260,13 @@ async function fetchCommunes(districtCode) {
 // Event listeners
 provinceSelect.addEventListener('change', (e) => {
   const selectedOption = e.target.options[e.target.selectedIndex];
-  fetchDistricts(selectedOption.dataset.code);
+  fetchDistricts(selectedOption.dataset.name);
 });
 
 districtSelect.addEventListener('change', (e) => {
   const selectedOption = e.target.options[e.target.selectedIndex];
-  fetchCommunes(selectedOption.dataset.code);
+  const provinceOption = provinceSelect.options[provinceSelect.selectedIndex];
+  fetchCommunes(provinceOption.dataset.name, selectedOption.dataset.name);
 });
 
 // Load provinces on page load
