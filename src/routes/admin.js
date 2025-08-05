@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 const performAnalysisFileController = require("../controllers/admin/api/perform_analysis_file.js");
 const adminLoginController = require("../controllers/admin/login.js");
 const adminLogoutController = require("../controllers/admin/logout.js");
@@ -57,5 +58,15 @@ router.get("/tours", adminAuthentication, tourController.getTours);
 router.get("/tours/revenues", adminAuthentication, tourController.getTourRevenue);
 router.get("/tours/:id/edit", adminAuthentication, tourController.getTourDetails);
 router.get('/tours/completed_bookings', adminAuthentication, tourController.getCompletedBookingsByMonth);
+
+router.get("/provinces", async (req, res) => {
+  try {
+    const response = await axios.get("https://api.luat.ai/administrative/provinces");
+    res.json(response.data);
+  } catch (err) {
+    console.error("Error fetching provinces:", err);
+    res.status(500).json({ error: "Failed to fetch provinces" });
+  }
+});
 
 module.exports = router;
