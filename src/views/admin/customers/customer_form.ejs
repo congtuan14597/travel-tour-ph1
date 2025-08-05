@@ -173,11 +173,12 @@ function sortVietnamese(a, b) {
 
 // Fetch tỉnh/thành phố
 async function fetchProvinces() {
-  const response = await fetch('https://api.luat.ai/administrative/provinces', {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
+  // const response = await fetch('https://api.luat.ai/administrative/provinces', {
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   }
+  // });
+  const response = await fetch('/admin/provinces');
   const data = await response.json();
   
   const sortedData = data.sort((a, b) => 
